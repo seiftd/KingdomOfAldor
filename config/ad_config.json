@@ -1,0 +1,340 @@
+{
+  "version": "1.0.0",
+  "last_updated": "2024-01-10T12:00:00Z",
+  "description": "Kingdom of Aldoria Ad Configuration - Allows dynamic ad source management and reward configuration",
+  
+  "ad_sources": {
+    "primary": {
+      "name": "AdMob",
+      "enabled": true,
+      "priority": 1,
+      "fill_rate": 95.0,
+      "success_rate": 94.2,
+      "rpm": 3.20,
+      "api_key": "YOUR_ADMOB_API_KEY",
+      "app_id": "YOUR_ADMOB_APP_ID",
+      "banner_unit_id": "YOUR_BANNER_UNIT_ID",
+      "interstitial_unit_id": "YOUR_INTERSTITIAL_UNIT_ID",
+      "rewarded_unit_id": "YOUR_REWARDED_UNIT_ID"
+    },
+    "secondary": [
+      {
+        "name": "Unity Ads",
+        "enabled": true,
+        "priority": 2,
+        "fill_rate": 90.0,
+        "success_rate": 89.5,
+        "rpm": 2.80,
+        "game_id": "YOUR_UNITY_GAME_ID",
+        "api_key": "YOUR_UNITY_API_KEY"
+      },
+      {
+        "name": "AppLovin",
+        "enabled": true,
+        "priority": 3,
+        "fill_rate": 88.0,
+        "success_rate": 87.3,
+        "rpm": 2.65,
+        "sdk_key": "YOUR_APPLOVIN_SDK_KEY",
+        "report_key": "YOUR_APPLOVIN_REPORT_KEY"
+      },
+      {
+        "name": "IronSource",
+        "enabled": true,
+        "priority": 4,
+        "fill_rate": 92.0,
+        "success_rate": 91.1,
+        "rpm": 2.90,
+        "app_key": "YOUR_IRONSOURCE_APP_KEY",
+        "user_id": "YOUR_IRONSOURCE_USER_ID"
+      },
+      {
+        "name": "Vungle",
+        "enabled": true,
+        "priority": 5,
+        "fill_rate": 85.0,
+        "success_rate": 84.2,
+        "rpm": 2.45,
+        "app_id": "YOUR_VUNGLE_APP_ID",
+        "api_key": "YOUR_VUNGLE_API_KEY"
+      },
+      {
+        "name": "Facebook Audience Network",
+        "enabled": true,
+        "priority": 6,
+        "fill_rate": 87.0,
+        "success_rate": 86.1,
+        "rpm": 2.55,
+        "app_id": "YOUR_FAN_APP_ID",
+        "placement_id": "YOUR_FAN_PLACEMENT_ID"
+      },
+      {
+        "name": "TikTok Ads",
+        "enabled": false,
+        "priority": 7,
+        "fill_rate": 83.0,
+        "success_rate": 82.4,
+        "rpm": 2.30,
+        "app_id": "YOUR_TIKTOK_APP_ID",
+        "secret_key": "YOUR_TIKTOK_SECRET_KEY"
+      },
+      {
+        "name": "Chartboost",
+        "enabled": false,
+        "priority": 8,
+        "fill_rate": 86.0,
+        "success_rate": 85.3,
+        "rpm": 2.40,
+        "app_id": "YOUR_CHARTBOOST_APP_ID",
+        "app_signature": "YOUR_CHARTBOOST_APP_SIGNATURE"
+      }
+    ]
+  },
+  
+  "ad_limits": {
+    "daily_limits": {
+      "free_players": {
+        "rewarded_ads": 30,
+        "interstitial_ads": 50,
+        "banner_ads": 200
+      },
+      "weekly_vip": {
+        "rewarded_ads": 50,
+        "interstitial_ads": 75,
+        "banner_ads": 300
+      },
+      "monthly_vip": {
+        "rewarded_ads": 75,
+        "interstitial_ads": 100,
+        "banner_ads": 500
+      }
+    },
+    "cooldown_periods": {
+      "rewarded_ads": 30,
+      "interstitial_ads": 60,
+      "between_stages": 120
+    },
+    "frequency_caps": {
+      "rewarded_per_hour": 10,
+      "interstitial_per_hour": 5,
+      "interstitial_per_stage": 1
+    }
+  },
+  
+  "reward_configuration": {
+    "rewarded_ads": {
+      "gems": {
+        "min": 1,
+        "max": 5,
+        "bonus_multipliers": {
+          "weekly_vip": 1.5,
+          "monthly_vip": 2.0,
+          "special_events": 3.0
+        }
+      },
+      "gold": {
+        "min": 50,
+        "max": 200,
+        "bonus_multipliers": {
+          "weekly_vip": 1.5,
+          "monthly_vip": 2.0,
+          "special_events": 3.0
+        }
+      },
+      "special_rewards": {
+        "energy_refill": {
+          "probability": 0.05,
+          "amount": 5
+        },
+        "xp_boost": {
+          "probability": 0.03,
+          "multiplier": 2.0,
+          "duration_minutes": 30
+        },
+        "legendary_chest": {
+          "probability": 0.01,
+          "chest_type": "bronze"
+        }
+      }
+    },
+    "interstitial_completion": {
+      "gems": {
+        "min": 1,
+        "max": 2
+      },
+      "gold": {
+        "min": 25,
+        "max": 75
+      }
+    }
+  },
+  
+  "mediation_settings": {
+    "waterfall_strategy": "revenue_optimization",
+    "timeout_seconds": 30,
+    "retry_attempts": 3,
+    "fallback_enabled": true,
+    "auto_refresh": true,
+    "refresh_interval_minutes": 5,
+    "load_timeout": 10,
+    "show_timeout": 5
+  },
+  
+  "targeting_options": {
+    "geographic": {
+      "tier_1_countries": ["US", "CA", "GB", "AU", "DE", "FR", "JP"],
+      "tier_2_countries": ["BR", "IN", "MX", "IT", "ES", "KR", "RU"],
+      "tier_3_countries": ["*"]
+    },
+    "demographic": {
+      "age_groups": ["13-17", "18-24", "25-34", "35-44", "45+"],
+      "interests": ["gaming", "mobile_games", "rpg", "fantasy", "adventure"]
+    },
+    "behavioral": {
+      "session_length": {
+        "short": "0-5min",
+        "medium": "5-15min", 
+        "long": "15min+"
+      },
+      "spending_tier": {
+        "free": "no_purchase",
+        "low": "0.01-4.99",
+        "medium": "5.00-19.99",
+        "high": "20.00-49.99",
+        "whale": "50.00+"
+      }
+    }
+  },
+  
+  "analytics_tracking": {
+    "events": {
+      "ad_request": true,
+      "ad_loaded": true,
+      "ad_failed": true,
+      "ad_impression": true,
+      "ad_clicked": true,
+      "ad_closed": true,
+      "ad_rewarded": true,
+      "ad_revenue": true
+    },
+    "custom_parameters": {
+      "player_level": true,
+      "current_world": true,
+      "currency_balance": true,
+      "session_number": true,
+      "days_since_install": true,
+      "ltv_estimate": true
+    },
+    "third_party_tracking": {
+      "firebase": true,
+      "adjust": false,
+      "appsflyer": false,
+      "facebook_analytics": true
+    }
+  },
+  
+  "a_b_testing": {
+    "enabled": true,
+    "tests": [
+      {
+        "name": "reward_amount_test",
+        "description": "Test different gem reward amounts",
+        "status": "active",
+        "traffic_split": 50,
+        "variants": {
+          "control": {
+            "gem_min": 1,
+            "gem_max": 5
+          },
+          "test": {
+            "gem_min": 2,
+            "gem_max": 6
+          }
+        }
+      },
+      {
+        "name": "cooldown_test",
+        "description": "Test different ad cooldown periods",
+        "status": "inactive",
+        "traffic_split": 30,
+        "variants": {
+          "control": {
+            "cooldown_seconds": 30
+          },
+          "test": {
+            "cooldown_seconds": 20
+          }
+        }
+      }
+    ]
+  },
+  
+  "monetization_strategy": {
+    "revenue_goals": {
+      "daily_target": 1500.00,
+      "monthly_target": 45000.00,
+      "quarterly_target": 135000.00
+    },
+    "optimization": {
+      "auto_adjust_rewards": true,
+      "dynamic_pricing": false,
+      "seasonal_multipliers": true,
+      "player_segmentation": true
+    },
+    "special_events": {
+      "double_rewards_weekend": {
+        "enabled": true,
+        "frequency": "monthly",
+        "duration_hours": 48,
+        "multiplier": 2.0
+      },
+      "happy_hour": {
+        "enabled": true,
+        "daily_start_hour": 18,
+        "duration_hours": 2,
+        "multiplier": 1.5
+      }
+    }
+  },
+  
+  "compliance": {
+    "gdpr_consent": true,
+    "ccpa_compliance": true,
+    "coppa_safe": true,
+    "age_verification": true,
+    "data_retention_days": 365,
+    "privacy_policy_url": "https://kingdomofaldoria.com/privacy",
+    "terms_url": "https://kingdomofaldoria.com/terms"
+  },
+  
+  "emergency_controls": {
+    "kill_switch": {
+      "enabled": false,
+      "reason": "",
+      "activated_by": "",
+      "activation_time": null
+    },
+    "rate_limiting": {
+      "enabled": true,
+      "max_requests_per_minute": 100,
+      "blacklist_duration_minutes": 60
+    },
+    "fallback_mode": {
+      "enabled": false,
+      "offline_rewards": {
+        "gems": 1,
+        "gold": 25
+      }
+    }
+  },
+  
+  "admin_settings": {
+    "allowed_admins": [
+      "seiftouatilol@gmail.com"
+    ],
+    "modification_log": true,
+    "auto_backup": true,
+    "change_approval_required": false,
+    "maintenance_mode": false
+  }
+}
