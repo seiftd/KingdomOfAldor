@@ -4,1194 +4,768 @@ Contains all game constants, settings, and configuration parameters
 """
 
 import pygame
+import json
+import os
+import logging
+from enum import Enum
+from pathlib import Path
+from typing import Dict, Any, List, Tuple, Optional
+
+# Kingdom of Aldoria - Game Configuration
+# Core game settings and constants
+
+import pygame
+import os
 from pathlib import Path
 
-class Config:
-    """Main configuration class for Kingdom of Aldoria"""
+# Import premium content
+try:
+    from src.content.premium_content import (
+        PREMIUM_HEROES, PREMIUM_WEAPONS, PREMIUM_SKINS, PREMIUM_BUNDLES,
+        get_premium_content_by_type, get_premium_item_by_id
+    )
+except ImportError:
+    PREMIUM_HEROES = {}
+    PREMIUM_WEAPONS = {}
+    PREMIUM_SKINS = {}
+    PREMIUM_BUNDLES = {}
 
-    # Game Info
-    GAME_TITLE = "Kingdom of Aldoria"
-    VERSION = "1.0.0"
-    DEBUG = True  # Set to False for production
+# Game Version and Info
+GAME_VERSION = "1.0.0"
+GAME_TITLE = "Kingdom of Aldoria"
 
-    # Screen Settings
-    SCREEN_WIDTH = 1280
-    SCREEN_HEIGHT = 720
-    FPS = 60
-    FULLSCREEN = False
+# === BASIC GAME SETTINGS ===
+VERSION = "1.2.0"
+SCREEN_WIDTH = 1280
+SCREEN_HEIGHT = 720
+FPS = 60
+DEBUG_MODE = False
 
-    # Colors (RGB)
-    BLACK = (0, 0, 0)
-    WHITE = (255, 255, 255)
-    RED = (255, 0, 0)
-    GREEN = (0, 255, 0)
-    BLUE = (0, 0, 255)
-    YELLOW = (255, 255, 0)
-    PURPLE = (128, 0, 128)
-    ORANGE = (255, 165, 0)
-    GOLD = (255, 215, 0)
-    SILVER = (192, 192, 192)
-    DARK_GRAY = (64, 64, 64)
-    LIGHT_GRAY = (192, 192, 192)
+# === PATHS ===
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+ASSETS_DIR = os.path.join(BASE_DIR, "assets")
+SAVES_DIR = os.path.join(BASE_DIR, "saves")
+AUDIO_DIR = os.path.join(ASSETS_DIR, "audio")
+IMAGES_DIR = os.path.join(ASSETS_DIR, "images")
 
-    # UI Colors
-    UI_BACKGROUND = (25, 25, 35)
-    UI_PANEL = (45, 45, 55)
-    UI_BUTTON = (70, 70, 80)
-    UI_BUTTON_HOVER = (90, 90, 100)
-    UI_TEXT = (255, 255, 255)
-    UI_TEXT_SECONDARY = (180, 180, 180)
-    UI_ACCENT = (100, 200, 255)
-    UI_SUCCESS = (100, 255, 100)
-    UI_WARNING = (255, 200, 100)
-    UI_ERROR = (255, 100, 100)
-
-    # Paths
-    BASE_DIR = Path(__file__).parent.parent.parent
-    ASSETS_DIR = BASE_DIR / "assets"
-    SPRITES_DIR = ASSETS_DIR / "sprites"
-    AUDIO_DIR = ASSETS_DIR / "audio"
-    UI_DIR = ASSETS_DIR / "ui"
-    WORLDS_DIR = ASSETS_DIR / "worlds"
-    SAVE_DIR = BASE_DIR / "saves"
-
-    # Game Balance
-    MAX_STAMINA_DEFAULT = 10
-    STAMINA_RECHARGE_MINUTES = 20
-    STAMINA_PER_STAGE = 1
-
-    # Currency
-    GEMS_PER_AD = 3
-    MAX_ADS_PER_DAY = 30
-    GOLD_TO_GEM_RATIO = 100  # 100 gold = 1 gem
-
-    # Enhanced Ad System
-    AD_REWARD_GEMS_MIN = 1
-    AD_REWARD_GEMS_MAX = 5
-    AD_REWARD_GOLD_MIN = 50
-    AD_REWARD_GOLD_MAX = 200
-    AD_SOURCES = [
-        "AdMob", "Unity Ads", "AppLovin", "IronSource", "Vungle",
-        "Facebook Audience Network", "TikTok Ads", "Chartboost"
-    ]
-    AD_DAILY_LIMIT_DEFAULT = 30
-    AD_DAILY_LIMIT_VIP = 50
-    AD_COOLDOWN_SECONDS = 30
-
-    # Subscription Benefits
-    WEEKLY_SUB_GEMS_PER_DAY = 25
-    WEEKLY_SUB_MAX_STAMINA = 20
-    MONTHLY_SUB_GEMS_PER_DAY = 40
-    MONTHLY_SUB_MAX_STAMINA = 25
-
-    # Pricing (USD)
-    WEEKLY_SUB_PRICE = 4.99
-    MONTHLY_SUB_PRICE = 15.99
-    STARTER_PACK_PRICE = 0.99
-    LEGENDARY_ITEM_PRICE_MIN = 3.99
-    LEGENDARY_ITEM_PRICE_MAX = 14.99
-
-    # World Settings
-    WORLDS_COUNT = 10
-    STAGES_PER_WORLD = 30
-    BOSS_STAGE_INTERVAL = 5
-
-    # World Names
-    WORLD_NAMES = [
-        "Forest of Shadows",
-        "Desert of Souls",
-        "Ice Peaks",
-        "Dark Kingdom",
-        "Light Fortress",
-        "Mountain Realm",
-        "Ocean Depths",
-        "Sky Citadel",
-        "Underground Caves",
-        "Volcanic Wasteland"
-    ]
-
-    # Player Settings
-    PLAYER_START_LEVEL = 1
-    PLAYER_START_HP = 100
-    PLAYER_START_ATTACK = 10
-    PLAYER_START_DEFENSE = 5
-    PLAYER_START_SPEED = 8
-
-    # Progression
-    XP_PER_LEVEL = 100  # Base XP required for level 2
-    STAT_INCREASE_PER_LEVEL = 0.05  # 5% increase per level
-
-    # Enhanced Heroes System
-    HEROES = {
-        "knight_arin": {
-            "name": "Knight Arin",
-            "rarity": "common",
-            "base_hp": 100,
-            "base_attack": 10,
-            "base_defense": 8,
-            "skill": "Divine Strike",
-            "unlock_type": "default"
-        },
-        "forest_scout": {
-            "name": "Forest Scout",
-            "rarity": "common",
-            "base_hp": 80,
-            "base_attack": 12,
-            "base_defense": 6,
-            "skill": "Speed Boost",
-            "unlock_type": "gems",
-            "cost": 100
-        },
-        "desert_nomad": {
-            "name": "Desert Nomad",
-            "rarity": "uncommon",
-            "base_hp": 90,
-            "base_attack": 11,
-            "base_defense": 7,
-            "skill": "Sand Storm",
-            "unlock_type": "gems",
-            "cost": 250
-        },
-        "void_knight": {
-            "name": "Void Knight",
-            "rarity": "epic",
-            "base_hp": 120,
-            "base_attack": 15,
-            "base_defense": 12,
-            "skill": "Time Rewind",
-            "unlock_type": "payment_only",
-            "cost": 9.99
-        },
-        "dragon_slayer": {
-            "name": "Dragon Slayer",
-            "rarity": "legendary",
-            "base_hp": 150,
-            "base_attack": 20,
-            "base_defense": 15,
-            "skill": "Dragon Fury",
-            "unlock_type": "payment_only",
-            "cost": 19.99
-        },
-        "celestial_mage": {
-            "name": "Celestial Mage",
-            "rarity": "legendary",
-            "base_hp": 100,
-            "base_attack": 25,
-            "base_defense": 10,
-            "skill": "Meteor Strike",
-            "unlock_type": "payment_only",
-            "cost": 24.99
-        },
-        "shadow_assassin": {
-            "name": "Shadow Assassin",
-            "rarity": "epic",
-            "base_hp": 80,
-            "base_attack": 18,
-            "base_defense": 8,
-            "skill": "Shadow Clone",
-            "unlock_type": "gems",
-            "cost": 500
-        },
-        "ice_queen": {
-            "name": "Ice Queen",
-            "rarity": "legendary",
-            "base_hp": 130,
-            "base_attack": 22,
-            "base_defense": 14,
-            "skill": "Frozen Time",
-            "unlock_type": "payment_only",
-            "cost": 29.99
-        }
+# === WORLDS AND STAGES (EXPANDED) ===
+# Enhanced World Configuration with More Maps and Storyline
+WORLDS = {
+    1: {
+        "name": "Forest of Shadows",
+        "description": "Ancient woods filled with mystical creatures",
+        "stages": 40,  # Increased from 30
+        "unlock_level": 1,
+        "background": "worlds/forest_shadows.png",
+        "music": "world_forest.ogg",
+        "boss_stages": [10, 20, 30, 40],
+        "story_sessions": [1, 15, 30],
+        "enemies": ["goblin", "wolf", "orc", "dark_elf"],
+        "rewards": {"gold": 50, "xp": 25}
+    },
+    2: {
+        "name": "Desert of Souls",
+        "description": "Scorching sands hiding ancient secrets",
+        "stages": 40,
+        "unlock_level": 10,
+        "background": "worlds/desert_souls.png",
+        "music": "world_desert.ogg", 
+        "boss_stages": [10, 20, 30, 40],
+        "story_sessions": [45, 60, 80],
+        "enemies": ["sand_worm", "mummy", "scorpion", "djinn"],
+        "rewards": {"gold": 75, "xp": 35}
+    },
+    3: {
+        "name": "Crystal Caverns",
+        "description": "Underground realm of sparkling crystals",
+        "stages": 40,
+        "unlock_level": 20,
+        "background": "worlds/crystal_caverns.png",
+        "music": "world_caverns.ogg",
+        "boss_stages": [10, 20, 30, 40],
+        "story_sessions": [85, 100, 120],
+        "enemies": ["crystal_golem", "cave_spider", "dwarf_miner", "crystal_elemental"],
+        "rewards": {"gold": 100, "xp": 50}
+    },
+    4: {
+        "name": "Frozen Peaks",
+        "description": "Icy mountains where dragons soar",
+        "stages": 40,
+        "unlock_level": 30,
+        "background": "worlds/frozen_peaks.png",
+        "music": "world_frozen.ogg",
+        "boss_stages": [10, 20, 30, 40],
+        "story_sessions": [125, 140, 160],
+        "enemies": ["ice_giant", "frost_wolf", "yeti", "ice_dragon"],
+        "rewards": {"gold": 125, "xp": 65}
+    },
+    5: {
+        "name": "Volcanic Realm",
+        "description": "Land of fire and molten lava",
+        "stages": 40,
+        "unlock_level": 40,
+        "background": "worlds/volcanic_realm.png",
+        "music": "world_volcanic.ogg",
+        "boss_stages": [10, 20, 30, 40],
+        "story_sessions": [165, 180, 200],
+        "enemies": ["fire_elemental", "lava_golem", "phoenix", "flame_demon"],
+        "rewards": {"gold": 150, "xp": 80}
+    },
+    6: {
+        "name": "Sky Citadel",
+        "description": "Floating fortress among the clouds",
+        "stages": 40,
+        "unlock_level": 50,
+        "background": "worlds/sky_citadel.png",
+        "music": "world_sky.ogg",
+        "boss_stages": [10, 20, 30, 40],
+        "story_sessions": [205, 220, 240],
+        "enemies": ["wind_spirit", "cloud_guardian", "sky_knight", "storm_lord"],
+        "rewards": {"gold": 175, "xp": 95}
+    },
+    7: {
+        "name": "Abyssal Depths",
+        "description": "Dark underwater kingdom of the deep",
+        "stages": 40,
+        "unlock_level": 60,
+        "background": "worlds/abyssal_depths.png",
+        "music": "world_abyss.ogg",
+        "boss_stages": [10, 20, 30, 40],
+        "story_sessions": [245, 260, 280],
+        "enemies": ["sea_serpent", "kraken", "merfolk_warrior", "leviathan"],
+        "rewards": {"gold": 200, "xp": 110}
+    },
+    8: {
+        "name": "Celestial Gardens",
+        "description": "Divine realm of eternal beauty",
+        "stages": 40,
+        "unlock_level": 70,
+        "background": "worlds/celestial_gardens.png",
+        "music": "world_celestial.ogg",
+        "boss_stages": [10, 20, 30, 40],
+        "story_sessions": [285, 300, 320],
+        "enemies": ["angel_guardian", "celestial_beast", "divine_champion", "seraph"],
+        "rewards": {"gold": 225, "xp": 125}
+    },
+    9: {
+        "name": "Shadowlands",
+        "description": "Realm where darkness reigns supreme",
+        "stages": 40,
+        "unlock_level": 80,
+        "background": "worlds/shadowlands.png",
+        "music": "world_shadow.ogg",
+        "boss_stages": [10, 20, 30, 40],
+        "story_sessions": [325, 340, 360],
+        "enemies": ["shadow_demon", "void_walker", "dark_lord", "nightmare"],
+        "rewards": {"gold": 250, "xp": 140}
+    },
+    10: {
+        "name": "Nexus of Eternity",
+        "description": "The ultimate realm where time stands still",
+        "stages": 50,  # Final world has more stages
+        "unlock_level": 90,
+        "background": "worlds/nexus_eternity.png",
+        "music": "world_nexus.ogg",
+        "boss_stages": [10, 20, 30, 40, 50],
+        "story_sessions": [365, 380, 400],
+        "enemies": ["cosmic_entity", "time_guardian", "eternal_champion", "aldoria_final_boss"],
+        "rewards": {"gold": 300, "xp": 160}
     }
+}
 
-    # Enhanced Weapons System
-    WEAPONS = {
-        "bronze_sword": {
-            "name": "Bronze Sword",
-            "rarity": "common",
-            "attack": 5,
-            "special": "None",
-            "unlock_type": "default"
-        },
-        "iron_blade": {
-            "name": "Iron Blade",
-            "rarity": "common",
-            "attack": 8,
-            "special": "Critical +5%",
-            "unlock_type": "gold",
-            "cost": 500
-        },
-        "silver_sword": {
-            "name": "Silver Sword",
-            "rarity": "uncommon",
-            "attack": 12,
-            "special": "Undead Damage +50%",
-            "unlock_type": "gems",
-            "cost": 50
-        },
-        "void_scythe": {
-            "name": "Void Scythe",
-            "rarity": "epic",
-            "attack": 18,
-            "special": "Dark Energy Drain",
-            "unlock_type": "gems",
-            "cost": 200
-        },
-        "solar_flare_sword": {
-            "name": "Solar Flare Sword",
-            "rarity": "epic",
-            "attack": 20,
-            "special": "Fire Damage +100%",
-            "unlock_type": "payment_only",
-            "cost": 7.99
-        },
-        "excalibur": {
-            "name": "Excalibur",
-            "rarity": "legendary",
-            "attack": 30,
-            "special": "Holy Light +200%",
-            "unlock_type": "payment_only",
-            "cost": 14.99
-        },
-        "dragon_fang": {
-            "name": "Dragon Fang",
-            "rarity": "legendary",
-            "attack": 35,
-            "special": "Dragon Slayer +300%",
-            "unlock_type": "payment_only",
-            "cost": 19.99
-        },
-        "cosmic_blade": {
-            "name": "Cosmic Blade",
-            "rarity": "legendary",
-            "attack": 40,
-            "special": "Reality Tear",
-            "unlock_type": "payment_only",
-            "cost": 24.99
-        },
-        "infinity_edge": {
-            "name": "Infinity Edge",
-            "rarity": "mythic",
-            "attack": 50,
-            "special": "Infinite Power",
-            "unlock_type": "payment_only",
-            "cost": 49.99
-        }
-    }
-
-    # Enhanced Skins System
-    SKINS = {
-        "default": {
-            "name": "Default Knight",
-            "rarity": "common",
-            "bonus": "None",
-            "unlock_type": "default"
-        },
-        "forest_guardian": {
-            "name": "Forest Guardian",
-            "rarity": "uncommon",
-            "bonus": "Nature Resistance +25%",
-            "unlock_type": "gems",
-            "cost": 75
-        },
-        "desert_warrior": {
-            "name": "Desert Warrior",
-            "rarity": "uncommon",
-            "bonus": "Heat Resistance +25%",
-            "unlock_type": "gems",
-            "cost": 75
-        },
-        "ice_champion": {
-            "name": "Ice Champion",
-            "rarity": "rare",
-            "bonus": "Cold Immunity",
-            "unlock_type": "gems",
-            "cost": 150
-        },
-        "void_lord": {
-            "name": "Void Lord",
-            "rarity": "epic",
-            "bonus": "Dark Magic +50%",
-            "unlock_type": "payment_only",
-            "cost": 4.99
-        },
-        "golden_emperor": {
-            "name": "Golden Emperor",
-            "rarity": "legendary",
-            "bonus": "Gold Gain +100%",
-            "unlock_type": "payment_only",
-            "cost": 9.99
-        },
-        "celestial_avatar": {
-            "name": "Celestial Avatar",
-            "rarity": "legendary",
-            "bonus": "All Stats +25%",
-            "unlock_type": "payment_only",
-            "cost": 14.99
-        },
-        "dragon_emperor": {
-            "name": "Dragon Emperor",
-            "rarity": "legendary",
-            "bonus": "Dragon Powers",
-            "unlock_type": "payment_only",
-            "cost": 19.99
-        },
-        "cosmic_overlord": {
-            "name": "Cosmic Overlord",
-            "rarity": "mythic",
-            "bonus": "Reality Control",
-            "unlock_type": "payment_only",
-            "cost": 39.99
-        }
-    }
-
-    # Premium Legendary Skins (Payment Only)
-    SKINS = {
-        "default": {
-            "name": "Default Knight",
-            "rarity": "common",
-            "bonus": "None",
-            "unlock_type": "default"
-        },
-        "forest_guardian": {
-            "name": "Forest Guardian",
-            "rarity": "uncommon",
-            "bonus": "Nature Resistance +25%",
-            "unlock_type": "gems",
-            "cost": 75
-        },
-        "desert_warrior": {
-            "name": "Desert Warrior",
-            "rarity": "uncommon",
-            "bonus": "Heat Resistance +25%",
-            "unlock_type": "gems",
-            "cost": 75
-        },
-        "ice_champion": {
-            "name": "Ice Champion",
-            "rarity": "rare",
-            "bonus": "Cold Immunity",
-            "unlock_type": "gems",
-            "cost": 150
-        },
-        "void_lord": {
-            "name": "Void Lord",
-            "rarity": "epic",
-            "bonus": "Dark Magic +50%",
-            "unlock_type": "payment_only",
-            "cost": 4.99
-        },
-        "golden_emperor": {
-            "name": "Golden Emperor",
-            "rarity": "legendary",
-            "bonus": "Gold Gain +100%",
-            "unlock_type": "payment_only",
-            "cost": 9.99
-        },
-        "celestial_avatar": {
-            "name": "Celestial Avatar",
-            "rarity": "legendary",
-            "bonus": "All Stats +25%",
-            "unlock_type": "payment_only",
-            "cost": 14.99
-        },
-        "dragon_emperor": {
-            "name": "Dragon Emperor",
-            "rarity": "legendary",
-            "bonus": "Dragon Powers",
-            "unlock_type": "payment_only",
-            "cost": 19.99
-        },
-        "cosmic_overlord": {
-            "name": "Cosmic Overlord",
-            "rarity": "mythic",
-            "bonus": "Reality Control",
-            "unlock_type": "payment_only",
-            "cost": 39.99
-        },
-        "dragon_knight": {
-            "name": "Dragon Knight Arin",
-            "description": "Legendary dragon-forged armor with fire immunity",
-            "rarity": "legendary",
-            "price": 2500,  # Gems only
-            "currency": "gems",
-            "payment_only": True,
-            "skills": ["fire_immunity", "dragon_breath", "flame_aura"],
-            "stats_bonus": {"attack": 50, "defense": 40, "speed": 30, "health": 100}
-        },
-        "shadow_assassin": {
-            "name": "Shadow Assassin Arin",
-            "description": "Master of stealth and critical strikes",
-            "rarity": "legendary",
-            "price": 2200,
-            "currency": "gems",
-            "payment_only": True,
-            "skills": ["stealth", "critical_master", "shadow_clone"],
-            "stats_bonus": {"attack": 60, "defense": 20, "speed": 70, "health": 50}
-        },
-        "arcane_mage": {
-            "name": "Arcane Mage Arin",
-            "description": "Wielder of ancient magical powers",
-            "rarity": "legendary",
-            "price": 2800,
-            "currency": "gems",
-            "payment_only": True,
-            "skills": ["mana_shield", "arcane_blast", "time_stop"],
-            "stats_bonus": {"attack": 80, "defense": 35, "speed": 45, "health": 75}
-        },
-        "celestial_guardian": {
-            "name": "Celestial Guardian Arin",
-            "description": "Blessed by the gods themselves",
-            "rarity": "legendary",
-            "price": 3000,
-            "currency": "gems",
-            "payment_only": True,
-            "skills": ["divine_protection", "healing_aura", "celestial_strike"],
-            "stats_bonus": {"attack": 45, "defense": 60, "speed": 35, "health": 120}
-        },
-        "void_reaper": {
-            "name": "Void Reaper Arin",
-            "description": "Harvester of souls from the void realm",
-            "rarity": "legendary",
-            "price": 2600,
-            "currency": "gems",
-            "payment_only": True,
-            "skills": ["soul_drain", "void_step", "death_mark"],
-            "stats_bonus": {"attack": 70, "defense": 30, "speed": 55, "health": 80}
-        }
-    }
-
-    # New Heroes (Additional Characters)
-    HEROES = {
-        "arin": {
-            "name": "Knight Arin",
-            "description": "Brave knight of Aldoria",
-            "base_stats": {"attack": 100, "defense": 80, "speed": 60, "health": 200},
-            "unlock_cost": 0,
-            "rarity": "common"
-        },
-        # Premium Legendary Heroes (Payment Only)
-        "seraphina": {
-            "name": "Princess Seraphina",
-            "description": "Royal mage with divine powers",
-            "base_stats": {"attack": 120, "defense": 90, "speed": 70, "health": 180},
-            "unlock_cost": 3500,
-            "currency": "gems",
-            "rarity": "legendary",
-            "payment_only": True,
-            "special_abilities": ["royal_decree", "divine_intervention", "mana_overflow"]
-        },
-        "thorven": {
-            "name": "Thorven the Berserker",
-            "description": "Fierce warrior from the northern clans",
-            "base_stats": {"attack": 150, "defense": 70, "speed": 50, "health": 250},
-            "unlock_cost": 3200,
-            "currency": "gems",
-            "rarity": "legendary",
-            "payment_only": True,
-            "special_abilities": ["berserker_rage", "intimidating_roar", "weapon_mastery"]
-        },
-        "luna": {
-            "name": "Luna Shadowblade",
-            "description": "Master assassin of the thieves guild",
-            "base_stats": {"attack": 130, "defense": 60, "speed": 100, "health": 160},
-            "unlock_cost": 2800,
-            "currency": "gems",
-            "rarity": "legendary",
-            "payment_only": True,
-            "special_abilities": ["stealth_mastery", "poison_blade", "shadow_step"]
-        },
-        "magnus": {
-            "name": "Archmage Magnus",
-            "description": "Ancient wizard with forbidden knowledge",
-            "base_stats": {"attack": 90, "defense": 50, "speed": 40, "health": 140},
-            "unlock_cost": 4000,
-            "currency": "gems",
-            "rarity": "legendary",
-            "payment_only": True,
-            "special_abilities": ["forbidden_magic", "spell_amplify", "mana_manipulation"]
-        }
-    }
-
-    # Enhanced Weapons System
-    WEAPONS = {
-        "bronze_sword": {
-            "name": "Bronze Sword",
-            "rarity": "common",
-            "attack": 5,
-            "special": "None",
-            "unlock_type": "default"
-        },
-        "iron_blade": {
-            "name": "Iron Blade",
-            "rarity": "common",
-            "attack": 8,
-            "special": "Critical +5%",
-            "unlock_type": "gold",
-            "cost": 500
-        },
-        "silver_sword": {
-            "name": "Silver Sword",
-            "rarity": "uncommon",
-            "attack": 12,
-            "special": "Undead Damage +50%",
-            "unlock_type": "gems",
-            "cost": 50
-        },
-        "void_scythe": {
-            "name": "Void Scythe",
-            "rarity": "epic",
-            "attack": 18,
-            "special": "Dark Energy Drain",
-            "unlock_type": "gems",
-            "cost": 200
-        },
-        "solar_flare_sword": {
-            "name": "Solar Flare Sword",
-            "rarity": "epic",
-            "attack": 20,
-            "special": "Fire Damage +100%",
-            "unlock_type": "payment_only",
-            "cost": 7.99
-        },
-        "excalibur": {
-            "name": "Excalibur",
-            "rarity": "legendary",
-            "attack": 30,
-            "special": "Holy Light +200%",
-            "unlock_type": "payment_only",
-            "cost": 14.99
-        },
-        "dragon_fang": {
-            "name": "Dragon Fang",
-            "rarity": "legendary",
-            "attack": 35,
-            "special": "Dragon Slayer +300%",
-            "unlock_type": "payment_only",
-            "cost": 19.99
-        },
-        "cosmic_blade": {
-            "name": "Cosmic Blade",
-            "rarity": "legendary",
-            "attack": 40,
-            "special": "Reality Tear",
-            "unlock_type": "payment_only",
-            "cost": 24.99
-        },
-        "infinity_edge": {
-            "name": "Infinity Edge",
-            "rarity": "mythic",
-            "attack": 50,
-            "special": "Infinite Power",
-            "unlock_type": "payment_only",
-            "cost": 49.99
-        },
-        "dragonslayer": {
-            "name": "Dragonslayer Greatsword",
-            "description": "Forged from dragon scales and meteoric steel",
-            "attack": 200,
-            "rarity": "legendary",
-            "price": 3000,
-            "currency": "gems",
-            "payment_only": True,
-            "special_effects": ["dragon_bane", "fire_damage", "critical_surge"]
-        },
-        "voidcutter": {
-            "name": "Voidcutter Blade",
-            "description": "Cuts through reality itself",
-            "attack": 180,
-            "rarity": "legendary",
-            "price": 2700,
-            "currency": "gems",
-            "payment_only": True,
-            "special_effects": ["void_slice", "armor_pierce", "dimensional_cut"]
-        },
-        "stormbreaker": {
-            "name": "Stormbreaker Hammer",
-            "description": "Channels the power of thunder and lightning",
-            "attack": 220,
-            "rarity": "legendary",
-            "price": 3200,
-            "currency": "gems",
-            "payment_only": True,
-            "special_effects": ["lightning_strike", "thunder_crash", "storm_aura"]
-        },
-        "soulreaper": {
-            "name": "Soulreaper Scythe",
-            "description": "Harvests the essence of fallen enemies",
-            "attack": 190,
-            "rarity": "legendary",
-            "price": 2900,
-            "currency": "gems",
-            "payment_only": True,
-            "special_effects": ["soul_harvest", "life_steal", "death_mark"]
-        },
-        "celestial_bow": {
-            "name": "Celestial Longbow",
-            "description": "Blessed by the moon and stars",
-            "attack": 160,
-            "rarity": "legendary",
-            "price": 2500,
-            "currency": "gems",
-            "payment_only": True,
-            "special_effects": ["star_shot", "lunar_blessing", "infinite_arrows"]
-        },
-        "frostmourne": {
-            "name": "Frostmourne",
-            "description": "Cursed blade that freezes the soul",
-            "attack": 210,
-            "rarity": "legendary",
-            "price": 3100,
-            "currency": "gems",
-            "payment_only": True,
-            "special_effects": ["frost_damage", "soul_freeze", "undead_command"]
-        }
-    }
-
-    # Skills
-    SKILL_SPEED_BOOST_DURATION = 5.0  # seconds
-    SKILL_HEAL_PERCENTAGE = 0.30  # 30% of max HP
-    SKILL_DAMAGE_DOUBLE_DURATION = 7.0  # seconds
-    SKILL_COOLDOWN_BASE = 30.0  # seconds
-
-    # Combat
-    TURN_DURATION = 2.0  # seconds per turn
-    CRITICAL_HIT_CHANCE = 0.15  # 15%
-    CRITICAL_HIT_MULTIPLIER = 1.5
-
-    # Enemy Scaling
-    ENEMY_POWER_SCALE_PER_STAGE = 1.10  # 10% increase per stage
-    BOSS_POWER_MULTIPLIER = 2.5
-
-    # Audio
-    MASTER_VOLUME = 0.7
-    MUSIC_VOLUME = 0.5
-    SFX_VOLUME = 0.8
-
-    # Animation
-    SPRITE_ANIMATION_SPEED = 0.1  # seconds per frame
-    UI_ANIMATION_SPEED = 0.05
-
-    # File Formats
-    IMAGE_FORMAT = "webp"
-    AUDIO_FORMAT = "ogg"
-
-    # Localization
-    DEFAULT_LANGUAGE = "en"
-    SUPPORTED_LANGUAGES = ["en", "ar", "fr"]
-
-    # Save System
-    SAVE_VERSION = "1.0"
-    AUTO_SAVE_INTERVAL = 30  # seconds
-
-    # Performance
-    MAX_PARTICLES = 100
-    MAX_SOUNDS_CONCURRENT = 8
-    ASSET_CACHE_SIZE = 50  # MB
-
-    # Network
-    CONNECTION_TIMEOUT = 10  # seconds
-    RETRY_ATTEMPTS = 3
-
-    # Enhanced Ad System Configuration
-    ADS_CONFIG = {
-        "enabled": True,
-        "max_daily_ads": 20,  # Can be upgraded
-        "max_rewarded_ads": 15,  # Can be upgraded
-        "max_interstitial_ads": 10,  # Can be upgraded
-        "ad_cooldown": 30,  # seconds between ads
-        "gem_reward_per_ad": 10,  # base gems per rewarded ad
-        "bonus_multiplier": 1.0,  # can be upgraded
-
-        # Ad Networks Configuration
-        "networks": {
-            "primary": {
-                "name": "AdMob",
-                "app_id": "ca-app-pub-1234567890123456~1234567890",
-                "rewarded_unit_id": "ca-app-pub-1234567890123456/1234567890",
-                "interstitial_unit_id": "ca-app-pub-1234567890123456/0987654321",
-                "banner_unit_id": "ca-app-pub-1234567890123456/1122334455",
-                "enabled": True,
-                "priority": 1
-            },
-            "secondary": {
-                "name": "Unity Ads",
-                "game_id": "1234567",
-                "rewarded_placement": "rewardedVideo",
-                "interstitial_placement": "video",
-                "enabled": True,
-                "priority": 2
-            },
-            "tertiary": {
-                "name": "IronSource",
-                "app_key": "abcdefgh",
-                "enabled": False,
-                "priority": 3
-            }
-        },
-
-        # Upgrade Levels
-        "upgrades": {
-            "daily_limit": {
-                "level_1": {"cost": 500, "currency": "gems", "max_ads": 25},
-                "level_2": {"cost": 1000, "currency": "gems", "max_ads": 30},
-                "level_3": {"cost": 2000, "currency": "gems", "max_ads": 40},
-                "level_4": {"cost": 3500, "currency": "gems", "max_ads": 50}
-            },
-            "gem_multiplier": {
-                "level_1": {"cost": 800, "currency": "gems", "multiplier": 1.5},
-                "level_2": {"cost": 1500, "currency": "gems", "multiplier": 2.0},
-                "level_3": {"cost": 2500, "currency": "gems", "multiplier": 2.5},
-                "level_4": {"cost": 4000, "currency": "gems", "multiplier": 3.0}
-            }
-        }
-    }
-
-    # Dashboard Configuration
-    DASHBOARD_CONFIG = {
-        "admin_email": "seiftouatilol@gmail.com",
-        "admin_password": "seif0662",  # In production, this should be hashed
-        "session_timeout": 3600,  # 1 hour in seconds
-        "max_login_attempts": 5,
-        "lockout_duration": 900,  # 15 minutes in seconds
-        "analytics_retention_days": 90,
-        "backup_frequency_hours": 24
-    }
-
-class GameStates:
-    """Game state constants"""
-    LOADING = "loading"
-    MAIN_MENU = "main_menu"
-    WORLD_MAP = "world_map"
-    BATTLE = "battle"
-    SHOP = "shop"
-    INVENTORY = "inventory"
-    SETTINGS = "settings"
-    PAUSE = "pause"
-    GAME_OVER = "game_over"
-    VICTORY = "victory"
-
-class SkillTypes:
-    """Player skill types"""
-    SPEED_BOOST = "speed_boost"
-    INSTANT_HEAL = "instant_heal"
-    TIME_REWIND = "time_rewind"
-    DAMAGE_DOUBLER = "damage_doubler"
-
-class ItemTypes:
-    """Item classification"""
-    WEAPON = "weapon"
-    ARMOR = "armor"
-    ACCESSORY = "accessory"
-    CONSUMABLE = "consumable"
-    MATERIAL = "material"
-
-class Rarities:
-    """Item rarity levels"""
-    COMMON = "common"
-    UNCOMMON = "uncommon"
-    RARE = "rare"
-    EPIC = "epic"
-    LEGENDARY = "legendary"
-    MYTHIC = "mythic"
-
-class CurrencyTypes:
-    """Currency types"""
-    GOLD = "gold"
-    GEMS = "gems"
-
-class AdTypes:
-    """Advertisement types"""
-    REWARDED = "rewarded"
-    INTERSTITIAL = "interstitial"
-    BANNER = "banner"
-
-class EnemyTypes:
-    """Enemy classifications"""
-    NORMAL = "normal"
-    ELITE = "elite"
-    BOSS = "boss"
-    MINI_BOSS = "mini_boss"
-
-# Premium Heroes (Gems/Payment Only)
-PREMIUM_HEROES = {
-    "shadow_assassin": {
-        "name": "Shadow Assassin",
-        "description": "Master of stealth and critical strikes",
-        "rarity": Rarities.LEGENDARY,
+# Enhanced Heroes System with Premium Integration
+HEROES = {
+    # Existing heroes
+    "knight_arin": {
+        "name": "Knight Arin",
+        "base_hp": 100,
+        "base_attack": 25,
+        "base_defense": 20,
+        "unlock_level": 1,
+        "unlock_type": "default",
+        "cost": 0,
+        "rarity": "Common",
+        "special_ability": "Shield Bash",
+        "sprite_path": "heroes/knight_arin.png"
+    },
+    "archer_elena": {
+        "name": "Archer Elena",
+        "base_hp": 80,
+        "base_attack": 35,
+        "base_defense": 15,
+        "unlock_level": 5,
+        "unlock_type": "gems",
+        "cost": 1000,
+        "rarity": "Rare",
+        "special_ability": "Multi Shot",
+        "sprite_path": "heroes/archer_elena.png"
+    },
+    "mage_zara": {
+        "name": "Mage Zara",
+        "base_hp": 70,
+        "base_attack": 45,
+        "base_defense": 10,
+        "unlock_level": 10,
+        "unlock_type": "gems",
         "cost": 2500,
-        "currency": CurrencyTypes.GEMS,
-        "stats": {"attack": 85, "defense": 60, "speed": 95, "health": 180},
-        "special_skill": "Shadow Strike",
-        "skill_description": "Deal 300% damage and become invisible for 2 turns"
+        "rarity": "Epic",
+        "special_ability": "Fireball",
+        "sprite_path": "heroes/mage_zara.png"
     },
-    "arcane_mage": {
-        "name": "Arcane Mage",
-        "description": "Wielder of ancient magical powers",
-        "rarity": Rarities.LEGENDARY,
-        "cost": 3000,
-        "currency": CurrencyTypes.GEMS,
-        "stats": {"attack": 95, "defense": 50, "speed": 75, "health": 160},
-        "special_skill": "Arcane Blast",
-        "skill_description": "Deal massive AoE damage to all enemies"
-    },
-    "dragon_knight": {
-        "name": "Dragon Knight",
-        "description": "Elite warrior blessed by dragons",
-        "rarity": Rarities.LEGENDARY,
-        "cost": 4000,
-        "currency": CurrencyTypes.GEMS,
-        "stats": {"attack": 90, "defense": 95, "speed": 70, "health": 250},
-        "special_skill": "Dragon's Fury",
-        "skill_description": "Summon dragon fire for massive damage"
-    },
-    "celestial_guardian": {
-        "name": "Celestial Guardian",
-        "description": "Divine protector from the heavens",
-        "rarity": Rarities.LEGENDARY,
+    "paladin_marcus": {
+        "name": "Paladin Marcus",
+        "base_hp": 120,
+        "base_attack": 30,
+        "base_defense": 25,
+        "unlock_level": 15,
+        "unlock_type": "gems",
         "cost": 5000,
-        "currency": CurrencyTypes.GEMS,
-        "stats": {"attack": 80, "defense": 100, "speed": 80, "health": 300},
-        "special_skill": "Divine Shield",
-        "skill_description": "Grant immunity to all allies for 3 turns"
-    }
+        "rarity": "Epic",
+        "special_ability": "Divine Shield",
+        "sprite_path": "heroes/paladin_marcus.png"
+    },
+    "assassin_kira": {
+        "name": "Assassin Kira",
+        "base_hp": 90,
+        "base_attack": 40,
+        "base_defense": 12,
+        "unlock_level": 20,
+        "unlock_type": "gems",
+        "cost": 7500,
+        "rarity": "Epic",
+        "special_ability": "Shadow Strike",
+        "sprite_path": "heroes/assassin_kira.png"
+    },
+    # Merge premium heroes
+    **PREMIUM_HEROES
 }
 
-# Premium Weapons (Gems/Payment Only)
-PREMIUM_WEAPONS = {
-    "excalibur": {
-        "name": "Excalibur",
-        "description": "The legendary sword of kings",
-        "rarity": Rarities.LEGENDARY,
-        "cost": 3500,
-        "currency": CurrencyTypes.GEMS,
-        "attack_bonus": 150,
-        "special_effect": "30% chance to deal double damage"
+# Enhanced Weapons System with Premium Integration
+WEAPONS = {
+    # Existing weapons
+    "rusty_sword": {
+        "name": "Rusty Sword",
+        "attack_bonus": 5,
+        "defense_bonus": 0,
+        "unlock_level": 1,
+        "unlock_type": "default",
+        "cost": 0,
+        "rarity": "Common",
+        "sprite_path": "weapons/rusty_sword.png"
     },
-    "scythe_of_souls": {
-        "name": "Scythe of Souls",
-        "description": "Harvests the essence of enemies",
-        "rarity": Rarities.LEGENDARY,
-        "cost": 4000,
-        "currency": CurrencyTypes.GEMS,
-        "attack_bonus": 180,
-        "special_effect": "Heal 20% of damage dealt"
+    "steel_sword": {
+        "name": "Steel Sword",
+        "attack_bonus": 15,
+        "defense_bonus": 2,
+        "unlock_level": 3,
+        "unlock_type": "gold",
+        "cost": 500,
+        "rarity": "Common",
+        "sprite_path": "weapons/steel_sword.png"
     },
-    "storm_hammer": {
-        "name": "Storm Hammer",
-        "description": "Channels the power of thunder",
-        "rarity": Rarities.LEGENDARY,
+    "enchanted_blade": {
+        "name": "Enchanted Blade",
+        "attack_bonus": 25,
+        "defense_bonus": 5,
+        "unlock_level": 8,
+        "unlock_type": "gems",
+        "cost": 1500,
+        "rarity": "Rare",
+        "sprite_path": "weapons/enchanted_blade.png"
+    },
+    "dragon_slayer": {
+        "name": "Dragon Slayer",
+        "attack_bonus": 35,
+        "defense_bonus": 8,
+        "unlock_level": 15,
+        "unlock_type": "gems",
+        "cost": 5000,
+        "rarity": "Epic",
+        "sprite_path": "weapons/dragon_slayer.png"
+    },
+    "shadow_dagger": {
+        "name": "Shadow Dagger",
+        "attack_bonus": 20,
+        "defense_bonus": 0,
+        "crit_chance": 25,
+        "unlock_level": 12,
+        "unlock_type": "gems",
         "cost": 3000,
-        "currency": CurrencyTypes.GEMS,
-        "attack_bonus": 140,
-        "special_effect": "Lightning chains to nearby enemies"
+        "rarity": "Rare",
+        "sprite_path": "weapons/shadow_dagger.png"
     },
-    "void_blade": {
-        "name": "Void Blade",
-        "description": "Cuts through reality itself",
-        "rarity": Rarities.LEGENDARY,
-        "cost": 4500,
-        "currency": CurrencyTypes.GEMS,
-        "attack_bonus": 200,
-        "special_effect": "Ignores 50% of enemy defense"
-    },
-    "phoenix_staff": {
-        "name": "Phoenix Staff",
-        "description": "Reborn from eternal flames",
-        "rarity": Rarities.LEGENDARY,
-        "cost": 3800,
-        "currency": CurrencyTypes.GEMS,
-        "attack_bonus": 160,
-        "special_effect": "Revive with 50% HP when defeated"
-    }
+    # Merge premium weapons
+    **PREMIUM_WEAPONS
 }
 
-# Premium Skins (Gems/Payment Only)
-PREMIUM_SKINS = {
-    "nightmare_lord": {
-        "name": "Nightmare Lord",
-        "description": "Rule over the realm of shadows",
-        "rarity": Rarities.LEGENDARY,
+# Enhanced Skins System with Premium Integration
+SKINS = {
+    # Existing skins
+    "default": {
+        "name": "Default",
+        "unlock_type": "default",
+        "cost": 0,
+        "rarity": "Common",
+        "sprite_path": "skins/default.png"
+    },
+    "golden_armor": {
+        "name": "Golden Armor",
+        "unlock_type": "gems",
         "cost": 2000,
-        "currency": CurrencyTypes.GEMS,
-        "special_skill": "Fear Aura",
-        "skill_description": "Reduce all enemy stats by 20%"
+        "rarity": "Rare",
+        "bonus_stats": {"defense": 5},
+        "sprite_path": "skins/golden_armor.png"
     },
-    "golden_emperor": {
-        "name": "Golden Emperor",
-        "description": "Adorned in divine gold armor",
-        "rarity": Rarities.LEGENDARY,
-        "cost": 2500,
-        "currency": CurrencyTypes.GEMS,
-        "special_skill": "Midas Touch",
-        "skill_description": "Gain 50% more gold from battles"
+    "shadow_cloak": {
+        "name": "Shadow Cloak",
+        "unlock_type": "gems",
+        "cost": 3500,
+        "rarity": "Epic",
+        "bonus_stats": {"attack": 8, "crit_chance": 10},
+        "sprite_path": "skins/shadow_cloak.png"
     },
-    "ice_queen": {
-        "name": "Ice Queen",
-        "description": "Frozen beauty with deadly power",
-        "rarity": Rarities.LEGENDARY,
-        "cost": 2200,
-        "currency": CurrencyTypes.GEMS,
-        "special_skill": "Frozen Domain",
-        "skill_description": "Freeze all enemies for 2 turns"
+    "phoenix_wings": {
+        "name": "Phoenix Wings",
+        "unlock_type": "gems",
+        "cost": 8000,
+        "rarity": "Epic",
+        "bonus_stats": {"hp": 20, "attack": 10},
+        "special_effect": "Fire Aura",
+        "sprite_path": "skins/phoenix_wings.png"
     },
-    "demon_hunter": {
-        "name": "Demon Hunter",
-        "description": "Slayer of the underworld",
-        "rarity": Rarities.LEGENDARY,
-        "cost": 2800,
-        "currency": CurrencyTypes.GEMS,
-        "special_skill": "Demon Slayer",
-        "skill_description": "Deal 200% damage to demon enemies"
+    # Merge premium skins
+    **PREMIUM_SKINS
+}
+
+# === RARITY SETTINGS ===
+RARITY_COLORS = {
+    "Common": (169, 169, 169),      # Gray
+    "Rare": (0, 123, 255),          # Blue
+    "Epic": (138, 43, 226),         # Purple
+    "Legendary": (255, 215, 0),     # Gold
+    "Mythic": (255, 20, 147)        # Deep Pink
+}
+
+# === IN-APP PURCHASES ===
+IAP_PACKAGES = {
+    "starter_pack": {
+        "name": "Starter Pack",
+        "description": "Perfect for new adventurers",
+        "price_usd": 0.99,
+        "gems": 100,
+        "gold": 5000,
+        "items": ["silver_sword"]
     },
-    "angel_of_war": {
-        "name": "Angel of War",
-        "description": "Divine warrior from paradise",
-        "rarity": Rarities.LEGENDARY,
-        "cost": 3200,
-        "currency": CurrencyTypes.GEMS,
-        "special_skill": "Divine Intervention",
-        "skill_description": "Prevent death once per battle"
+    "gem_small": {
+        "name": "Small Gem Pack",
+        "description": "A handful of precious gems",
+        "price_usd": 1.99,
+        "gems": 250,
+        "gold": 0,
+        "items": []
+    },
+    "gem_medium": {
+        "name": "Medium Gem Pack",
+        "description": "A pouch full of gems",
+        "price_usd": 4.99,
+        "gems": 650,
+        "gold": 0,
+        "items": []
+    },
+    "gem_large": {
+        "name": "Large Gem Pack",
+        "description": "A chest of brilliant gems",
+        "price_usd": 9.99,
+        "gems": 1400,
+        "gold": 0,
+        "items": []
+    },
+    "weekly_subscription": {
+        "name": "Weekly VIP",
+        "description": "7 days of VIP benefits",
+        "price_usd": 2.99,
+        "duration_days": 7,
+        "daily_gems": 50,
+        "daily_gold": 1000,
+        "benefits": ["double_xp", "no_ads", "daily_rewards"]
+    },
+    "monthly_subscription": {
+        "name": "Monthly VIP",
+        "description": "30 days of VIP benefits",
+        "price_usd": 9.99,
+        "duration_days": 30,
+        "daily_gems": 75,
+        "daily_gold": 2000,
+        "benefits": ["double_xp", "no_ads", "daily_rewards", "exclusive_content"]
     }
 }
 
-# Ads Configuration System
-ADS_CONFIG = {
-    "daily_limit": 50,  # Maximum ads per day
-    "rewarded_gems": 10,  # Gems per rewarded ad
-    "interstitial_frequency": 3,  # Show after every X stage completions
-    "revive_cost_reduction": 50,  # Percentage reduction in gem cost for revive
+# === ENHANCED AD SYSTEM ===
+AD_CONFIG = {
+    "reward_ranges": {
+        "gems": {"min": 5, "max": 15},
+        "gold": {"min": 100, "max": 500}
+    },
+    "daily_limits": {
+        "free_user": 10,
+        "vip_user": 20
+    },
+    "cooldown_seconds": 30,
     "sources": [
-        {
-            "name": "AdMob",
-            "enabled": True,
-            "priority": 1,
-            "app_id": "ca-app-pub-3940256099942544~3347511713",  # Test ID
-            "rewarded_unit_id": "ca-app-pub-3940256099942544/5224354917",
-            "interstitial_unit_id": "ca-app-pub-3940256099942544/1033173712"
-        },
-        {
-            "name": "Unity Ads",
-            "enabled": True,
-            "priority": 2,
-            "game_id": "4374282",  # Test ID
-            "rewarded_placement": "Rewarded_Android",
-            "interstitial_placement": "Interstitial_Android"
-        },
-        {
-            "name": "Facebook Audience Network",
-            "enabled": False,
-            "priority": 3,
-            "app_id": "YOUR_FB_APP_ID",
-            "rewarded_placement": "YOUR_REWARDED_PLACEMENT_ID",
-            "interstitial_placement": "YOUR_INTERSTITIAL_PLACEMENT_ID"
-        }
+        {"name": "AdMob", "priority": 1, "fill_rate": 0.95},
+        {"name": "Unity Ads", "priority": 2, "fill_rate": 0.90},
+        {"name": "IronSource", "priority": 3, "fill_rate": 0.85}
     ],
-    "analytics": {
-        "track_impressions": True,
-        "track_revenue": True,
-        "track_completion_rate": True
-    }
+    "vip_bonus_multiplier": 1.5
 }
 
-# Dashboard Analytics
+# === ADMIN DASHBOARD ===
 DASHBOARD_CONFIG = {
     "admin_email": "seiftouatilol@gmail.com",
     "admin_password": "seif0662",
-    "session_timeout": 3600,  # 1 hour in seconds
-    "data_retention_days": 365,
-    "refresh_interval": 30,  # seconds for auto-refresh
-    "charts_enabled": True
+    "session_timeout_hours": 24,
+    "analytics_retention_days": 90
 }
 
-# Premium Heroes (Gem/Payment Only)
-PREMIUM_HEROES = {
-    'shadow_assassin': {
-        'name': 'Shadow Assassin',
-        'description': 'Master of stealth and critical strikes',
-        'cost': 5000,  # gems
-        'rarity': 'Legendary',
-        'stats': {'attack': 120, 'defense': 80, 'speed': 150, 'health': 800},
-        'special_ability': 'Shadow Strike - 300% critical damage',
-        'unlock_level': 25
+# === AUDIO SETTINGS ===
+MASTER_VOLUME = 0.7
+MUSIC_VOLUME = 0.5
+SFX_VOLUME = 0.8
+MAX_SOUND_CHANNELS = 8
+
+# === MOBILE SETTINGS ===
+MOBILE_BUTTON_SIZE = 80
+TOUCH_SENSITIVITY = 5
+GESTURE_THRESHOLD = 50
+
+# === SAVE SETTINGS ===
+SAVE_ENCRYPTION_KEY = b'kingdom_of_aldoria_save_key_2024_very_secure'
+AUTO_SAVE_INTERVAL = 30
+MAX_SAVE_BACKUPS = 5
+
+# === LOCALIZATION ===
+SUPPORTED_LANGUAGES = ["en", "ar", "fr"]
+DEFAULT_LANGUAGE = "en"
+
+# === PERFORMANCE SETTINGS ===
+TEXTURE_ATLAS_SIZE = 2048
+OBJECT_POOL_SIZE = 100
+PRELOAD_WORLDS = 2
+
+# === NETWORK SETTINGS ===
+API_TIMEOUT = 10
+RETRY_ATTEMPTS = 3
+OFFLINE_MODE_ENABLED = True
+
+# === FIREBASE CONFIG ===
+FIREBASE_CONFIG = {
+    "apiKey": "your-api-key",
+    "authDomain": "kingdom-of-aldoria.firebaseapp.com",
+    "projectId": "kingdom-of-aldoria",
+    "storageBucket": "kingdom-of-aldoria.appspot.com",
+    "messagingSenderId": "123456789",
+    "appId": "your-app-id"
+}
+
+# === DATABASE CONFIG ===
+SQLITE_DB_PATH = os.path.join(SAVES_DIR, "game_data.db")
+SYNC_INTERVAL_MINUTES = 5
+CONFLICT_RESOLUTION = "newest_timestamp"
+
+# Additional Gem-Purchasable Heroes
+GEM_HEROES = {
+    "storm_caller": {
+        "name": "Storm Caller",
+        "description": "Master of lightning and thunder",
+        "base_stats": {"hp": 120, "attack": 35, "defense": 20, "speed": 40},
+        "special_abilities": ["Chain Lightning", "Thunder Shield"],
+        "unlock_level": 15,
+        "unlock_type": "gems",
+        "cost": 500,
+        "rarity": "Epic",
+        "sprite_path": "heroes/storm_caller.png"
     },
-    'arcane_mage': {
-        'name': 'Arcane Mage', 
-        'description': 'Wielder of ancient magical powers',
-        'cost': 7500,  # gems
-        'rarity': 'Legendary',
-        'stats': {'attack': 160, 'defense': 60, 'speed': 90, 'health': 700},
-        'special_ability': 'Arcane Blast - Area damage to all enemies',
-        'unlock_level': 35
+    "flame_dancer": {
+        "name": "Flame Dancer",
+        "description": "Graceful warrior who dances with fire",
+        "base_stats": {"hp": 100, "attack": 40, "defense": 15, "speed": 50},
+        "special_abilities": ["Fire Whirl", "Burning Step"],
+        "unlock_level": 20,
+        "unlock_type": "gems", 
+        "cost": 750,
+        "rarity": "Epic",
+        "sprite_path": "heroes/flame_dancer.png"
     },
-    'divine_paladin': {
-        'name': 'Divine Paladin',
-        'description': 'Holy warrior with healing powers',
-        'cost': 10000,  # gems
-        'rarity': 'Legendary',
-        'stats': {'attack': 100, 'defense': 140, 'speed': 70, 'health': 1200},
-        'special_ability': 'Divine Shield - Immunity + heal for 3 turns',
-        'unlock_level': 50
+    "ice_guardian": {
+        "name": "Ice Guardian",
+        "description": "Protector of the frozen realm",
+        "base_stats": {"hp": 150, "attack": 25, "defense": 40, "speed": 25},
+        "special_abilities": ["Ice Wall", "Frozen Armor"],
+        "unlock_level": 25,
+        "unlock_type": "gems",
+        "cost": 1000,
+        "rarity": "Epic", 
+        "sprite_path": "heroes/ice_guardian.png"
     },
-    'dragon_rider': {
-        'name': 'Dragon Rider',
-        'description': 'Commands the power of ancient dragons',
-        'cost': 15000,  # gems
-        'rarity': 'Legendary',
-        'stats': {'attack': 180, 'defense': 100, 'speed': 120, 'health': 1000},
-        'special_ability': 'Dragon Breath - Massive fire damage',
-        'unlock_level': 75
+    "void_assassin": {
+        "name": "Void Assassin",
+        "description": "Strikes from the shadows of the void",
+        "base_stats": {"hp": 80, "attack": 50, "defense": 10, "speed": 60},
+        "special_abilities": ["Void Step", "Shadow Strike"],
+        "unlock_level": 30,
+        "unlock_type": "gems",
+        "cost": 1250,
+        "rarity": "Epic",
+        "sprite_path": "heroes/void_assassin.png"
     }
 }
 
-# Premium Weapons (Gem/Payment Only)
-PREMIUM_WEAPONS = {
-    'excalibur': {
-        'name': 'Excalibur',
-        'description': 'The legendary sword of kings',
-        'cost': 8000,  # gems
-        'rarity': 'Legendary',
-        'attack_bonus': 80,
-        'special_effect': 'Divine Strike - 50% chance for double damage',
-        'unlock_level': 30
+# Additional Gem-Purchasable Weapons
+GEM_WEAPONS = {
+    "lightning_spear": {
+        "name": "Lightning Spear",
+        "type": "spear",
+        "attack": 45,
+        "special_effect": "Chain Lightning on crit",
+        "unlock_level": 12,
+        "unlock_type": "gems",
+        "cost": 300,
+        "rarity": "Rare",
+        "sprite_path": "weapons/lightning_spear.png"
     },
-    'staff_of_eternity': {
-        'name': 'Staff of Eternity',
-        'description': 'Ancient staff pulsing with magical energy',
-        'cost': 12000,  # gems
-        'rarity': 'Legendary',
-        'attack_bonus': 100,
-        'special_effect': 'Mana Surge - 30% chance to cast spell twice',
-        'unlock_level': 45
+    "frost_blade": {
+        "name": "Frost Blade", 
+        "type": "sword",
+        "attack": 40,
+        "special_effect": "Slows enemy on hit",
+        "unlock_level": 15,
+        "unlock_type": "gems",
+        "cost": 400,
+        "rarity": "Rare",
+        "sprite_path": "weapons/frost_blade.png"
     },
-    'shadowbane_dagger': {
-        'name': 'Shadowbane Dagger',
-        'description': 'Forged from shadow essence and starlight',
-        'cost': 6000,  # gems
-        'rarity': 'Legendary',
-        'attack_bonus': 60,
-        'special_effect': 'Shadow Step - 25% chance to dodge and counter',
-        'unlock_level': 20
+    "shadow_dagger": {
+        "name": "Shadow Dagger",
+        "type": "dagger",
+        "attack": 35,
+        "special_effect": "Chance to ignore armor",
+        "unlock_level": 18,
+        "unlock_type": "gems", 
+        "cost": 500,
+        "rarity": "Rare",
+        "sprite_path": "weapons/shadow_dagger.png"
     },
-    'dragonscale_hammer': {
-        'name': 'Dragonscale Hammer',
-        'description': 'Crafted from the scales of an elder dragon',
-        'cost': 15000,  # gems
-        'rarity': 'Legendary',
-        'attack_bonus': 120,
-        'special_effect': 'Earthquake - Area damage to all enemies',
-        'unlock_level': 60
+    "phoenix_bow": {
+        "name": "Phoenix Bow",
+        "type": "bow",
+        "attack": 50,
+        "special_effect": "Burning arrows",
+        "unlock_level": 22,
+        "unlock_type": "gems",
+        "cost": 600,
+        "rarity": "Epic",
+        "sprite_path": "weapons/phoenix_bow.png"
+    },
+    "void_hammer": {
+        "name": "Void Hammer",
+        "type": "hammer", 
+        "attack": 60,
+        "special_effect": "Area damage on crit",
+        "unlock_level": 25,
+        "unlock_type": "gems",
+        "cost": 750,
+        "rarity": "Epic",
+        "sprite_path": "weapons/void_hammer.png"
     }
 }
 
-# Premium Skins (Gem/Payment Only)
-PREMIUM_SKINS = {
-    'golden_emperor': {
-        'name': 'Golden Emperor',
-        'description': 'Radiant armor that commands respect',
-        'cost': 5000,  # gems
-        'rarity': 'Legendary',
-        'stat_bonus': {'attack': 25, 'defense': 25, 'speed': 15},
-        'special_effect': 'Royal Presence - +20% gold from battles',
-        'unlock_level': 25
+# Additional Gem-Purchasable Skins
+GEM_SKINS = {
+    "elemental_knight": {
+        "name": "Elemental Knight",
+        "description": "Infused with elemental powers",
+        "skill": "Elemental Strike",
+        "skill_description": "Random elemental damage",
+        "unlock_level": 10,
+        "unlock_type": "gems",
+        "cost": 200,
+        "rarity": "Rare",
+        "sprite_path": "skins/elemental_knight.png"
     },
-    'shadow_lord': {
-        'name': 'Shadow Lord',
-        'description': 'Dark armor infused with shadow magic',
-        'cost': 7500,  # gems
-        'rarity': 'Legendary',
-        'stat_bonus': {'attack': 35, 'defense': 15, 'speed': 25},
-        'special_effect': 'Shadow Cloak - 15% chance to dodge attacks',
-        'unlock_level': 35
+    "shadow_warrior": {
+        "name": "Shadow Warrior",
+        "description": "Master of stealth and darkness",
+        "skill": "Shadow Clone",
+        "skill_description": "Creates temporary clone",
+        "unlock_level": 15,
+        "unlock_type": "gems",
+        "cost": 350,
+        "rarity": "Rare", 
+        "sprite_path": "skins/shadow_warrior.png"
     },
-    'crystal_guardian': {
-        'name': 'Crystal Guardian',
-        'description': 'Crystalline armor that reflects damage',
-        'cost': 10000,  # gems
-        'rarity': 'Legendary',
-        'stat_bonus': {'attack': 20, 'defense': 40, 'speed': 10},
-        'special_effect': 'Crystal Reflection - 30% damage reflected',
-        'unlock_level': 45
-    },
-    'inferno_champion': {
-        'name': 'Inferno Champion',
-        'description': 'Fiery armor that burns enemies',
-        'cost': 12000,  # gems
-        'rarity': 'Legendary',
-        'stat_bonus': {'attack': 45, 'defense': 20, 'speed': 20},
-        'special_effect': 'Burning Aura - Enemies take fire damage each turn',
-        'unlock_level': 55
-    },
-    'celestial_warrior': {
-        'name': 'Celestial Warrior',
-        'description': 'Divine armor blessed by the heavens',
-        'cost': 15000,  # gems
-        'rarity': 'Legendary',
-        'stat_bonus': {'attack': 30, 'defense': 35, 'speed': 25},
-        'special_effect': 'Divine Blessing - Immunity to status effects',
-        'unlock_level': 65
+    "crystal_guardian": {
+        "name": "Crystal Guardian",
+        "description": "Protected by magical crystals",
+        "skill": "Crystal Shield",
+        "skill_description": "Absorbs damage",
+        "unlock_level": 20,
+        "unlock_type": "gems",
+        "cost": 500,
+        "rarity": "Epic",
+        "sprite_path": "skins/crystal_guardian.png"
     }
 }
 
-# Ads Configuration System
-ADS_CONFIG = {
-    'daily_limit': 50,  # Default daily limit
-    'reward_per_ad': 25,  # Gems per ad
-    'cooldown_minutes': 5,  # Minutes between ads
-    'sources': {
-        'admob': {
-            'enabled': True,
-            'app_id': 'ca-app-pub-3940256099942544~3347511713',  # Test ID
-            'rewarded_ad_unit': 'ca-app-pub-3940256099942544/5224354917',
-            'interstitial_ad_unit': 'ca-app-pub-3940256099942544/1033173712',
-            'weight': 70  # Percentage of ads from this source
-        },
-        'unity_ads': {
-            'enabled': True,
-            'game_id': '4374880',  # Test ID
-            'placement_id_rewarded': 'Rewarded_Android',
-            'placement_id_interstitial': 'Interstitial_Android',
-            'weight': 20
-        },
-        'applovin': {
-            'enabled': False,
-            'sdk_key': 'test_sdk_key',
-            'rewarded_ad_unit': 'test_rewarded',
-            'interstitial_ad_unit': 'test_interstitial',
-            'weight': 10
+# Enhanced Heroes System - merge with premium content
+HEROES.update(GEM_HEROES)
+WEAPONS.update(GEM_WEAPONS) 
+SKINS.update(GEM_SKINS)
+
+# Enhanced storyline configuration
+STORYLINE = {
+    "session_1": {
+        "title": "The Awakening",
+        "worlds": [1, 2, 3, 4],
+        "intro": "In the peaceful kingdom of Aldoria, darkness suddenly falls upon the land. Ancient evils stir from their slumber, corrupting the once-beautiful realms. Knight Arin, a young warrior blessed with divine light, must begin his quest to restore balance to the world.",
+        "chapters": {
+            1: {
+                "title": "Shadows in the Forest",
+                "description": "The Forest of Shadows was once a place of beauty and life. Now, twisted creatures roam its darkened paths. Arin must navigate through the corrupted woodland to reach the heart of the darkness.",
+                "key_events": ["First encounter with shadow beasts", "Discovery of the cursed shrine", "Meeting the Forest Guardian"]
+            },
+            2: {
+                "title": "Souls of the Desert",
+                "description": "The Desert of Souls holds the spirits of ancient warriors who fell in a great battle long ago. These restless souls must be put to rest before they consume the living world.",
+                "key_events": ["Battle with the Pharaoh's tomb guardians", "Solving the pyramid puzzles", "Freeing the trapped souls"]
+            },
+            3: {
+                "title": "Ice and Fire",
+                "description": "The Frozen Peaks hide ancient fire magic beneath their icy surface. Arin must master both elements to progress on his journey.",
+                "key_events": ["Awakening the Ice Dragon", "Finding the Flame of Eternity", "Balancing opposing forces"]
+            },
+            4: {
+                "title": "Heart of the Mountain",
+                "description": "Deep within the Volcanic Caves lies the first source of corruption. Arin must face the Molten King to prevent the darkness from spreading further.",
+                "key_events": ["Navigating lava rivers", "Confronting fire elementals", "Battle with the Molten King"]
+            }
         }
     },
-    'revenue_tracking': {
-        'enabled': True,
-        'revenue_per_ad': 0.02,  # USD per ad view
-        'currency': 'USD'
+    "session_2": {
+        "title": "The Forgotten Prophecy",
+        "worlds": [5, 6, 7, 8],
+        "intro": "With the first corruption cleansed, Arin discovers an ancient prophecy that speaks of a chosen one who will either save or doom Aldoria. As he delves deeper into the mystery, darker forces emerge, and allies become enemies.",
+        "chapters": {
+            5: {
+                "title": "Whispers in the Swamp",
+                "description": "The Mystic Swamp is home to powerful witches who hold fragments of the ancient prophecy. Arin must navigate their tests and riddles to learn the truth.",
+                "key_events": ["Meeting the Swamp Witch", "The Trial of Elements", "Revelation of the prophecy"]
+            },
+            6: {
+                "title": "Crystals of Truth",
+                "description": "The Crystal Caverns contain memories of the past, showing visions of what was and what might be. Arin must face his own doubts and fears.",
+                "key_events": ["Visions of the past", "Inner demons manifest", "Gaining crystal sight"]
+            },
+            7: {
+                "title": "Among the Clouds",
+                "description": "The Sky Citadel is where celestial beings dwell, but even they have been touched by corruption. Arin must prove his worth to gain their aid.",
+                "key_events": ["Trials of the Sky Lords", "Earning celestial weapons", "The betrayal revealed"]
+            },
+            8: {
+                "title": "Embracing Shadows",
+                "description": "In the Shadow Realm, Arin must confront the darkness within himself. Only by accepting both light and shadow can he become truly powerful.",
+                "key_events": ["Meeting his shadow self", "The dark knight's test", "Mastering shadow magic"]
+            }
+        }
     },
-    'analytics': {
-        'track_impressions': True,
-        'track_clicks': True,
-        'track_revenue': True,
-        'track_user_engagement': True
+    "session_3": {
+        "title": "The Final Convergence",
+        "worlds": [9, 10, 11, 12, 13, 14, 15],
+        "intro": "The prophecy is fulfilled, and Arin stands at the crossroads of destiny. The final battle approaches as all realms converge into one. Light and darkness, creation and destruction, all will be decided in the ultimate confrontation that will determine the fate of Aldoria forever.",
+        "chapters": {
+            9: {
+                "title": "Divine Preparation",
+                "description": "The Celestial Gardens serve as a sanctuary where Arin prepares for the final battle. Here, he gathers divine allies and receives the blessings of light.",
+                "key_events": ["Blessing of the Divine", "Gathering celestial army", "Forging the Light Blade"]
+            },
+            10: {
+                "title": "Descent to Darkness",
+                "description": "The Abyssal Throne awaits. Arin must descend into the heart of evil to face the Dark Lord in his own domain.",
+                "key_events": ["Breaking the dark seals", "Confronting fallen heroes", "The Dark Lord's challenge"]
+            },
+            11: {
+                "title": "Cosmic Revelations",
+                "description": "The Astral Observatory reveals the true nature of reality. Arin learns that his journey was guided by forces beyond mortal comprehension.",
+                "key_events": ["Meeting the Star Sages", "Understanding cosmic truth", "Gaining astral powers"]
+            },
+            12: {
+                "title": "Elemental Mastery",
+                "description": "At the Elemental Nexus, Arin must prove mastery over all elemental forces to gain the power needed for the final confrontation.",
+                "key_events": ["Trial of Five Elements", "Elemental fusion", "Becoming the Elemental Lord"]
+            },
+            13: {
+                "title": "Temporal Paradox",
+                "description": "The Time Spiral tests Arin's resolve across multiple timelines. He must ensure the correct future comes to pass.",
+                "key_events": ["Navigating time streams", "Preventing dark futures", "Stabilizing the timeline"]
+            },
+            14: {
+                "title": "Void Confrontation",
+                "description": "In the Void Sanctum, Arin faces the source of all corruption - the Void itself. This battle will determine the nature of reality.",
+                "key_events": ["Entering the Void", "Battle with Void entities", "Choosing creation over destruction"]
+            },
+            15: {
+                "title": "Eternal Victory",
+                "description": "The Eternal Realm is where legends are born. Arin's final test will echo through eternity, securing peace for all time.",
+                "key_events": ["The ultimate trial", "Transcending mortality", "Becoming the Eternal Guardian"]
+            }
+        }
     }
 }
 
-# Dashboard Configuration
-DASHBOARD_CONFIG = {
-    'admin_email': 'seiftouatilol@gmail.com',
-    'admin_password_hash': 'b8c6f8b8a3c4d5e6f7a8b9c0d1e2f3a4',  # Hash of 'seif0662'
-    'session_timeout': 3600,  # 1 hour in seconds
-    'auto_refresh_interval': 30,  # seconds
-    'data_retention_days': 90,
-    'export_formats': ['json', 'csv', 'xlsx']
-}
+# Enhanced Heroes System - merge with premium content
+HEROES.update(PREMIUM_HEROES)
 
-# Analytics Tracking
-ANALYTICS_CONFIG = {
-    'track_user_sessions': True,
-    'track_level_completion': True,
-    'track_purchases': True,
-    'track_ad_interactions': True,
-    'track_retention': True,
-    'daily_active_users': True,
-    'monthly_active_users': True,
-    'revenue_tracking': True
+# Enhanced Weapons System - merge with premium content  
+WEAPONS.update(PREMIUM_WEAPONS)
+
+# Enhanced Skins System - merge with premium content
+SKINS.update(PREMIUM_SKINS)
+
+# Add premium bundles
+BUNDLES = PREMIUM_BUNDLES
+
+# Story Sessions
+STORY_SESSIONS = {
+    1: {
+        "title": "The Awakening",
+        "description": "The kingdom faces a growing darkness as ancient evils stir",
+        "chapters": [
+            {
+                "title": "The Call to Adventure",
+                "text": "In the peaceful Kingdom of Aldoria, young Knight Arin receives an urgent summons from the High Council. Dark creatures have begun emerging from the Whispering Woods, and strange magical disturbances plague the land. As the kingdom's newest knight, Arin must venture into these mystical realms to uncover the source of this growing threat.",
+                "worlds": [1, 2, 3]
+            }
+        ]
+    },
+    2: {
+        "title": "The Shadow War",
+        "description": "The darkness spreads as an ancient enemy reveals itself",
+        "chapters": [
+            {
+                "title": "Veil Between Worlds",
+                "text": "Arin's journey leads deeper into realms where reality itself seems unstable. The Shadow Realm bleeds into the physical world, and crystal formations appear to be conduits for dark magic. Ancient texts speak of a Dark Lord who once ruled these lands, now stirring from his eternal slumber. The knight must gather allies and powerful artifacts to face this growing menace.",
+                "worlds": [4, 5, 6, 7]
+            }
+        ]
+    },
+    3: {
+        "title": "The Final Stand",
+        "description": "The ultimate battle for Aldoria's future begins",
+        "chapters": [
+            {
+                "title": "Beyond the Veil",
+                "text": "The Dark Lord's influence reaches across dimensions, corrupting even the most sacred places. Arin must venture through mystical gardens where time itself is a weapon, into the void between stars, and finally to the Throne of Eternity. But even defeating the Dark Lord may not be enough, as new threats emerge from the depths of the ocean and the storm-torn peaks beyond.",
+                "worlds": [8, 9, 10, 11, 12]
+            }
+        ]
+    }
 }
