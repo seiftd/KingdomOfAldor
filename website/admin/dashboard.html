@@ -66,6 +66,8 @@
                 <button class="nav-btn" onclick="switchTab('ads')">📺 Ads & Sources</button>
                 <button class="nav-btn" onclick="switchTab('players')">👥 Players</button>
                 <button class="nav-btn" onclick="switchTab('subscriptions')">👑 Subscriptions</button>
+                <button class="nav-btn" onclick="switchTab('codes')">🎫 Promo Codes</button>
+                <button class="nav-btn" onclick="switchTab('sync')">🔄 Data Sync</button>
                 <button class="nav-btn" onclick="switchTab('settings')">⚙️ Settings</button>
             </div>
         </nav>
@@ -358,6 +360,118 @@
             </div>
         </div>
 
+        <!-- Promo Codes Tab -->
+        <div id="codes-tab" class="tab-content">
+            <div class="codes-dashboard">
+                <div class="codes-header">
+                    <h3>Promo Code Management</h3>
+                    <button class="create-code-btn" onclick="showCreateCodeModal()">+ Create New Code</button>
+                </div>
+
+                <div class="codes-stats">
+                    <div class="code-stat-card">
+                        <h4>Total Codes</h4>
+                        <div class="stat-value" id="total-codes">0</div>
+                    </div>
+                    <div class="code-stat-card">
+                        <h4>Active Codes</h4>
+                        <div class="stat-value" id="active-codes">0</div>
+                    </div>
+                    <div class="code-stat-card">
+                        <h4>Total Redemptions</h4>
+                        <div class="stat-value" id="total-redemptions">0</div>
+                    </div>
+                    <div class="code-stat-card">
+                        <h4>Gems Distributed</h4>
+                        <div class="stat-value" id="total-gems-distributed">0</div>
+                    </div>
+                </div>
+
+                <div class="codes-table">
+                    <h3>All Codes</h3>
+                    <div class="table-container">
+                        <table id="codes-table">
+                            <thead>
+                                <tr>
+                                    <th>Code</th>
+                                    <th>Name</th>
+                                    <th>Type</th>
+                                    <th>Rewards</th>
+                                    <th>Usage</th>
+                                    <th>Status</th>
+                                    <th>Expires</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="codes-table-body">
+                                <!-- Code rows will be populated by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Data Sync Tab -->
+        <div id="sync-tab" class="tab-content">
+            <div class="sync-dashboard">
+                <div class="sync-status">
+                    <h3>Online/Offline Status</h3>
+                    <div class="status-cards">
+                        <div class="status-card online">
+                            <h4>Online Players</h4>
+                            <div class="status-value" id="online-players">0</div>
+                            <div class="status-detail">Currently connected</div>
+                        </div>
+                        <div class="status-card offline">
+                            <h4>Offline Players</h4>
+                            <div class="status-value" id="offline-players">0</div>
+                            <div class="status-detail">Last seen >1h ago</div>
+                        </div>
+                        <div class="status-card sync">
+                            <h4>Pending Syncs</h4>
+                            <div class="status-value" id="pending-syncs">0</div>
+                            <div class="status-detail">Awaiting connection</div>
+                        </div>
+                        <div class="status-card firebase">
+                            <h4>Firebase Status</h4>
+                            <div class="status-value" id="firebase-status">●</div>
+                            <div class="status-detail">Real-time database</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sync-analytics">
+                    <div class="sync-chart-container">
+                        <h3>Sync Activity (Last 24h)</h3>
+                        <canvas id="sync-activity-chart"></canvas>
+                    </div>
+                    
+                    <div class="data-distribution">
+                        <h3>Data Distribution</h3>
+                        <canvas id="data-distribution-chart"></canvas>
+                    </div>
+                </div>
+
+                <div class="recent-syncs">
+                    <h3>Recent Sync Events</h3>
+                    <div class="sync-events-list" id="sync-events-list">
+                        <!-- Sync events will be populated by JavaScript -->
+                    </div>
+                </div>
+
+                <div class="sync-controls">
+                    <h3>Sync Management</h3>
+                    <div class="sync-actions">
+                        <button class="sync-btn" onclick="forceSyncAll()">Force Sync All</button>
+                        <button class="sync-btn" onclick="clearSyncCache()">Clear Sync Cache</button>
+                        <button class="sync-btn" onclick="resetConflictData()">Reset Conflicts</button>
+                        <button class="sync-btn danger" onclick="emergencyOfflineMode()">Emergency Offline</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Settings Tab -->
         <div id="settings-tab" class="tab-content">
             <div class="settings-dashboard">
@@ -413,6 +527,73 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- Code Creation Modal -->
+    <div id="code-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Create New Promo Code</h3>
+                <span class="close" onclick="closeCodeModal()">&times;</span>
+            </div>
+            <form id="create-code-form" class="modal-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="code-name">Code</label>
+                        <input type="text" id="code-name" required maxlength="20" placeholder="EXAMPLE2024">
+                    </div>
+                    <div class="form-group">
+                        <label for="code-type">Type</label>
+                        <select id="code-type">
+                            <option value="welcome">Welcome</option>
+                            <option value="daily">Daily</option>
+                            <option value="weekly">Weekly</option>
+                            <option value="event">Event</option>
+                            <option value="premium">Premium</option>
+                            <option value="vip">VIP</option>
+                            <option value="custom">Custom</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="code-display-name">Display Name</label>
+                    <input type="text" id="code-display-name" required placeholder="Special Event Code">
+                </div>
+                
+                <div class="form-group">
+                    <label for="code-description">Description</label>
+                    <textarea id="code-description" placeholder="Limited time bonus for players"></textarea>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="reward-gems">Gems Reward</label>
+                        <input type="number" id="reward-gems" min="0" value="100">
+                    </div>
+                    <div class="form-group">
+                        <label for="reward-gold">Gold Reward</label>
+                        <input type="number" id="reward-gold" min="0" value="1000">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="usage-limit">Usage Limit</label>
+                        <input type="number" id="usage-limit" min="1" value="100">
+                    </div>
+                    <div class="form-group">
+                        <label for="duration-days">Duration (Days)</label>
+                        <input type="number" id="duration-days" min="1" value="30">
+                    </div>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="button" onclick="closeCodeModal()">Cancel</button>
+                    <button type="submit">Create Code</button>
+                </div>
+            </form>
         </div>
     </div>
 

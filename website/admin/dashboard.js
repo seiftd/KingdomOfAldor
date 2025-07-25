@@ -188,6 +188,12 @@ function loadTabData(tabName) {
         case 'subscriptions':
             updateSubscriptionsData();
             break;
+        case 'codes':
+            updateCodesData();
+            break;
+        case 'sync':
+            updateSyncData();
+            break;
         case 'settings':
             loadSettings();
             break;
@@ -785,6 +791,317 @@ function setupRealTimeUpdates() {
         
         updateRecentActivity();
     }, 30000);
+}
+
+// Promo Codes Management
+function updateCodesData() {
+    // Simulate code data
+    const codesData = {
+        totalCodes: 15,
+        activeCodes: 12,
+        totalRedemptions: 1847,
+        totalGemsDistributed: 125340,
+        codes: [
+            {
+                code: 'WELCOME2024',
+                name: 'Welcome to Kingdom of Aldoria',
+                type: 'welcome',
+                rewardGems: 100,
+                rewardGold: 1000,
+                currentUsage: 456,
+                usageLimit: 1000,
+                status: 'active',
+                expiresFormatted: '2024-12-31'
+            },
+            {
+                code: 'LAUNCH50',
+                name: 'Game Launch Celebration',
+                type: 'event',
+                rewardGems: 500,
+                rewardGold: 5000,
+                currentUsage: 234,
+                usageLimit: 500,
+                status: 'active',
+                expiresFormatted: '2024-02-15'
+            },
+            {
+                code: 'SEIFVIP',
+                name: 'Creator Special',
+                type: 'vip',
+                rewardGems: 2500,
+                rewardGold: 25000,
+                currentUsage: 67,
+                usageLimit: 100,
+                status: 'active',
+                expiresFormatted: '2024-04-10'
+            }
+        ]
+    };
+    
+    // Update statistics
+    document.getElementById('total-codes').textContent = codesData.totalCodes;
+    document.getElementById('active-codes').textContent = codesData.activeCodes;
+    document.getElementById('total-redemptions').textContent = codesData.totalRedemptions.toLocaleString();
+    document.getElementById('total-gems-distributed').textContent = codesData.totalGemsDistributed.toLocaleString();
+    
+    // Update codes table
+    updateCodesTable(codesData.codes);
+}
+
+function updateCodesTable(codes) {
+    const tableBody = document.getElementById('codes-table-body');
+    if (!tableBody) return;
+    
+    tableBody.innerHTML = '';
+    
+    codes.forEach(code => {
+        const row = document.createElement('tr');
+        
+        const statusColor = code.status === 'active' ? 'var(--success-green)' : 
+                           code.status === 'expired' ? 'var(--error-red)' : 'var(--warning-orange)';
+        
+        row.innerHTML = `
+            <td><strong>${code.code}</strong></td>
+            <td>${code.name}</td>
+            <td><span class="code-type ${code.type}">${code.type}</span></td>
+            <td>💎 ${code.rewardGems} | 🪙 ${code.rewardGold}</td>
+            <td>${code.currentUsage}/${code.usageLimit}</td>
+            <td><span style="color: ${statusColor}">${code.status}</span></td>
+            <td>${code.expiresFormatted}</td>
+            <td>
+                <button class="action-btn edit" onclick="editCode('${code.code}')">Edit</button>
+                <button class="action-btn delete" onclick="deleteCode('${code.code}')">Delete</button>
+            </td>
+        `;
+        
+        tableBody.appendChild(row);
+    });
+}
+
+function showCreateCodeModal() {
+    document.getElementById('code-modal').style.display = 'flex';
+    
+    // Setup form submission
+    const form = document.getElementById('create-code-form');
+    form.onsubmit = function(e) {
+        e.preventDefault();
+        createNewCode();
+    };
+}
+
+function closeCodeModal() {
+    document.getElementById('code-modal').style.display = 'none';
+    document.getElementById('create-code-form').reset();
+}
+
+function createNewCode() {
+    const formData = {
+        code: document.getElementById('code-name').value.toUpperCase(),
+        displayName: document.getElementById('code-display-name').value,
+        description: document.getElementById('code-description').value,
+        type: document.getElementById('code-type').value,
+        rewardGems: parseInt(document.getElementById('reward-gems').value),
+        rewardGold: parseInt(document.getElementById('reward-gold').value),
+        usageLimit: parseInt(document.getElementById('usage-limit').value),
+        durationDays: parseInt(document.getElementById('duration-days').value)
+    };
+    
+    // Validate code format
+    if (!/^[A-Z0-9_-]{3,20}$/.test(formData.code)) {
+        showAlert('error', 'Code must be 3-20 characters, uppercase letters and numbers only');
+        return;
+    }
+    
+    console.log('🎫 Creating code:', formData);
+    
+    // Simulate API call
+    setTimeout(() => {
+        showAlert('success', `Code ${formData.code} created successfully!`);
+        closeCodeModal();
+        updateCodesData(); // Refresh the table
+    }, 1000);
+}
+
+function editCode(code) {
+    console.log('✏️ Editing code:', code);
+    showAlert('info', `Editing code ${code} (feature coming soon)`);
+}
+
+function deleteCode(code) {
+    if (confirm(`Are you sure you want to delete code ${code}? This action cannot be undone.`)) {
+        console.log('🗑️ Deleting code:', code);
+        showAlert('success', `Code ${code} deleted successfully!`);
+        updateCodesData(); // Refresh the table
+    }
+}
+
+// Data Sync Management
+function updateSyncData() {
+    // Simulate sync data
+    const syncData = {
+        onlinePlayers: 423,
+        offlinePlayers: 1654,
+        pendingSyncs: 12,
+        firebaseStatus: 'connected',
+        recentSyncs: [
+            { player: 'DragonSlayer93', type: 'Player Data', status: 'success', time: '2 minutes ago' },
+            { player: 'MysticMage', type: 'Inventory', status: 'success', time: '3 minutes ago' },
+            { player: 'ShadowKnight', type: 'Stage Progress', status: 'conflict', time: '5 minutes ago' },
+            { player: 'IceQueen42', type: 'Player Data', status: 'success', time: '7 minutes ago' },
+            { player: 'FireWizard', type: 'Currency', status: 'failed', time: '10 minutes ago' }
+        ]
+    };
+    
+    // Update status cards
+    document.getElementById('online-players').textContent = syncData.onlinePlayers.toLocaleString();
+    document.getElementById('offline-players').textContent = syncData.offlinePlayers.toLocaleString();
+    document.getElementById('pending-syncs').textContent = syncData.pendingSyncs;
+    
+    const firebaseStatusEl = document.getElementById('firebase-status');
+    firebaseStatusEl.textContent = '●';
+    firebaseStatusEl.style.color = syncData.firebaseStatus === 'connected' ? 'var(--success-green)' : 'var(--error-red)';
+    
+    // Update recent syncs
+    updateRecentSyncs(syncData.recentSyncs);
+    
+    // Initialize sync charts
+    initializeSyncCharts();
+}
+
+function updateRecentSyncs(syncs) {
+    const syncsList = document.getElementById('sync-events-list');
+    if (!syncsList) return;
+    
+    syncsList.innerHTML = '';
+    
+    syncs.forEach(sync => {
+        const syncItem = document.createElement('div');
+        syncItem.className = 'sync-event-item';
+        
+        const statusColor = sync.status === 'success' ? 'var(--success-green)' :
+                           sync.status === 'conflict' ? 'var(--warning-orange)' : 'var(--error-red)';
+        
+        syncItem.innerHTML = `
+            <div class="sync-event-player">${sync.player}</div>
+            <div class="sync-event-type">${sync.type}</div>
+            <div class="sync-event-status" style="color: ${statusColor}">${sync.status}</div>
+            <div class="sync-event-time">${sync.time}</div>
+        `;
+        
+        syncsList.appendChild(syncItem);
+    });
+}
+
+function initializeSyncCharts() {
+    // Sync Activity Chart
+    const syncCtx = document.getElementById('sync-activity-chart');
+    if (syncCtx && !charts.syncActivity) {
+        charts.syncActivity = new Chart(syncCtx.getContext('2d'), {
+            type: 'line',
+            data: {
+                labels: generateHourLabels(24),
+                datasets: [{
+                    label: 'Sync Events',
+                    data: generateSyncActivityData(24),
+                    borderColor: CONFIG.charts.colors.blue,
+                    backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                    tension: 0.4,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    }
+    
+    // Data Distribution Chart
+    const dataCtx = document.getElementById('data-distribution-chart');
+    if (dataCtx && !charts.dataDistribution) {
+        charts.dataDistribution = new Chart(dataCtx.getContext('2d'), {
+            type: 'doughnut',
+            data: {
+                labels: ['SQLite (Offline)', 'Firebase (Online)', 'Pending Sync'],
+                datasets: [{
+                    data: [65, 30, 5],
+                    backgroundColor: [
+                        CONFIG.charts.colors.green,
+                        CONFIG.charts.colors.blue,
+                        CONFIG.charts.colors.orange
+                    ]
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    }
+                }
+            }
+        });
+    }
+}
+
+function generateHourLabels(hours) {
+    const labels = [];
+    for (let i = hours - 1; i >= 0; i--) {
+        const date = new Date();
+        date.setHours(date.getHours() - i);
+        labels.push(date.getHours() + ':00');
+    }
+    return labels;
+}
+
+function generateSyncActivityData(hours) {
+    const data = [];
+    for (let i = 0; i < hours; i++) {
+        data.push(Math.floor(Math.random() * 50) + 10);
+    }
+    return data;
+}
+
+function forceSyncAll() {
+    console.log('🔄 Forcing sync for all players...');
+    showAlert('info', 'Initiating sync for all players...');
+    
+    // Simulate sync process
+    setTimeout(() => {
+        showAlert('success', 'All players synced successfully!');
+        updateSyncData();
+    }, 2000);
+}
+
+function clearSyncCache() {
+    console.log('🗑️ Clearing sync cache...');
+    showAlert('info', 'Sync cache cleared');
+}
+
+function resetConflictData() {
+    if (confirm('This will reset all conflict resolution data. Continue?')) {
+        console.log('🔄 Resetting conflict data...');
+        showAlert('success', 'Conflict data reset successfully');
+        updateSyncData();
+    }
+}
+
+function emergencyOfflineMode() {
+    if (confirm('This will force all players into offline mode. Are you sure?')) {
+        console.log('🚨 Emergency offline mode activated');
+        showAlert('warning', 'Emergency offline mode activated');
+    }
 }
 
 function loadSettings() {
