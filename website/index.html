@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kingdom of Aldoria - Official Payment Portal</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+</head>
+<body>
+    <div class="stars-background"></div>
+    
+    <!-- Header Section -->
+    <header class="hero-section">
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="logo">
+                    <img src="assets/logo.png" alt="Kingdom of Aldoria">
+                    <span>Kingdom of Aldoria</span>
+                </div>
+                <ul class="nav-menu">
+                    <li><a href="#game">Game</a></li>
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#packages">Packages</a></li>
+                    <li><a href="#payment">Payment</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+                <div class="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </nav>
+
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1>Kingdom of Aldoria</h1>
+                <p class="subtitle">Epic Fantasy Mobile RPG Adventure</p>
+                <p class="description">Embark on a legendary journey through 10 mystical worlds, master powerful skills, and become the ultimate knight in this immersive 2D RPG experience.</p>
+                <div class="hero-buttons">
+                    <a href="#packages" class="btn btn-primary">Choose Package</a>
+                    <a href="#game" class="btn btn-secondary">Learn More</a>
+                </div>
+            </div>
+            <div class="hero-image">
+                <img src="assets/knight-hero.png" alt="Knight Arin">
+                <div class="floating-elements">
+                    <div class="gem gem-1">💎</div>
+                    <div class="gem gem-2">⚔️</div>
+                    <div class="gem gem-3">🏰</div>
+                    <div class="gem gem-4">✨</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Game Info Section -->
+    <section id="game" class="game-section">
+        <div class="container">
+            <h2>The Ultimate Mobile RPG Experience</h2>
+            <div class="game-grid">
+                <div class="game-feature">
+                    <div class="feature-icon">🗺️</div>
+                    <h3>10 Fantasy Worlds</h3>
+                    <p>Explore diverse realms from the mysterious Forest of Shadows to the scorching Volcanic Wasteland. Each world offers unique challenges and rewards.</p>
+                </div>
+                <div class="game-feature">
+                    <div class="feature-icon">⚔️</div>
+                    <h3>300 Epic Stages</h3>
+                    <p>Battle through 30 stages per world with progressive difficulty. Face mighty bosses every 5 stages in epic encounters that test your skills.</p>
+                </div>
+                <div class="game-feature">
+                    <div class="feature-icon">🎭</div>
+                    <h3>Character Customization</h3>
+                    <p>Unlock unique skins with special abilities: Speed Boost, Instant Heal, Time Rewind, and Damage Doubler. Customize your playstyle!</p>
+                </div>
+                <div class="game-feature">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Turn-Based Combat</h3>
+                    <p>Strategic real-time combat with critical hits, skill combinations, and tactical decision-making. Master the art of battle!</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features-section">
+        <div class="container">
+            <h2>Premium Features & Benefits</h2>
+            <div class="features-grid">
+                <div class="feature-card premium">
+                    <div class="card-header">
+                        <h3>🏆 VIP Membership</h3>
+                        <div class="price">$15.99/month</div>
+                    </div>
+                    <ul class="benefits-list">
+                        <li>✨ 40 Gems Daily Bonus</li>
+                        <li>⚡ Maximum Stamina: 25</li>
+                        <li>🚫 Ad-Free Experience</li>
+                        <li>👑 Exclusive VIP Badge</li>
+                        <li>🎁 Priority Customer Support</li>
+                        <li>🌟 Early Access to New Content</li>
+                    </ul>
+                    <button class="btn btn-premium" onclick="selectPackage('monthly', 15.99)">Choose VIP</button>
+                </div>
+
+                <div class="feature-card popular">
+                    <div class="popular-badge">Most Popular</div>
+                    <div class="card-header">
+                        <h3>⚔️ Weekly Pass</h3>
+                        <div class="price">$4.99/week</div>
+                    </div>
+                    <ul class="benefits-list">
+                        <li>💎 25 Gems Daily Bonus</li>
+                        <li>⚡ Maximum Stamina: 20</li>
+                        <li>🚫 No Advertisements</li>
+                        <li>🎯 Bonus Experience Rates</li>
+                        <li>🏃 Faster Energy Regeneration</li>
+                    </ul>
+                    <button class="btn btn-popular" onclick="selectPackage('weekly', 4.99)">Choose Weekly</button>
+                </div>
+
+                <div class="feature-card starter">
+                    <div class="card-header">
+                        <h3>🎮 Starter Pack</h3>
+                        <div class="price">$0.99</div>
+                    </div>
+                    <ul class="benefits-list">
+                        <li>🎭 Exclusive Character Skin</li>
+                        <li>⚔️ Legendary Weapon</li>
+                        <li>💎 100 Bonus Gems</li>
+                        <li>🪙 1,000 Gold Coins</li>
+                        <li>🏃 Perfect for New Players</li>
+                    </ul>
+                    <button class="btn btn-starter" onclick="selectPackage('starter', 0.99)">Get Started</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Packages Section -->
+    <section id="packages" class="packages-section">
+        <div class="container">
+            <h2>Choose Your Adventure Package</h2>
+            <div class="packages-tabs">
+                <button class="tab-btn active" onclick="switchTab('subscriptions')">Subscriptions</button>
+                <button class="tab-btn" onclick="switchTab('items')">Premium Items</button>
+                <button class="tab-btn" onclick="switchTab('gems')">Gem Packages</button>
+            </div>
+
+            <div id="subscriptions" class="package-content active">
+                <div class="package-grid">
+                    <div class="package-item legendary">
+                        <div class="package-header">
+                            <h3>👑 Royal Crown Membership</h3>
+                            <div class="package-price">$15.99<span>/month</span></div>
+                        </div>
+                        <div class="package-benefits">
+                            <h4>Premium Benefits:</h4>
+                            <ul>
+                                <li>💎 40 Gems every day (1,200 gems/month value)</li>
+                                <li>⚡ Maximum stamina increased to 25</li>
+                                <li>🚫 Completely ad-free experience</li>
+                                <li>👑 Exclusive VIP crown badge</li>
+                                <li>🎁 Monthly exclusive legendary items</li>
+                                <li>🌟 Early access to new worlds</li>
+                                <li>💬 Priority customer support</li>
+                            </ul>
+                        </div>
+                        <button class="package-btn legendary-btn" onclick="selectPackage('monthly_premium', 15.99)">
+                            Become Royalty
+                        </button>
+                    </div>
+
+                    <div class="package-item epic">
+                        <div class="popular-banner">⭐ MOST POPULAR ⭐</div>
+                        <div class="package-header">
+                            <h3>⚔️ Knight's Weekly Pass</h3>
+                            <div class="package-price">$4.99<span>/week</span></div>
+                        </div>
+                        <div class="package-benefits">
+                            <h4>Knight Benefits:</h4>
+                            <ul>
+                                <li>💎 25 Gems daily (175 gems/week value)</li>
+                                <li>⚡ Maximum stamina: 20</li>
+                                <li>🚫 No ads during gameplay</li>
+                                <li>🏃 50% faster stamina regeneration</li>
+                                <li>🎯 Double experience from battles</li>
+                                <li>🛡️ Exclusive knight armor skin</li>
+                            </ul>
+                        </div>
+                        <button class="package-btn epic-btn" onclick="selectPackage('weekly_premium', 4.99)">
+                            Join the Knights
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="items" class="package-content">
+                <div class="items-grid">
+                    <div class="item-card">
+                        <img src="assets/void-scythe.png" alt="Void Scythe">
+                        <h3>🌌 Void Scythe</h3>
+                        <p>Legendary cosmic weapon with +40 attack power and dark energy effects.</p>
+                        <div class="item-price">$9.99</div>
+                        <button class="item-btn" onclick="selectPackage('void_scythe', 9.99)">Purchase</button>
+                    </div>
+                    <div class="item-card">
+                        <img src="assets/solar-sword.png" alt="Solar Flare Sword">
+                        <h3>🔥 Solar Flare Sword</h3>
+                        <p>Blazing weapon that ignites enemies with +35 fire damage bonus.</p>
+                        <div class="item-price">$7.99</div>
+                        <button class="item-btn" onclick="selectPackage('solar_sword', 7.99)">Purchase</button>
+                    </div>
+                    <div class="item-card">
+                        <img src="assets/void-knight.png" alt="Void Knight Skin">
+                        <h3>🖤 Void Knight Skin</h3>
+                        <p>Mysterious dark armor with Time Rewind ability. Legendary rarity.</p>
+                        <div class="item-price">$14.99</div>
+                        <button class="item-btn" onclick="selectPackage('void_knight_skin', 14.99)">Purchase</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="gems" class="package-content">
+                <div class="gems-grid">
+                    <div class="gem-package">
+                        <div class="gem-icon">💎</div>
+                        <h3>100 Gems</h3>
+                        <div class="gem-price">$1.99</div>
+                        <button class="gem-btn" onclick="selectPackage('gems_100', 1.99)">Buy Gems</button>
+                    </div>
+                    <div class="gem-package popular">
+                        <div class="gem-icon">💎</div>
+                        <h3>500 Gems</h3>
+                        <div class="gem-price">$8.99</div>
+                        <div class="bonus">+50 Bonus!</div>
+                        <button class="gem-btn" onclick="selectPackage('gems_500', 8.99)">Buy Gems</button>
+                    </div>
+                    <div class="gem-package">
+                        <div class="gem-icon">💎</div>
+                        <h3>1,200 Gems</h3>
+                        <div class="gem-price">$19.99</div>
+                        <div class="bonus">+200 Bonus!</div>
+                        <button class="gem-btn" onclick="selectPackage('gems_1200', 19.99)">Buy Gems</button>
+                    </div>
+                    <div class="gem-package mega">
+                        <div class="gem-icon">💎</div>
+                        <h3>3,000 Gems</h3>
+                        <div class="gem-price">$49.99</div>
+                        <div class="bonus">+700 Bonus!</div>
+                        <button class="gem-btn" onclick="selectPackage('gems_3000', 49.99)">Buy Gems</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Payment Section -->
+    <section id="payment" class="payment-section">
+        <div class="container">
+            <h2>Secure Payment Options</h2>
+            <div class="payment-container">
+                <div class="selected-package">
+                    <h3>Selected Package</h3>
+                    <div id="selected-package-info">
+                        <p>Select a package above to proceed with payment</p>
+                    </div>
+                </div>
+
+                <div class="payment-methods">
+                    <h3>Choose Payment Method</h3>
+                    
+                    <div class="payment-option" onclick="selectPaymentMethod('redotpay')">
+                        <div class="payment-icon">
+                            <img src="assets/redotpay-logo.png" alt="RedotPay">
+                        </div>
+                        <div class="payment-info">
+                            <h4>RedotPay</h4>
+                            <p>Secure global payment solution with instant processing</p>
+                        </div>
+                        <div class="payment-badge recommended">Recommended</div>
+                    </div>
+
+                    <div class="payment-option" onclick="selectPaymentMethod('binance')">
+                        <div class="payment-icon">
+                            <img src="assets/binance-logo.png" alt="Binance Pay">
+                        </div>
+                        <div class="payment-info">
+                            <h4>Binance Pay</h4>
+                            <p>Cryptocurrency payments with low fees and fast transactions</p>
+                        </div>
+                        <div class="payment-badge crypto">Crypto</div>
+                    </div>
+
+                    <div class="payment-option" onclick="selectPaymentMethod('card')">
+                        <div class="payment-icon">
+                            <span>💳</span>
+                        </div>
+                        <div class="payment-info">
+                            <h4>Credit/Debit Card</h4>
+                            <p>Visa, Mastercard, American Express accepted</p>
+                        </div>
+                        <div class="payment-badge standard">Standard</div>
+                    </div>
+                </div>
+
+                <div class="payment-form" id="payment-form" style="display: none;">
+                    <h3>Complete Your Purchase</h3>
+                    <form id="checkout-form">
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="player-id">Player ID (Optional)</label>
+                            <input type="text" id="player-id" name="player-id" placeholder="Enter your game Player ID">
+                        </div>
+
+                        <div class="payment-details" id="payment-details">
+                            <!-- Payment method specific details will be loaded here -->
+                        </div>
+
+                        <div class="security-info">
+                            <div class="security-badge">🔒 Secure Payment</div>
+                            <p>Your payment information is encrypted and secure. We use industry-standard SSL encryption to protect your data.</p>
+                        </div>
+
+                        <button type="submit" class="btn btn-pay" id="pay-button">
+                            Complete Payment
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Showcase -->
+    <section class="showcase-section">
+        <div class="container">
+            <h2>Why Choose Kingdom of Aldoria?</h2>
+            <div class="showcase-grid">
+                <div class="showcase-item">
+                    <div class="showcase-icon">🎨</div>
+                    <h3>Stunning 2D Art</h3>
+                    <p>Hand-crafted fantasy sprites and environments that bring the magical world to life.</p>
+                </div>
+                <div class="showcase-item">
+                    <div class="showcase-icon">📱</div>
+                    <h3>Mobile Optimized</h3>
+                    <p>Perfect touch controls and UI designed specifically for mobile gaming experience.</p>
+                </div>
+                <div class="showcase-item">
+                    <div class="showcase-icon">🌍</div>
+                    <h3>Rich Storyline</h3>
+                    <p>Deep lore and engaging narrative across 10 unique fantasy worlds to explore.</p>
+                </div>
+                <div class="showcase-item">
+                    <div class="showcase-icon">⚖️</div>
+                    <h3>Fair Gameplay</h3>
+                    <p>Balanced progression system that rewards both free and premium players fairly.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact-section">
+        <div class="container">
+            <h2>Need Help?</h2>
+            <div class="contact-info">
+                <div class="contact-item">
+                    <h3>📧 Support Email</h3>
+                    <p>support@kingdomofaldoria.com</p>
+                </div>
+                <div class="contact-item">
+                    <h3>💬 Live Chat</h3>
+                    <p>Available 24/7 for premium members</p>
+                </div>
+                <div class="contact-item">
+                    <h3>📱 Social Media</h3>
+                    <p>Follow us for updates and community events</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <img src="assets/logo.png" alt="Kingdom of Aldoria">
+                    <span>Kingdom of Aldoria</span>
+                </div>
+                <div class="footer-links">
+                    <a href="#game">Game Info</a>
+                    <a href="#features">Features</a>
+                    <a href="#packages">Packages</a>
+                    <a href="privacy.html">Privacy Policy</a>
+                    <a href="terms.html">Terms of Service</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Kingdom of Aldoria. All rights reserved. Embark on your epic adventure today!</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="loading-overlay" style="display: none;">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <p>Processing your payment...</p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
