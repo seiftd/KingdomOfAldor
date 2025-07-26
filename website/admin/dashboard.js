@@ -1157,3 +1157,724 @@ style.textContent = `
 document.head.appendChild(style);
 
 console.log('🎮 Kingdom of Aldoria Admin Dashboard loaded successfully!');
+
+// Add these functions at the end of the file
+
+// Events Management Functions
+function showCreateEventModal() {
+    const modalHtml = `
+        <div class="modal-overlay" onclick="closeModal(event)">
+            <div class="modal-content" onclick="event.stopPropagation()">
+                <div class="modal-header">
+                    <h3>🎉 Create New Event</h3>
+                    <button class="modal-close" onclick="closeModal()">&times;</button>
+                </div>
+                
+                <form id="create-event-form" onsubmit="createEvent(event)">
+                    <div class="form-group">
+                        <label for="event-name">Event Name</label>
+                        <input type="text" id="event-name" name="name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="event-type">Event Type</label>
+                        <select id="event-type" name="type" required>
+                            <option value="daily_login">Daily Login Bonus</option>
+                            <option value="weekly_quest">Weekly Quest</option>
+                            <option value="special_event">Special Event</option>
+                            <option value="seasonal">Seasonal Event</option>
+                            <option value="competition">Competition</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="event-description">Description</label>
+                        <textarea id="event-description" name="description" rows="3"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="event-start">Start Date & Time</label>
+                        <input type="datetime-local" id="event-start" name="startDate" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="event-end">End Date & Time</label>
+                        <input type="datetime-local" id="event-end" name="endDate" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="event-rewards">Rewards (JSON format)</label>
+                        <textarea id="event-rewards" name="rewards" rows="4" 
+                                  placeholder='{"gems": 100, "weapons": ["silver_sword"], "experience": 500}'></textarea>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" class="form-btn secondary" onclick="closeModal()">Cancel</button>
+                        <button type="submit" class="form-btn primary">Create Event</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    `;
+    
+    document.body.insertAdjacentHTML('beforeend', modalHtml);
+}
+
+function createEvent(event) {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    const eventData = Object.fromEntries(formData.entries());
+    
+    try {
+        eventData.rewards = JSON.parse(eventData.rewards || '{}');
+    } catch (e) {
+        showNotification('❌ Invalid rewards JSON format', 'error');
+        return;
+    }
+    
+    // Simulate API call
+    console.log('Creating event:', eventData);
+    showNotification('✅ Event created successfully!', 'success');
+    closeModal();
+    refreshEvents();
+}
+
+function createEventFromTemplate(templateType) {
+    const templates = {
+        double_xp: {
+            name: 'Double XP Weekend',
+            type: 'special_event',
+            description: 'Get 2x experience points from all battles during this weekend!',
+            rewards: { experience_multiplier: 2 }
+        },
+        gem_rain: {
+            name: 'Gem Rain Event',
+            type: 'special_event',
+            description: 'Earn extra gems from all sources for a limited time!',
+            rewards: { gems_multiplier: 1.5, bonus_gems: 50 }
+        },
+        boss_rush: {
+            name: 'Boss Rush Challenge',
+            type: 'competition',
+            description: 'Face powerful bosses in succession for legendary rewards!',
+            rewards: { legendary_weapon: 'random', gems: 500, rare_materials: 10 }
+        },
+        login_bonus: {
+            name: '7-Day Login Bonus',
+            type: 'daily_login',
+            description: 'Login daily for 7 days to receive progressive rewards!',
+            rewards: { 
+                day1: { gems: 50 },
+                day2: { gems: 75 },
+                day3: { gems: 100, weapons: ['silver_sword'] },
+                day7: { gems: 500, legendary_weapon: 'random' }
+            }
+        }
+    };
+    
+    const template = templates[templateType];
+    if (template) {
+        // Auto-fill form with template data
+        showCreateEventModal();
+        setTimeout(() => {
+            document.getElementById('event-name').value = template.name;
+            document.getElementById('event-type').value = template.type;
+            document.getElementById('event-description').value = template.description;
+            document.getElementById('event-rewards').value = JSON.stringify(template.rewards, null, 2);
+        }, 100);
+    }
+}
+
+function refreshEvents() {
+    loadEventsData();
+    showNotification('🔄 Events data refreshed', 'info');
+}
+
+function filterEvents() {
+    const filter = document.getElementById('event-filter').value;
+    console.log('Filtering events by:', filter);
+    // Implement filtering logic
+}
+
+function filterEventsByType() {
+    const filter = document.getElementById('event-type-filter').value;
+    console.log('Filtering events by type:', filter);
+    // Implement filtering logic
+}
+
+// Weapons Management Functions
+function showCreateWeaponModal() {
+    const modalHtml = `
+        <div class="modal-overlay" onclick="closeModal(event)">
+            <div class="modal-content" onclick="event.stopPropagation()">
+                <div class="modal-header">
+                    <h3>⚔️ Add New Weapon</h3>
+                    <button class="modal-close" onclick="closeModal()">&times;</button>
+                </div>
+                
+                <form id="create-weapon-form" onsubmit="createWeapon(event)">
+                    <div class="form-group">
+                        <label for="weapon-name">Weapon Name</label>
+                        <input type="text" id="weapon-name" name="name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="weapon-type">Weapon Type</label>
+                        <select id="weapon-type" name="type" required>
+                            <option value="sword">Sword</option>
+                            <option value="bow">Bow</option>
+                            <option value="staff">Staff</option>
+                            <option value="dagger">Dagger</option>
+                            <option value="hammer">Hammer</option>
+                            <option value="scythe">Scythe</option>
+                            <option value="orb">Orb</option>
+                            <option value="gauntlets">Gauntlets</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="weapon-rarity">Rarity</label>
+                        <select id="weapon-rarity" name="rarity" required>
+                            <option value="wood">Wood</option>
+                            <option value="iron">Iron</option>
+                            <option value="silver">Silver</option>
+                            <option value="gold">Gold</option>
+                            <option value="platinum">Platinum</option>
+                            <option value="emerald">Emerald</option>
+                            <option value="diamond">Diamond</option>
+                            <option value="elite">Elite</option>
+                            <option value="hyper">Hyper</option>
+                            <option value="legendary">Legendary</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="weapon-attack">Attack Power</label>
+                        <input type="number" id="weapon-attack" name="attack" min="1" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="weapon-price">Price (Gems/USD)</label>
+                        <input type="number" id="weapon-price" name="price" min="0" step="0.01" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="weapon-description">Description</label>
+                        <textarea id="weapon-description" name="description" rows="3"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="weapon-special">Special Abilities (JSON)</label>
+                        <textarea id="weapon-special" name="special" rows="3" 
+                                  placeholder='{"crit_chance": 0.25, "fire_damage": 50}'></textarea>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" class="form-btn secondary" onclick="closeModal()">Cancel</button>
+                        <button type="submit" class="form-btn primary">Add Weapon</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    `;
+    
+    document.body.insertAdjacentHTML('beforeend', modalHtml);
+}
+
+function createWeapon(event) {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    const weaponData = Object.fromEntries(formData.entries());
+    
+    try {
+        weaponData.special = JSON.parse(weaponData.special || '{}');
+    } catch (e) {
+        showNotification('❌ Invalid special abilities JSON format', 'error');
+        return;
+    }
+    
+    // Simulate API call
+    console.log('Creating weapon:', weaponData);
+    showNotification('✅ Weapon added successfully!', 'success');
+    closeModal();
+    loadWeaponsData();
+}
+
+function searchWeapons() {
+    const query = document.getElementById('weapon-search').value;
+    console.log('Searching weapons:', query);
+    // Implement search logic
+}
+
+function filterWeaponsByRarity() {
+    const rarity = document.getElementById('weapon-rarity-filter').value;
+    console.log('Filtering weapons by rarity:', rarity);
+    // Implement filtering logic
+}
+
+function filterWeaponsByType() {
+    const type = document.getElementById('weapon-type-filter').value;
+    console.log('Filtering weapons by type:', type);
+    // Implement filtering logic
+}
+
+function exportWeapons() {
+    // Simulate data export
+    const weaponsData = generateSampleWeaponsData();
+    downloadJSON(weaponsData, 'weapons_export.json');
+    showNotification('📊 Weapons data exported successfully!', 'success');
+}
+
+// Heroes Management Functions
+function showCreateHeroModal() {
+    const modalHtml = `
+        <div class="modal-overlay" onclick="closeModal(event)">
+            <div class="modal-content" onclick="event.stopPropagation()">
+                <div class="modal-header">
+                    <h3>🦸 Add New Hero</h3>
+                    <button class="modal-close" onclick="closeModal()">&times;</button>
+                </div>
+                
+                <form id="create-hero-form" onsubmit="createHero(event)">
+                    <div class="form-group">
+                        <label for="hero-name">Hero Name</label>
+                        <input type="text" id="hero-name" name="name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="hero-class">Hero Class</label>
+                        <select id="hero-class" name="class" required>
+                            <option value="knight">Knight</option>
+                            <option value="mage">Mage</option>
+                            <option value="archer">Archer</option>
+                            <option value="assassin">Assassin</option>
+                            <option value="berserker">Berserker</option>
+                            <option value="paladin">Paladin</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="hero-rarity">Rarity</label>
+                        <select id="hero-rarity" name="rarity" required>
+                            <option value="common">Common</option>
+                            <option value="rare">Rare</option>
+                            <option value="epic">Epic</option>
+                            <option value="legendary">Legendary</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="hero-health">Health Points</label>
+                        <input type="number" id="hero-health" name="health" min="100" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="hero-attack">Attack Power</label>
+                        <input type="number" id="hero-attack" name="attack" min="10" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="hero-price">Price (Gems/USD)</label>
+                        <input type="number" id="hero-price" name="price" min="0" step="0.01" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="hero-description">Description</label>
+                        <textarea id="hero-description" name="description" rows="3"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="hero-abilities">Abilities (comma-separated)</label>
+                        <input type="text" id="hero-abilities" name="abilities" 
+                               placeholder="Fireball, Heal, Shield Block">
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" class="form-btn secondary" onclick="closeModal()">Cancel</button>
+                        <button type="submit" class="form-btn primary">Add Hero</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    `;
+    
+    document.body.insertAdjacentHTML('beforeend', modalHtml);
+}
+
+function createHero(event) {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    const heroData = Object.fromEntries(formData.entries());
+    
+    // Process abilities
+    heroData.abilities = heroData.abilities.split(',').map(a => a.trim()).filter(a => a);
+    
+    // Simulate API call
+    console.log('Creating hero:', heroData);
+    showNotification('✅ Hero added successfully!', 'success');
+    closeModal();
+    loadHeroesData();
+}
+
+function searchHeroes() {
+    const query = document.getElementById('hero-search').value;
+    console.log('Searching heroes:', query);
+    // Implement search logic
+}
+
+function filterHeroesByClass() {
+    const heroClass = document.getElementById('hero-class-filter').value;
+    console.log('Filtering heroes by class:', heroClass);
+    // Implement filtering logic
+}
+
+function filterHeroesByRarity() {
+    const rarity = document.getElementById('hero-rarity-filter').value;
+    console.log('Filtering heroes by rarity:', rarity);
+    // Implement filtering logic
+}
+
+function exportHeroes() {
+    // Simulate data export
+    const heroesData = generateSampleHeroesData();
+    downloadJSON(heroesData, 'heroes_export.json');
+    showNotification('📊 Heroes data exported successfully!', 'success');
+}
+
+// Enhanced VIP Management Functions
+function searchVIPs() {
+    const query = document.getElementById('vip-search').value;
+    console.log('Searching VIPs:', query);
+    // Implement search logic
+}
+
+function filterVIPs() {
+    const filter = document.getElementById('vip-filter').value;
+    console.log('Filtering VIPs:', filter);
+    // Implement filtering logic
+}
+
+function exportSubscriptions() {
+    // Simulate data export
+    const vipData = generateSampleVIPData();
+    downloadJSON(vipData, 'vip_subscriptions_export.json');
+    showNotification('📊 VIP data exported successfully!', 'success');
+}
+
+function refreshSubscriptions() {
+    loadVIPData();
+    showNotification('🔄 VIP data refreshed', 'info');
+}
+
+function extendVIP(userId) {
+    console.log('Extending VIP for user:', userId);
+    showNotification(`✅ VIP extended for user ${userId}`, 'success');
+    // Implement VIP extension logic
+}
+
+function removeVIP(userId) {
+    if (confirm('Are you sure you want to remove VIP status for this user?')) {
+        console.log('Removing VIP for user:', userId);
+        showNotification(`❌ VIP removed for user ${userId}`, 'success');
+        // Implement VIP removal logic
+    }
+}
+
+// Utility Functions
+function closeModal(event) {
+    if (event && event.target !== event.currentTarget) return;
+    const modal = document.querySelector('.modal-overlay');
+    if (modal) {
+        modal.remove();
+    }
+}
+
+function downloadJSON(data, filename) {
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+}
+
+// Data Loading Functions
+function loadEventsData() {
+    // Simulate loading events data
+    const eventsContainer = document.getElementById('events-container');
+    if (eventsContainer) {
+        eventsContainer.innerHTML = generateSampleEventsHTML();
+    }
+    
+    // Update stats
+    updateElementById('active-events', '3');
+    updateElementById('scheduled-events', '5');
+    updateElementById('event-participation', '78%');
+}
+
+function loadWeaponsData() {
+    // Simulate loading weapons data
+    const weaponsGrid = document.getElementById('weapons-grid');
+    if (weaponsGrid) {
+        weaponsGrid.innerHTML = generateSampleWeaponsHTML();
+    }
+    
+    // Update stats
+    updateElementById('total-weapons', '45');
+    updateElementById('legendary-weapons', '8');
+    updateElementById('popular-weapon', 'Godslayer Excalibur');
+}
+
+function loadHeroesData() {
+    // Simulate loading heroes data
+    const heroesGrid = document.getElementById('heroes-grid');
+    if (heroesGrid) {
+        heroesGrid.innerHTML = generateSampleHeroesHTML();
+    }
+    
+    // Update stats
+    updateElementById('total-heroes', '12');
+    updateElementById('premium-heroes', '4');
+    updateElementById('popular-hero', 'Dragon Lord Arin');
+}
+
+function loadVIPData() {
+    // Simulate loading VIP data
+    const vipList = document.getElementById('vip-list');
+    if (vipList) {
+        vipList.innerHTML = generateSampleVIPHTML();
+    }
+    
+    // Update stats
+    updateElementById('active-vips', '156');
+    updateElementById('vip-revenue', '$2,480');
+    updateElementById('retention-rate', '87%');
+}
+
+// Sample Data Generators
+function generateSampleEventsHTML() {
+    return `
+        <div class="event-card">
+            <div class="event-header">
+                <h4>⚡ Double XP Weekend</h4>
+                <div class="event-status active">Active</div>
+            </div>
+            <p>Get 2x experience from all battles this weekend!</p>
+            <div class="event-details">
+                <small>Ends: Tomorrow 23:59 | Participants: 1,247</small>
+            </div>
+        </div>
+        
+        <div class="event-card">
+            <div class="event-header">
+                <h4>💎 Gem Rain Event</h4>
+                <div class="event-status scheduled">Scheduled</div>
+            </div>
+            <p>Extra gems from all sources for 3 days!</p>
+            <div class="event-details">
+                <small>Starts: Monday 00:00 | Expected: 2,000+ players</small>
+            </div>
+        </div>
+    `;
+}
+
+function generateSampleWeaponsHTML() {
+    return `
+        <div class="weapon-card">
+            <div class="weapon-rarity legendary">LEGENDARY</div>
+            <div class="weapon-image">⚔️</div>
+            <h4>Godslayer Excalibur</h4>
+            <div class="weapon-stats">
+                <div class="weapon-stat">Attack: 150</div>
+                <div class="weapon-stat">Crit: 35%</div>
+            </div>
+            <div class="weapon-actions">
+                <button class="weapon-action-btn edit">Edit</button>
+                <button class="weapon-action-btn delete">Delete</button>
+            </div>
+        </div>
+        
+        <div class="weapon-card">
+            <div class="weapon-rarity legendary">LEGENDARY</div>
+            <div class="weapon-image">🏹</div>
+            <h4>Worldender Bow</h4>
+            <div class="weapon-stats">
+                <div class="weapon-stat">Attack: 140</div>
+                <div class="weapon-stat">Range: 50%</div>
+            </div>
+            <div class="weapon-actions">
+                <button class="weapon-action-btn edit">Edit</button>
+                <button class="weapon-action-btn delete">Delete</button>
+            </div>
+        </div>
+    `;
+}
+
+function generateSampleHeroesHTML() {
+    return `
+        <div class="hero-card">
+            <div class="hero-class">Knight</div>
+            <div class="hero-avatar">🦸</div>
+            <h4>Dragon Lord Arin</h4>
+            <div class="hero-abilities">
+                <h5>Abilities:</h5>
+                <div class="ability-list">
+                    <span class="ability-tag">Dragon Breath</span>
+                    <span class="ability-tag">Fire Shield</span>
+                </div>
+            </div>
+            <div class="hero-pricing">
+                <span class="hero-price">$24.99</span>
+            </div>
+            <div class="hero-actions">
+                <button class="hero-action-btn edit">Edit</button>
+                <button class="hero-action-btn delete">Delete</button>
+            </div>
+        </div>
+        
+        <div class="hero-card">
+            <div class="hero-class">Mage</div>
+            <div class="hero-avatar">🧙</div>
+            <h4>Cosmic Emperor Arin</h4>
+            <div class="hero-abilities">
+                <h5>Abilities:</h5>
+                <div class="ability-list">
+                    <span class="ability-tag">Stellar Nova</span>
+                    <span class="ability-tag">Gravity Control</span>
+                </div>
+            </div>
+            <div class="hero-pricing">
+                <span class="hero-price">$26.99</span>
+            </div>
+            <div class="hero-actions">
+                <button class="hero-action-btn edit">Edit</button>
+                <button class="hero-action-btn delete">Delete</button>
+            </div>
+        </div>
+    `;
+}
+
+function generateSampleVIPHTML() {
+    return `
+        <div class="vip-item">
+            <div class="vip-info">
+                <div class="vip-name">Player_123</div>
+                <div class="vip-details">Royal Crown • Expires: Dec 25, 2024 • $15.99/month</div>
+            </div>
+            <div class="vip-status active">Active</div>
+            <div class="vip-actions">
+                <button class="vip-action-btn extend" onclick="extendVIP('player_123')">Extend</button>
+                <button class="vip-action-btn remove" onclick="removeVIP('player_123')">Remove</button>
+            </div>
+        </div>
+        
+        <div class="vip-item">
+            <div class="vip-info">
+                <div class="vip-name">DragonSlayer99</div>
+                <div class="vip-details">Knight's Weekly • Expires: Dec 15, 2024 • $4.99/week</div>
+            </div>
+            <div class="vip-status expiring">Expiring Soon</div>
+            <div class="vip-actions">
+                <button class="vip-action-btn extend" onclick="extendVIP('dragonslayer99')">Extend</button>
+                <button class="vip-action-btn remove" onclick="removeVIP('dragonslayer99')">Remove</button>
+            </div>
+        </div>
+    `;
+}
+
+// Data generation functions for export
+function generateSampleWeaponsData() {
+    return [
+        {
+            id: 1,
+            name: "Godslayer Excalibur",
+            type: "sword",
+            rarity: "legendary",
+            attack: 150,
+            price: 29.99,
+            special_abilities: { crit_chance: 0.35, fire_damage: 75 }
+        },
+        {
+            id: 2,
+            name: "Worldender Bow",
+            type: "bow",
+            rarity: "legendary",
+            attack: 140,
+            price: 27.99,
+            special_abilities: { void_damage: 80, piercing: true }
+        }
+    ];
+}
+
+function generateSampleHeroesData() {
+    return [
+        {
+            id: 1,
+            name: "Dragon Lord Arin",
+            class: "knight",
+            rarity: "legendary",
+            health: 500,
+            attack: 120,
+            price: 24.99,
+            abilities: ["Dragon Breath", "Fire Shield", "Dragon Wings"]
+        },
+        {
+            id: 2,
+            name: "Cosmic Emperor Arin",
+            class: "mage",
+            rarity: "legendary",
+            health: 400,
+            attack: 150,
+            price: 26.99,
+            abilities: ["Stellar Nova", "Gravity Control", "Cosmic Speed"]
+        }
+    ];
+}
+
+function generateSampleVIPData() {
+    return [
+        {
+            user_id: "player_123",
+            username: "Player_123",
+            subscription_type: "monthly",
+            start_date: "2024-11-01",
+            end_date: "2024-12-25",
+            price: 15.99,
+            status: "active"
+        },
+        {
+            user_id: "dragonslayer99",
+            username: "DragonSlayer99",
+            subscription_type: "weekly",
+            start_date: "2024-12-08",
+            end_date: "2024-12-15",
+            price: 4.99,
+            status: "expiring"
+        }
+    ];
+}
+
+// Initialize new tabs when switching
+const originalSwitchTab = window.switchTab;
+window.switchTab = function(tabName) {
+    originalSwitchTab(tabName);
+    
+    // Load data for new tabs
+    switch(tabName) {
+        case 'events':
+            loadEventsData();
+            break;
+        case 'weapons':
+            loadWeaponsData();
+            break;
+        case 'heroes':
+            loadHeroesData();
+            break;
+        case 'subscriptions':
+            loadVIPData();
+            break;
+    }
+};
