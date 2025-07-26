@@ -202,27 +202,167 @@
             </div>
 
             <div id="items" class="package-content">
-                <div class="items-grid">
-                    <div class="item-card">
-                        <img src="assets/void-scythe.png" alt="Void Scythe">
-                        <h3>🌌 Void Scythe</h3>
-                        <p>Legendary cosmic weapon with +40 attack power and dark energy effects.</p>
-                        <div class="item-price">$9.99</div>
-                        <button class="item-btn" onclick="selectPackage('void_scythe', 9.99)">Purchase</button>
+                <div class="legendary-showcase">
+                    <h3 class="legendary-title">🌟 LEGENDARY ARSENAL 🌟</h3>
+                    <p class="legendary-subtitle">Forge your destiny with weapons of unimaginable power</p>
+                </div>
+                
+                <div class="items-grid legendary-grid">
+                    <!-- Legendary Weapons Tier -->
+                    <div class="item-card legendary-weapon">
+                        <div class="item-rarity legendary">LEGENDARY</div>
+                        <div class="item-image-container">
+                            <img src="assets/godslayer-excalibur.png" alt="Godslayer Excalibur" class="legendary-weapon-img">
+                            <div class="weapon-aura legendary-aura"></div>
+                            <div class="legendary-particles"></div>
+                        </div>
+                        <h3>⚔️ Godslayer Excalibur</h3>
+                        <div class="weapon-stats">
+                            <div class="stat-item">🗡️ Attack: +150</div>
+                            <div class="stat-item">⚡ Crit Rate: +35%</div>
+                            <div class="stat-item">🔥 Fire Damage: +75</div>
+                        </div>
+                        <p class="item-description">The ultimate blade forged in dragonfire. Each strike creates explosive holy flames that devastate all enemies.</p>
+                        <div class="special-abilities">
+                            <div class="ability">🌟 Divine Wrath: 500% damage ultimate attack</div>
+                            <div class="ability">🔥 Eternal Flame: Burns enemies for 10 turns</div>
+                            <div class="ability">⚔️ Godslayer Mode: +100% stats for 30 seconds</div>
+                        </div>
+                        <div class="item-price legendary-price">$29.99</div>
+                        <button class="item-btn legendary-btn" onclick="selectPackage('godslayer_excalibur', 29.99)">
+                            <span class="btn-text">Claim Legendary Power</span>
+                            <div class="btn-glow"></div>
+                        </button>
                     </div>
-                    <div class="item-card">
-                        <img src="assets/solar-sword.png" alt="Solar Flare Sword">
-                        <h3>🔥 Solar Flare Sword</h3>
-                        <p>Blazing weapon that ignites enemies with +35 fire damage bonus.</p>
-                        <div class="item-price">$7.99</div>
-                        <button class="item-btn" onclick="selectPackage('solar_sword', 7.99)">Purchase</button>
+
+                    <div class="item-card legendary-weapon">
+                        <div class="item-rarity legendary">LEGENDARY</div>
+                        <div class="item-image-container">
+                            <img src="assets/worldender-bow.png" alt="Worldender Bow" class="legendary-weapon-img">
+                            <div class="weapon-aura void-aura"></div>
+                            <div class="void-particles"></div>
+                        </div>
+                        <h3>🏹 Worldender Bow</h3>
+                        <div class="weapon-stats">
+                            <div class="stat-item">🏹 Range Attack: +140</div>
+                            <div class="stat-item">🎯 Precision: +50%</div>
+                            <div class="stat-item">🌌 Void Damage: +80</div>
+                        </div>
+                        <p class="item-description">Arrows forged from collapsed stars pierce through dimensions, dealing catastrophic void damage to all foes.</p>
+                        <div class="special-abilities">
+                            <div class="ability">🌌 Dimensional Rift: Pierces through all enemies</div>
+                            <div class="ability">⭐ Starfall: Rain of 10 void arrows</div>
+                            <div class="ability">🌀 Void Vortex: Pulls enemies into damage zone</div>
+                        </div>
+                        <div class="item-price legendary-price">$27.99</div>
+                        <button class="item-btn legendary-btn" onclick="selectPackage('worldender_bow', 27.99)">
+                            <span class="btn-text">Master the Void</span>
+                            <div class="btn-glow"></div>
+                        </button>
                     </div>
-                    <div class="item-card">
-                        <img src="assets/void-knight.png" alt="Void Knight Skin">
-                        <h3>🖤 Void Knight Skin</h3>
-                        <p>Mysterious dark armor with Time Rewind ability. Legendary rarity.</p>
-                        <div class="item-price">$14.99</div>
-                        <button class="item-btn" onclick="selectPackage('void_knight_skin', 14.99)">Purchase</button>
+
+                    <div class="item-card legendary-weapon">
+                        <div class="item-rarity legendary">LEGENDARY</div>
+                        <div class="item-image-container">
+                            <img src="assets/omniscience-staff.png" alt="Staff of Omniscience" class="legendary-weapon-img">
+                            <div class="weapon-aura cosmic-aura"></div>
+                            <div class="cosmic-particles"></div>
+                        </div>
+                        <h3>🔮 Staff of Omniscience</h3>
+                        <div class="weapon-stats">
+                            <div class="stat-item">🔮 Magic Power: +180</div>
+                            <div class="stat-item">🧠 Intelligence: +60</div>
+                            <div class="stat-item">✨ Mana Regen: +200%</div>
+                        </div>
+                        <p class="item-description">Contains the wisdom of ancient gods. Wielder gains foresight and unlimited magical potential.</p>
+                        <div class="special-abilities">
+                            <div class="ability">👁️ Future Sight: Predict enemy attacks</div>
+                            <div class="ability">⏰ Time Mastery: Rewind any battle action</div>
+                            <div class="ability">🌟 Reality Warp: Change battlefield conditions</div>
+                        </div>
+                        <div class="item-price legendary-price">$32.99</div>
+                        <button class="item-btn legendary-btn" onclick="selectPackage('omniscience_staff', 32.99)">
+                            <span class="btn-text">Ascend to Godhood</span>
+                            <div class="btn-glow"></div>
+                        </button>
+                    </div>
+
+                    <!-- Legendary Skins Section -->
+                    <div class="legendary-skins-section">
+                        <h4 class="section-title">🎭 LEGENDARY HERO TRANSFORMATIONS</h4>
+                        
+                        <div class="skin-showcase">
+                            <div class="item-card legendary-skin">
+                                <div class="item-rarity legendary">LEGENDARY SKIN</div>
+                                <div class="skin-preview">
+                                    <img src="assets/dragon-lord-arin.png" alt="Dragon Lord Arin" class="legendary-skin-img">
+                                    <div class="skin-effects">
+                                        <div class="dragon-flames"></div>
+                                        <div class="power-aura"></div>
+                                    </div>
+                                </div>
+                                <h3>🐉 Dragon Lord Arin</h3>
+                                <p class="skin-description">Arin's ultimate transformation after absorbing dragon essence. Becomes one with dragonfire.</p>
+                                <div class="skin-abilities">
+                                    <div class="ability">🔥 Dragon Breath: AoE fire attack every turn</div>
+                                    <div class="ability">🛡️ Scales of Power: +50% damage resistance</div>
+                                    <div class="ability">✨ Draconic Majesty: +100% all stats</div>
+                                    <div class="ability">🌪️ Wing Strike: Devastating wind attacks</div>
+                                </div>
+                                <div class="item-price legendary-price">$24.99</div>
+                                <button class="item-btn legendary-btn" onclick="selectPackage('dragon_lord_skin', 24.99)">
+                                    <span class="btn-text">Embrace Dragon Power</span>
+                                    <div class="btn-glow"></div>
+                                </button>
+                            </div>
+
+                            <div class="item-card legendary-skin">
+                                <div class="item-rarity legendary">LEGENDARY SKIN</div>
+                                <div class="skin-preview">
+                                    <img src="assets/cosmic-emperor-arin.png" alt="Cosmic Emperor Arin" class="legendary-skin-img">
+                                    <div class="skin-effects">
+                                        <div class="cosmic-energy"></div>
+                                        <div class="stellar-crown"></div>
+                                    </div>
+                                </div>
+                                <h3>🌌 Cosmic Emperor Arin</h3>
+                                <p class="skin-description">Ascended form wielding the power of collapsed stars and cosmic forces beyond imagination.</p>
+                                <div class="skin-abilities">
+                                    <div class="ability">⭐ Stellar Nova: Screen-clearing explosion</div>
+                                    <div class="ability">🌀 Gravity Control: Manipulate enemy movement</div>
+                                    <div class="ability">🚀 Cosmic Speed: Instant battlefield teleportation</div>
+                                    <div class="ability">👑 Emperor's Decree: Control enemy actions</div>
+                                </div>
+                                <div class="item-price legendary-price">$26.99</div>
+                                <button class="item-btn legendary-btn" onclick="selectPackage('cosmic_emperor_skin', 26.99)">
+                                    <span class="btn-text">Rule the Universe</span>
+                                    <div class="btn-glow"></div>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Special Bundle Offers -->
+                    <div class="legendary-bundles">
+                        <h4 class="section-title">💎 ULTIMATE POWER BUNDLES</h4>
+                        
+                        <div class="bundle-card ultimate-bundle">
+                            <div class="bundle-badge">🌟 ULTIMATE PACKAGE 🌟</div>
+                            <h3>🏆 Godslayer Complete Arsenal</h3>
+                            <div class="bundle-contents">
+                                <div class="bundle-item">⚔️ All 3 Legendary Weapons</div>
+                                <div class="bundle-item">🎭 Both Legendary Skins</div>
+                                <div class="bundle-item">💎 5,000 Premium Gems</div>
+                                <div class="bundle-item">👑 6 Months VIP Membership</div>
+                                <div class="bundle-item">🎁 Exclusive Cosmic Throne Mount</div>
+                            </div>
+                            <div class="bundle-savings">💰 Save $47.95! (Regular: $187.93)</div>
+                            <div class="item-price ultimate-price">$139.99</div>
+                            <button class="item-btn ultimate-btn" onclick="selectPackage('godslayer_bundle', 139.99)">
+                                <span class="btn-text">BECOME THE ULTIMATE LEGEND</span>
+                                <div class="btn-glow ultimate-glow"></div>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -257,6 +397,36 @@
                         <button class="gem-btn" onclick="selectPackage('gems_3000', 49.99)">Buy Gems</button>
                     </div>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- QR Code Download Section -->
+    <section class="qr-download-section">
+        <h2>📱 Download Kingdom of Aldoria</h2>
+        <p>Scan the QR code to download the game instantly on your mobile device</p>
+        
+        <div class="qr-code-container">
+            <div class="qr-code">
+                <img src="assets/qr-code-download.png" alt="Download QR Code" id="game-qr-code">
+            </div>
+            
+            <div class="download-info">
+                <h3>🎮 Start Your Adventure Now!</h3>
+                <p>Experience the ultimate mobile RPG adventure. Battle through 10 mystical worlds, collect legendary weapons, and become the ultimate knight!</p>
+                
+                <div class="download-platforms">
+                    <a href="#" class="platform-btn android" onclick="downloadGame('android')">
+                        📱 Android APK
+                    </a>
+                    <a href="#" class="platform-btn ios" onclick="downloadGame('ios')">
+                        🍎 iOS App Store
+                    </a>
+                </div>
+                
+                <p style="margin-top: 1rem; font-size: 0.9rem; color: #ccc;">
+                    💡 Tip: Save the QR code and share it with friends to play together!
+                </p>
             </div>
         </div>
     </section>

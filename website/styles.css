@@ -870,6 +870,506 @@ h2 {
     100% { transform: rotate(360deg); }
 }
 
+/* Legendary Items Styling */
+.legendary-showcase {
+    text-align: center;
+    margin-bottom: 3rem;
+    background: linear-gradient(135deg, #1a0033, #4a0080, #8b00ff);
+    padding: 2rem;
+    border-radius: 20px;
+    border: 3px solid #ffd700;
+    box-shadow: 0 0 50px rgba(255, 215, 0, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.legendary-showcase::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: conic-gradient(transparent, rgba(255, 215, 0, 0.3), transparent);
+    animation: rotate 4s linear infinite;
+}
+
+.legendary-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    background: linear-gradient(45deg, #ffd700, #ff6b6b, #4ecdc4, #45b7d1);
+    background-size: 400% 400%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: gradientShift 3s ease-in-out infinite;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    position: relative;
+    z-index: 1;
+}
+
+.legendary-subtitle {
+    font-size: 1.2rem;
+    color: #ffd700;
+    margin-top: 0.5rem;
+    position: relative;
+    z-index: 1;
+}
+
+.legendary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.legendary-weapon, .legendary-skin {
+    background: linear-gradient(145deg, #1a1a2e, #16213e, #0f3460);
+    border: 3px solid transparent;
+    background-clip: padding-box;
+    border-radius: 20px;
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.legendary-weapon::before, .legendary-skin::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, #ffd700, #ff6b6b, #4ecdc4, #45b7d1);
+    z-index: -1;
+    border-radius: 20px;
+    background-size: 400% 400%;
+    animation: gradientShift 4s ease-in-out infinite;
+}
+
+.legendary-weapon:hover, .legendary-skin:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 20px 60px rgba(255, 215, 0, 0.4);
+}
+
+.item-rarity.legendary {
+    background: linear-gradient(45deg, #ffd700, #ff8c00);
+    color: #1a1a2e;
+    font-weight: 700;
+    font-size: 0.9rem;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+    animation: pulse 2s ease-in-out infinite;
+}
+
+.item-image-container, .skin-preview {
+    position: relative;
+    margin: 2rem 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.legendary-weapon-img, .legendary-skin-img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 4px solid #ffd700;
+    background: radial-gradient(circle, rgba(255, 215, 0, 0.2), transparent);
+    animation: float 3s ease-in-out infinite;
+}
+
+/* Weapon Aura Effects */
+.weapon-aura {
+    position: absolute;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+}
+
+.legendary-aura {
+    background: radial-gradient(circle, rgba(255, 215, 0, 0.3), rgba(255, 107, 107, 0.2), transparent);
+    animation: auraGlow 2s ease-in-out infinite alternate;
+}
+
+.void-aura {
+    background: radial-gradient(circle, rgba(138, 43, 226, 0.4), rgba(75, 0, 130, 0.3), transparent);
+    animation: voidPulse 2.5s ease-in-out infinite;
+}
+
+.cosmic-aura {
+    background: radial-gradient(circle, rgba(0, 255, 255, 0.3), rgba(255, 20, 147, 0.2), transparent);
+    animation: cosmicShimmer 3s linear infinite;
+}
+
+/* Particle Effects */
+.legendary-particles, .void-particles, .cosmic-particles {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+}
+
+.legendary-particles::before, .legendary-particles::after {
+    content: '✨';
+    position: absolute;
+    font-size: 1.2rem;
+    color: #ffd700;
+    animation: sparkle 2s ease-in-out infinite;
+}
+
+.legendary-particles::before {
+    top: 20%;
+    left: 10%;
+    animation-delay: 0s;
+}
+
+.legendary-particles::after {
+    bottom: 20%;
+    right: 10%;
+    animation-delay: 1s;
+}
+
+.void-particles::before, .void-particles::after {
+    content: '🌌';
+    position: absolute;
+    font-size: 1rem;
+    animation: voidFloat 3s ease-in-out infinite;
+}
+
+.void-particles::before {
+    top: 15%;
+    right: 15%;
+    animation-delay: 0.5s;
+}
+
+.void-particles::after {
+    bottom: 15%;
+    left: 15%;
+    animation-delay: 2s;
+}
+
+.cosmic-particles::before, .cosmic-particles::after {
+    content: '⭐';
+    position: absolute;
+    font-size: 0.8rem;
+    animation: cosmicTwinkle 2.5s ease-in-out infinite;
+}
+
+.cosmic-particles::before {
+    top: 25%;
+    left: 20%;
+    animation-delay: 1s;
+}
+
+.cosmic-particles::after {
+    bottom: 25%;
+    right: 20%;
+    animation-delay: 0.3s;
+}
+
+/* Weapon Stats */
+.weapon-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin: 1rem 0;
+}
+
+.stat-item {
+    background: rgba(255, 215, 0, 0.1);
+    padding: 0.5rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    border: 1px solid rgba(255, 215, 0, 0.3);
+}
+
+.special-abilities, .skin-abilities {
+    margin: 1.5rem 0;
+}
+
+.ability {
+    background: linear-gradient(90deg, rgba(255, 215, 0, 0.1), rgba(255, 107, 107, 0.1));
+    padding: 0.7rem;
+    margin: 0.5rem 0;
+    border-radius: 10px;
+    border-left: 4px solid #ffd700;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+/* Legendary Pricing */
+.legendary-price {
+    font-size: 2rem;
+    font-weight: 700;
+    background: linear-gradient(45deg, #ffd700, #ff6b6b);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-align: center;
+    margin: 1rem 0;
+}
+
+.ultimate-price {
+    font-size: 2.5rem;
+    background: linear-gradient(45deg, #ffd700, #ff6b6b, #4ecdc4);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+/* Legendary Buttons */
+.legendary-btn, .ultimate-btn {
+    position: relative;
+    background: linear-gradient(45deg, #ffd700, #ff6b6b);
+    border: none;
+    padding: 1rem 2rem;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: #1a1a2e;
+    cursor: pointer;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 25px rgba(255, 215, 0, 0.3);
+}
+
+.legendary-btn:hover, .ultimate-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 35px rgba(255, 215, 0, 0.5);
+}
+
+.btn-glow {
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    transition: left 0.5s ease;
+}
+
+.legendary-btn:hover .btn-glow, .ultimate-btn:hover .btn-glow {
+    left: 100%;
+}
+
+/* Skin Effects */
+.skin-effects {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+}
+
+.dragon-flames {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 60px;
+    background: radial-gradient(circle, rgba(255, 69, 0, 0.6), transparent);
+    border-radius: 50%;
+    animation: flameFlicker 1.5s ease-in-out infinite;
+}
+
+.power-aura {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 140px;
+    height: 140px;
+    background: radial-gradient(circle, rgba(255, 215, 0, 0.2), transparent);
+    border-radius: 50%;
+    animation: powerPulse 2s ease-in-out infinite;
+}
+
+.cosmic-energy {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: conic-gradient(from 0deg, transparent, rgba(0, 255, 255, 0.3), transparent, rgba(255, 20, 147, 0.3), transparent);
+    border-radius: 50%;
+    animation: cosmicRotate 4s linear infinite;
+}
+
+.stellar-crown {
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 30px;
+    height: 20px;
+    background: radial-gradient(circle, rgba(255, 215, 0, 0.8), transparent);
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    animation: crownGlow 2.5s ease-in-out infinite;
+}
+
+/* Bundle Styling */
+.ultimate-bundle {
+    background: linear-gradient(145deg, #2c1810, #8b4513, #daa520);
+    border: 4px solid #ffd700;
+    border-radius: 25px;
+    padding: 2.5rem;
+    margin: 2rem 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.bundle-badge {
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(45deg, #ffd700, #ff6b6b);
+    color: #1a1a2e;
+    padding: 0.5rem 2rem;
+    border-radius: 20px;
+    font-weight: 700;
+    font-size: 1.1rem;
+    box-shadow: 0 5px 20px rgba(255, 215, 0, 0.4);
+}
+
+.bundle-contents {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.8rem;
+    margin: 1.5rem 0;
+}
+
+.bundle-item {
+    background: rgba(255, 215, 0, 0.1);
+    padding: 0.8rem;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 215, 0, 0.3);
+    font-weight: 600;
+}
+
+.bundle-savings {
+    text-align: center;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #00ff7f;
+    background: rgba(0, 255, 127, 0.1);
+    padding: 1rem;
+    border-radius: 15px;
+    margin: 1rem 0;
+    border: 2px solid #00ff7f;
+}
+
+/* Animations */
+@keyframes gradientShift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+}
+
+@keyframes rotate {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+}
+
+@keyframes auraGlow {
+    0% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); }
+    100% { opacity: 0.8; transform: translate(-50%, -50%) scale(1.1); }
+}
+
+@keyframes voidPulse {
+    0%, 100% { opacity: 0.4; transform: translate(-50%, -50%) scale(0.9); }
+    50% { opacity: 0.7; transform: translate(-50%, -50%) scale(1.2); }
+}
+
+@keyframes cosmicShimmer {
+    0% { transform: translate(-50%, -50%) rotate(0deg); }
+    100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+@keyframes sparkle {
+    0%, 100% { opacity: 0.3; transform: scale(0.8); }
+    50% { opacity: 1; transform: scale(1.2); }
+}
+
+@keyframes voidFloat {
+    0%, 100% { opacity: 0.4; transform: translateY(0px); }
+    50% { opacity: 0.8; transform: translateY(-15px); }
+}
+
+@keyframes cosmicTwinkle {
+    0%, 100% { opacity: 0.5; transform: scale(0.5); }
+    50% { opacity: 1; transform: scale(1.5); }
+}
+
+@keyframes flameFlicker {
+    0%, 100% { opacity: 0.6; transform: translateX(-50%) scale(1); }
+    50% { opacity: 1; transform: translateX(-50%) scale(1.3); }
+}
+
+@keyframes powerPulse {
+    0%, 100% { opacity: 0.3; transform: translate(-50%, -50%) scale(1); }
+    50% { opacity: 0.6; transform: translate(-50%, -50%) scale(1.2); }
+}
+
+@keyframes cosmicRotate {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes crownGlow {
+    0%, 100% { opacity: 0.7; transform: translateX(-50%) scale(1); }
+    50% { opacity: 1; transform: translateX(-50%) scale(1.1); }
+}
+
+/* Section Titles */
+.section-title {
+    text-align: center;
+    font-size: 1.8rem;
+    font-weight: 700;
+    background: linear-gradient(45deg, #ffd700, #ff6b6b);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    margin: 2rem 0 1rem 0;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.legendary-skins-section, .legendary-bundles {
+    margin-top: 3rem;
+    grid-column: 1 / -1;
+}
+
+.skin-showcase {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 1.5rem;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .hero-content {
@@ -924,6 +1424,27 @@ h2 {
     .footer-links {
         flex-wrap: wrap;
         justify-content: center;
+    }
+
+    .legendary-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    
+    .weapon-stats {
+        grid-template-columns: 1fr;
+    }
+    
+    .bundle-contents {
+        grid-template-columns: 1fr;
+    }
+    
+    .legendary-title {
+        font-size: 2rem;
+    }
+    
+    .section-title {
+        font-size: 1.5rem;
     }
 }
 
@@ -993,4 +1514,104 @@ h2 {
         background: white;
         color: black;
     }
+}
+
+/* Additional QR Code Section */
+.qr-download-section {
+    background: linear-gradient(135deg, #1a1a2e, #16213e);
+    padding: 3rem 2rem;
+    text-align: center;
+    margin: 3rem 0;
+    border-radius: 20px;
+    border: 2px solid #ffd700;
+    position: relative;
+    overflow: hidden;
+}
+
+.qr-download-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.1), transparent);
+    animation: shimmer 3s ease-in-out infinite;
+}
+
+.qr-code-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 3rem;
+    flex-wrap: wrap;
+    margin-top: 2rem;
+}
+
+.qr-code {
+    background: white;
+    padding: 1rem;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(255, 215, 0, 0.3);
+    transition: transform 0.3s ease;
+}
+
+.qr-code:hover {
+    transform: scale(1.05);
+}
+
+.qr-code img {
+    width: 150px;
+    height: 150px;
+    border-radius: 10px;
+}
+
+.download-info {
+    max-width: 400px;
+}
+
+.download-info h3 {
+    font-size: 1.8rem;
+    color: #ffd700;
+    margin-bottom: 1rem;
+}
+
+.download-info p {
+    font-size: 1.1rem;
+    color: #e0e0e0;
+    line-height: 1.6;
+}
+
+.download-platforms {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.platform-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: linear-gradient(45deg, #4285f4, #34a853);
+    color: white;
+    padding: 0.8rem 1.5rem;
+    border-radius: 25px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: transform 0.3s ease;
+}
+
+.platform-btn:hover {
+    transform: translateY(-3px);
+}
+
+.platform-btn.ios {
+    background: linear-gradient(45deg, #000, #333);
+}
+
+@keyframes shimmer {
+    0% { left: -100%; }
+    100% { left: 100%; }
 }

@@ -66,6 +66,9 @@
                 <button class="nav-btn" onclick="switchTab('ads')">📺 Ads & Sources</button>
                 <button class="nav-btn" onclick="switchTab('players')">👥 Players</button>
                 <button class="nav-btn" onclick="switchTab('subscriptions')">👑 Subscriptions</button>
+                <button class="nav-btn" onclick="switchTab('events')">🎉 Events</button>
+                <button class="nav-btn" onclick="switchTab('weapons')">⚔️ Weapons</button>
+                <button class="nav-btn" onclick="switchTab('heroes')">🦸 Heroes</button>
                 <button class="nav-btn" onclick="switchTab('codes')">🎫 Promo Codes</button>
                 <button class="nav-btn" onclick="switchTab('sync')">🔄 Data Sync</button>
                 <button class="nav-btn" onclick="switchTab('settings')">⚙️ Settings</button>
@@ -308,54 +311,286 @@
         <!-- Subscriptions Tab -->
         <div id="subscriptions-tab" class="tab-content">
             <div class="subscriptions-dashboard">
-                <div class="subscription-overview">
-                    <div class="sub-card weekly">
-                        <h4>Weekly Pass</h4>
-                        <div class="sub-stats">
-                            <div class="sub-stat">
-                                <span>Active Subscribers</span>
-                                <span id="weekly-subs">0</span>
+                <div class="dashboard-header">
+                    <h2>👑 VIP Subscriptions Management</h2>
+                    <div class="action-buttons">
+                        <button class="action-btn primary" onclick="exportSubscriptions()">📊 Export Data</button>
+                        <button class="action-btn secondary" onclick="refreshSubscriptions()">🔄 Refresh</button>
+                    </div>
+                </div>
+
+                <div class="subscription-stats">
+                    <div class="stat-card">
+                        <h3>Active VIPs</h3>
+                        <div class="stat-value" id="active-vips">0</div>
+                        <div class="stat-change positive">+5 this week</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Monthly Revenue</h3>
+                        <div class="stat-value" id="vip-revenue">$0</div>
+                        <div class="stat-change positive">+12% growth</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Retention Rate</h3>
+                        <div class="stat-value" id="retention-rate">0%</div>
+                        <div class="stat-change neutral">Industry avg: 85%</div>
+                    </div>
+                </div>
+
+                <div class="subscription-controls">
+                    <div class="search-section">
+                        <input type="text" id="vip-search" placeholder="Search VIP members..." class="search-input">
+                        <button class="search-btn" onclick="searchVIPs()">🔍</button>
+                    </div>
+                    
+                    <div class="filter-section">
+                        <select id="vip-filter" onchange="filterVIPs()">
+                            <option value="all">All VIPs</option>
+                            <option value="active">Active</option>
+                            <option value="expiring">Expiring Soon</option>
+                            <option value="expired">Expired</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="vip-list" id="vip-list">
+                    <!-- VIP members will be populated here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Events Management Tab -->
+        <div id="events-tab" class="tab-content">
+            <div class="events-dashboard">
+                <div class="dashboard-header">
+                    <h2>🎉 Events Management</h2>
+                    <div class="action-buttons">
+                        <button class="action-btn primary" onclick="showCreateEventModal()">➕ Create New Event</button>
+                        <button class="action-btn secondary" onclick="refreshEvents()">🔄 Refresh</button>
+                    </div>
+                </div>
+
+                <div class="events-stats">
+                    <div class="stat-card">
+                        <h3>Active Events</h3>
+                        <div class="stat-value" id="active-events">0</div>
+                        <div class="stat-change neutral">Running now</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Scheduled Events</h3>
+                        <div class="stat-value" id="scheduled-events">0</div>
+                        <div class="stat-change positive">Upcoming</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Participation Rate</h3>
+                        <div class="stat-value" id="event-participation">0%</div>
+                        <div class="stat-change positive">Last event</div>
+                    </div>
+                </div>
+
+                <div class="events-controls">
+                    <div class="filter-section">
+                        <select id="event-filter" onchange="filterEvents()">
+                            <option value="all">All Events</option>
+                            <option value="active">Active</option>
+                            <option value="scheduled">Scheduled</option>
+                            <option value="completed">Completed</option>
+                            <option value="draft">Draft</option>
+                        </select>
+                        
+                        <select id="event-type-filter" onchange="filterEventsByType()">
+                            <option value="all">All Types</option>
+                            <option value="daily_login">Daily Login</option>
+                            <option value="weekly_quest">Weekly Quest</option>
+                            <option value="special_event">Special Event</option>
+                            <option value="seasonal">Seasonal</option>
+                            <option value="competition">Competition</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="events-grid">
+                    <div class="event-templates">
+                        <h3>🎯 Quick Event Templates</h3>
+                        <div class="template-cards">
+                            <div class="template-card" onclick="createEventFromTemplate('double_xp')">
+                                <div class="template-icon">⚡</div>
+                                <h4>Double XP Weekend</h4>
+                                <p>2x experience for all battles</p>
                             </div>
-                            <div class="sub-stat">
-                                <span>Monthly Revenue</span>
-                                <span id="weekly-monthly-revenue">$0</span>
+                            
+                            <div class="template-card" onclick="createEventFromTemplate('gem_rain')">
+                                <div class="template-icon">💎</div>
+                                <h4>Gem Rain Event</h4>
+                                <p>Extra gems from all sources</p>
                             </div>
-                            <div class="sub-stat">
-                                <span>Conversion Rate</span>
-                                <span id="weekly-conversion">0%</span>
+                            
+                            <div class="template-card" onclick="createEventFromTemplate('boss_rush')">
+                                <div class="template-icon">🐉</div>
+                                <h4>Boss Rush Challenge</h4>
+                                <p>Special boss battles with rare rewards</p>
+                            </div>
+                            
+                            <div class="template-card" onclick="createEventFromTemplate('login_bonus')">
+                                <div class="template-icon">🎁</div>
+                                <h4>7-Day Login Bonus</h4>
+                                <p>Progressive rewards for daily login</p>
                             </div>
                         </div>
                     </div>
 
-                    <div class="sub-card monthly">
-                        <h4>Monthly VIP</h4>
-                        <div class="sub-stats">
-                            <div class="sub-stat">
-                                <span>Active Subscribers</span>
-                                <span id="monthly-subs">0</span>
-                            </div>
-                            <div class="sub-stat">
-                                <span>Monthly Revenue</span>
-                                <span id="monthly-monthly-revenue">$0</span>
-                            </div>
-                            <div class="sub-stat">
-                                <span>Conversion Rate</span>
-                                <span id="monthly-conversion">0%</span>
-                            </div>
+                    <div class="active-events-list">
+                        <h3>📋 Current Events</h3>
+                        <div class="events-container" id="events-container">
+                            <!-- Events will be populated here -->
                         </div>
                     </div>
                 </div>
 
-                <div class="expiring-subscriptions">
-                    <h3>Expiring Soon</h3>
-                    <div class="expiring-list" id="expiring-subscriptions-list">
-                        <!-- Expiring subscriptions will be populated by JavaScript -->
+                <div class="event-analytics">
+                    <h3>📊 Event Performance Analytics</h3>
+                    <div class="analytics-charts">
+                        <div class="chart-container small">
+                            <h4>Event Participation Trends</h4>
+                            <canvas id="event-participation-chart"></canvas>
+                        </div>
+                        <div class="chart-container small">
+                            <h4>Reward Distribution</h4>
+                            <canvas id="event-rewards-chart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Weapons Management Tab -->
+        <div id="weapons-tab" class="tab-content">
+            <div class="weapons-dashboard">
+                <div class="dashboard-header">
+                    <h2>⚔️ Weapons Management</h2>
+                    <div class="action-buttons">
+                        <button class="action-btn primary" onclick="showCreateWeaponModal()">➕ Add New Weapon</button>
+                        <button class="action-btn secondary" onclick="exportWeapons()">📊 Export Data</button>
                     </div>
                 </div>
 
-                <div class="subscription-analytics">
-                    <h3>Subscription Trends</h3>
-                    <canvas id="subscription-chart"></canvas>
+                <div class="weapons-stats">
+                    <div class="stat-card">
+                        <h3>Total Weapons</h3>
+                        <div class="stat-value" id="total-weapons">0</div>
+                        <div class="stat-change neutral">In database</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Legendary Weapons</h3>
+                        <div class="stat-value" id="legendary-weapons">0</div>
+                        <div class="stat-change positive">Premium tier</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Most Popular</h3>
+                        <div class="stat-value" id="popular-weapon">-</div>
+                        <div class="stat-change neutral">This week</div>
+                    </div>
+                </div>
+
+                <div class="weapons-controls">
+                    <div class="search-section">
+                        <input type="text" id="weapon-search" placeholder="Search weapons..." class="search-input">
+                        <button class="search-btn" onclick="searchWeapons()">🔍</button>
+                    </div>
+                    
+                    <div class="filter-section">
+                        <select id="weapon-rarity-filter" onchange="filterWeaponsByRarity()">
+                            <option value="all">All Rarities</option>
+                            <option value="wood">Wood</option>
+                            <option value="iron">Iron</option>
+                            <option value="silver">Silver</option>
+                            <option value="gold">Gold</option>
+                            <option value="platinum">Platinum</option>
+                            <option value="emerald">Emerald</option>
+                            <option value="diamond">Diamond</option>
+                            <option value="elite">Elite</option>
+                            <option value="hyper">Hyper</option>
+                            <option value="legendary">Legendary</option>
+                        </select>
+                        
+                        <select id="weapon-type-filter" onchange="filterWeaponsByType()">
+                            <option value="all">All Types</option>
+                            <option value="sword">Sword</option>
+                            <option value="bow">Bow</option>
+                            <option value="staff">Staff</option>
+                            <option value="dagger">Dagger</option>
+                            <option value="hammer">Hammer</option>
+                            <option value="scythe">Scythe</option>
+                            <option value="orb">Orb</option>
+                            <option value="gauntlets">Gauntlets</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="weapons-grid" id="weapons-grid">
+                    <!-- Weapons will be populated here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Heroes Management Tab -->
+        <div id="heroes-tab" class="tab-content">
+            <div class="heroes-dashboard">
+                <div class="dashboard-header">
+                    <h2>🦸 Heroes Management</h2>
+                    <div class="action-buttons">
+                        <button class="action-btn primary" onclick="showCreateHeroModal()">➕ Add New Hero</button>
+                        <button class="action-btn secondary" onclick="exportHeroes()">📊 Export Data</button>
+                    </div>
+                </div>
+
+                <div class="heroes-stats">
+                    <div class="stat-card">
+                        <h3>Total Heroes</h3>
+                        <div class="stat-value" id="total-heroes">0</div>
+                        <div class="stat-change neutral">Available</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Premium Heroes</h3>
+                        <div class="stat-value" id="premium-heroes">0</div>
+                        <div class="stat-change positive">Paid content</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Most Played</h3>
+                        <div class="stat-value" id="popular-hero">-</div>
+                        <div class="stat-change neutral">This week</div>
+                    </div>
+                </div>
+
+                <div class="heroes-controls">
+                    <div class="search-section">
+                        <input type="text" id="hero-search" placeholder="Search heroes..." class="search-input">
+                        <button class="search-btn" onclick="searchHeroes()">🔍</button>
+                    </div>
+                    
+                    <div class="filter-section">
+                        <select id="hero-class-filter" onchange="filterHeroesByClass()">
+                            <option value="all">All Classes</option>
+                            <option value="knight">Knight</option>
+                            <option value="mage">Mage</option>
+                            <option value="archer">Archer</option>
+                            <option value="assassin">Assassin</option>
+                            <option value="berserker">Berserker</option>
+                            <option value="paladin">Paladin</option>
+                        </select>
+                        
+                        <select id="hero-rarity-filter" onchange="filterHeroesByRarity()">
+                            <option value="all">All Rarities</option>
+                            <option value="common">Common</option>
+                            <option value="rare">Rare</option>
+                            <option value="epic">Epic</option>
+                            <option value="legendary">Legendary</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="heroes-grid" id="heroes-grid">
+                    <!-- Heroes will be populated here -->
                 </div>
             </div>
         </div>

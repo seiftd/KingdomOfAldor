@@ -22,6 +22,135 @@ const PAYMENT_CONFIG = {
 let selectedPackage = null;
 let selectedPaymentMethod = null;
 
+// Payment processing status
+let paymentInProgress = false;
+
+// QR Code Generation and Download Functions
+function generateQRCode() {
+    const gameUrl = 'https://yourgame.com/download'; // Replace with actual download URL
+    const qrCodeElement = document.getElementById('game-qr-code');
+    
+    // Generate QR code using QR.js library or similar
+    // For now, we'll use a placeholder
+    if (qrCodeElement) {
+        // You can integrate with QR code generation library here
+        console.log('QR Code generated for URL:', gameUrl);
+    }
+}
+
+function downloadGame(platform) {
+    const downloadUrls = {
+        android: 'https://play.google.com/store/apps/details?id=com.aldoria.kingdom',
+        ios: 'https://apps.apple.com/app/kingdom-of-aldoria/id123456789'
+    };
+    
+    const url = downloadUrls[platform];
+    if (url) {
+        // Track download analytics
+        trackEvent('game_download', {
+            platform: platform,
+            source: 'website_qr_section'
+        });
+        
+        // Open download link
+        window.open(url, '_blank');
+        
+        // Show success message
+        showNotification(`🎮 Redirecting to ${platform === 'android' ? 'Google Play Store' : 'App Store'}...`, 'success');
+    }
+}
+
+// Enhanced tracking for legendary item purchases
+function trackLegendaryPurchase(itemId, price) {
+    trackEvent('legendary_item_purchase', {
+        item_id: itemId,
+        price: price,
+        currency: 'USD',
+        item_category: 'legendary'
+    });
+}
+
+// Modified selectPackage function to handle legendary items
+function selectPackage(packageId, price) {
+    if (paymentInProgress) {
+        showNotification('⏳ Payment already in progress...', 'warning');
+        return;
+    }
+
+    const packageData = {
+        // Existing packages
+        monthly_premium: { name: 'Royal Crown Membership', type: 'subscription' },
+        weekly_premium: { name: 'Knight\'s Weekly Pass', type: 'subscription' },
+        
+        // Legendary Weapons
+        godslayer_excalibur: { name: 'Godslayer Excalibur', type: 'legendary_weapon' },
+        worldender_bow: { name: 'Worldender Bow', type: 'legendary_weapon' },
+        omniscience_staff: { name: 'Staff of Omniscience', type: 'legendary_weapon' },
+        
+        // Legendary Skins
+        dragon_lord_skin: { name: 'Dragon Lord Arin Skin', type: 'legendary_skin' },
+        cosmic_emperor_skin: { name: 'Cosmic Emperor Arin Skin', type: 'legendary_skin' },
+        
+        // Ultimate Bundle
+        godslayer_bundle: { name: 'Godslayer Complete Arsenal', type: 'ultimate_bundle' },
+        
+        // Gem packages (existing)
+        gems_100: { name: '100 Gems', type: 'gems' },
+        gems_500: { name: '500 Gems + 50 Bonus', type: 'gems' },
+        gems_1200: { name: '1,200 Gems + 200 Bonus', type: 'gems' }
+    };
+
+    const selectedPackage = packageData[packageId];
+    if (!selectedPackage) {
+        showNotification('❌ Invalid package selected', 'error');
+        return;
+    }
+
+    // Track legendary purchases
+    if (selectedPackage.type.includes('legendary') || selectedPackage.type === 'ultimate_bundle') {
+        trackLegendaryPurchase(packageId, price);
+    }
+
+    // Show package selection confirmation with enhanced UI for legendary items
+    showPackageConfirmation(selectedPackage, price, packageId);
+}
+
+function showPackageConfirmation(packageData, price, packageId) {
+    const isLegendary = packageData.type.includes('legendary') || packageData.type === 'ultimate_bundle';
+    
+    const confirmationHtml = `
+        <div class="package-confirmation ${isLegendary ? 'legendary-confirmation' : ''}">
+            <div class="confirmation-header">
+                <h3>${isLegendary ? '🌟 LEGENDARY PURCHASE 🌟' : '📦 Package Confirmation'}</h3>
+            </div>
+            <div class="confirmation-content">
+                <div class="package-info">
+                    <h4>${packageData.name}</h4>
+                    <div class="package-price ${isLegendary ? 'legendary-price' : ''}">$${price}</div>
+                </div>
+                
+                ${isLegendary ? `
+                    <div class="legendary-benefits">
+                        <p>✨ You're about to unlock ultimate power!</p>
+                        <div class="power-indicator">
+                            <div class="power-bar"></div>
+                        </div>
+                    </div>
+                ` : ''}
+                
+                <div class="confirmation-buttons">
+                    <button class="confirm-btn ${isLegendary ? 'legendary-btn' : ''}" onclick="processPayment('${packageId}', ${price})">
+                        ${isLegendary ? '⚔️ Claim Legendary Power' : '💳 Proceed to Payment'}
+                    </button>
+                    <button class="cancel-btn" onclick="closeConfirmation()">Cancel</button>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    showModal(confirmationHtml);
+}
+
 // DOM Elements
 const packageInfo = document.getElementById('selected-package-info');
 const paymentForm = document.getElementById('payment-form');
@@ -48,6 +177,12 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Add visual effects
     addVisualEffects();
+    
+    // Initialize QR code on page load
+    generateQRCode();
+    
+    // Add legendary item hover effects
+    addLegendaryEffects();
     
     console.log('✨ All systems ready for epic adventures!');
 });
