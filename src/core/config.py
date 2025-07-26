@@ -242,16 +242,19 @@ HEROES = {
 
 # Enhanced Weapons System with Premium Integration
 WEAPONS = {
-    # ========== WOOD RANK ==========
+    # ========== WOOD RANK (Free/Default) ==========
     "wooden_sword": {
         "name": "Wooden Sword",
         "attack_bonus": 3,
         "defense_bonus": 0,
         "unlock_level": 1,
         "unlock_type": "default",
+        "acquisition_method": "default",
         "cost": 0,
         "rarity": "Common",
         "rank": "Wood",
+        "max_level": 120,
+        "level": 1,
         "sprite_path": "weapons/wooden_sword.png"
     },
     "wooden_bow": {
@@ -260,9 +263,12 @@ WEAPONS = {
         "defense_bonus": 0,
         "unlock_level": 1,
         "unlock_type": "gold",
+        "acquisition_method": "store",
         "cost": 50,
         "rarity": "Common",
         "rank": "Wood",
+        "max_level": 120,
+        "level": 1,
         "sprite_path": "weapons/wooden_bow.png"
     },
     "wooden_staff": {
@@ -272,34 +278,28 @@ WEAPONS = {
         "spell_power": 5,
         "unlock_level": 1,
         "unlock_type": "gold",
+        "acquisition_method": "store",
         "cost": 75,
         "rarity": "Common",
         "rank": "Wood",
+        "max_level": 120,
+        "level": 1,
         "sprite_path": "weapons/wooden_staff.png"
     },
-    "wooden_dagger": {
-        "name": "Wooden Dagger",
-        "attack_bonus": 5,
-        "defense_bonus": 0,
-        "crit_chance": 10,
-        "unlock_level": 2,
-        "unlock_type": "gold",
-        "cost": 100,
-        "rarity": "Common",
-        "rank": "Wood",
-        "sprite_path": "weapons/wooden_dagger.png"
-    },
 
-    # ========== IRON RANK ==========
+    # ========== IRON RANK (Store Purchase) ==========
     "iron_sword": {
         "name": "Iron Sword",
         "attack_bonus": 8,
         "defense_bonus": 1,
         "unlock_level": 3,
         "unlock_type": "gold",
+        "acquisition_method": "store",
         "cost": 200,
         "rarity": "Common",
         "rank": "Iron",
+        "max_level": 120,
+        "level": 1,
         "sprite_path": "weapons/iron_sword.png"
     },
     "iron_bow": {
@@ -309,9 +309,12 @@ WEAPONS = {
         "range_bonus": 2,
         "unlock_level": 3,
         "unlock_type": "gold",
+        "acquisition_method": "store",
         "cost": 250,
         "rarity": "Common",
         "rank": "Iron",
+        "max_level": 120,
+        "level": 1,
         "sprite_path": "weapons/iron_bow.png"
     },
     "iron_staff": {
@@ -321,46 +324,30 @@ WEAPONS = {
         "spell_power": 12,
         "unlock_level": 4,
         "unlock_type": "gold",
+        "acquisition_method": "store",
         "cost": 300,
         "rarity": "Common",
         "rank": "Iron",
+        "max_level": 120,
+        "level": 1,
         "sprite_path": "weapons/iron_staff.png"
     },
-    "iron_hammer": {
-        "name": "Iron Hammer",
-        "attack_bonus": 12,
-        "defense_bonus": 3,
-        "unlock_level": 4,
-        "unlock_type": "gold",
-        "cost": 350,
-        "rarity": "Common",
-        "rank": "Iron",
-        "sprite_path": "weapons/iron_hammer.png"
-    },
-    "iron_spear": {
-        "name": "Iron Spear",
-        "attack_bonus": 9,
-        "defense_bonus": 1,
-        "reach": 1,
-        "unlock_level": 5,
-        "unlock_type": "gold",
-        "cost": 400,
-        "rarity": "Common",
-        "rank": "Iron",
-        "sprite_path": "weapons/iron_spear.png"
-    },
 
-    # ========== SILVER RANK ==========
+    # ========== SILVER RANK (Daily Ad Events + Gem Store) ==========
     "silver_sword": {
         "name": "Silver Sword",
         "attack_bonus": 15,
         "defense_bonus": 3,
         "crit_chance": 5,
         "unlock_level": 6,
-        "unlock_type": "gold",
-        "cost": 800,
+        "unlock_type": "gems",
+        "acquisition_method": "daily_ad_event_or_gems",
+        "cost": 150,  # gems
+        "ad_requirement": 10,  # daily ads
         "rarity": "Uncommon",
         "rank": "Silver",
+        "max_level": 120,
+        "level": 1,
         "sprite_path": "weapons/silver_sword.png"
     },
     "silver_bow": {
@@ -370,10 +357,14 @@ WEAPONS = {
         "range_bonus": 3,
         "crit_chance": 8,
         "unlock_level": 7,
-        "unlock_type": "gold",
-        "cost": 900,
+        "unlock_type": "gems",
+        "acquisition_method": "daily_ad_event_or_gems",
+        "cost": 175,
+        "ad_requirement": 10,
         "rarity": "Uncommon",
         "rank": "Silver",
+        "max_level": 120,
+        "level": 1,
         "sprite_path": "weapons/silver_bow.png"
     },
     "silver_staff": {
@@ -383,39 +374,18 @@ WEAPONS = {
         "spell_power": 20,
         "mana_regen": 2,
         "unlock_level": 8,
-        "unlock_type": "gold",
-        "cost": 1000,
+        "unlock_type": "gems",
+        "acquisition_method": "daily_ad_event_or_gems",
+        "cost": 200,
+        "ad_requirement": 10,
         "rarity": "Uncommon",
         "rank": "Silver",
+        "max_level": 120,
+        "level": 1,
         "sprite_path": "weapons/silver_staff.png"
     },
-    "silver_dagger": {
-        "name": "Silver Dagger",
-        "attack_bonus": 14,
-        "defense_bonus": 0,
-        "crit_chance": 15,
-        "speed_bonus": 5,
-        "unlock_level": 8,
-        "unlock_type": "gold",
-        "cost": 950,
-        "rarity": "Uncommon",
-        "rank": "Silver",
-        "sprite_path": "weapons/silver_dagger.png"
-    },
-    "silver_scythe": {
-        "name": "Silver Scythe",
-        "attack_bonus": 16,
-        "defense_bonus": 2,
-        "life_steal": 5,
-        "unlock_level": 9,
-        "unlock_type": "gems",
-        "cost": 150,
-        "rarity": "Uncommon",
-        "rank": "Silver",
-        "sprite_path": "weapons/silver_scythe.png"
-    },
 
-    # ========== GOLD RANK ==========
+    # ========== GOLD RANK (Weekly Ad Events) ==========
     "golden_sword": {
         "name": "Golden Sword",
         "attack_bonus": 25,
@@ -423,10 +393,14 @@ WEAPONS = {
         "crit_chance": 10,
         "crit_damage": 20,
         "unlock_level": 12,
-        "unlock_type": "gems",
-        "cost": 300,
+        "unlock_type": "event",
+        "acquisition_method": "weekly_ad_event",
+        "cost": 0,
+        "ad_requirement": 30,  # weekly ads
         "rarity": "Rare",
         "rank": "Gold",
+        "max_level": 120,
+        "level": 1,
         "sprite_path": "weapons/golden_sword.png"
     },
     "golden_bow": {
@@ -437,10 +411,14 @@ WEAPONS = {
         "crit_chance": 12,
         "piercing": 1,
         "unlock_level": 13,
-        "unlock_type": "gems",
-        "cost": 350,
+        "unlock_type": "event",
+        "acquisition_method": "weekly_ad_event",
+        "cost": 0,
+        "ad_requirement": 30,
         "rarity": "Rare",
         "rank": "Gold",
+        "max_level": 120,
+        "level": 1,
         "sprite_path": "weapons/golden_bow.png"
     },
     "golden_staff": {
@@ -451,40 +429,18 @@ WEAPONS = {
         "mana_regen": 4,
         "spell_crit": 8,
         "unlock_level": 14,
-        "unlock_type": "gems",
-        "cost": 400,
+        "unlock_type": "event",
+        "acquisition_method": "weekly_ad_event",
+        "cost": 0,
+        "ad_requirement": 30,
         "rarity": "Rare",
         "rank": "Gold",
+        "max_level": 120,
+        "level": 1,
         "sprite_path": "weapons/golden_staff.png"
     },
-    "golden_hammer": {
-        "name": "Golden Hammer",
-        "attack_bonus": 32,
-        "defense_bonus": 8,
-        "stun_chance": 10,
-        "area_damage": 15,
-        "unlock_level": 15,
-        "unlock_type": "gems",
-        "cost": 450,
-        "rarity": "Rare",
-        "rank": "Gold",
-        "sprite_path": "weapons/golden_hammer.png"
-    },
-    "golden_fists": {
-        "name": "Golden Fists",
-        "attack_bonus": 22,
-        "defense_bonus": 4,
-        "speed_bonus": 10,
-        "combo_multiplier": 1.2,
-        "unlock_level": 16,
-        "unlock_type": "gems",
-        "cost": 380,
-        "rarity": "Rare",
-        "rank": "Gold",
-        "sprite_path": "weapons/golden_fists.png"
-    },
 
-    # ========== PLATINUM RANK ==========
+    # ========== PLATINUM RANK (Store with Gems) ==========
     "platinum_sword": {
         "name": "Platinum Sword",
         "attack_bonus": 40,
@@ -494,9 +450,12 @@ WEAPONS = {
         "elemental_damage": 10,
         "unlock_level": 18,
         "unlock_type": "gems",
+        "acquisition_method": "gem_store",
         "cost": 600,
         "rarity": "Rare",
         "rank": "Platinum",
+        "max_level": 120,
+        "level": 1,
         "sprite_path": "weapons/platinum_sword.png"
     },
     "platinum_bow": {
@@ -509,56 +468,16 @@ WEAPONS = {
         "multishot": 2,
         "unlock_level": 19,
         "unlock_type": "gems",
+        "acquisition_method": "gem_store",
         "cost": 650,
         "rarity": "Rare",
         "rank": "Platinum",
+        "max_level": 120,
+        "level": 1,
         "sprite_path": "weapons/platinum_bow.png"
     },
-    "platinum_staff": {
-        "name": "Platinum Staff",
-        "attack_bonus": 35,
-        "defense_bonus": 10,
-        "spell_power": 50,
-        "mana_regen": 6,
-        "spell_crit": 15,
-        "spell_penetration": 20,
-        "unlock_level": 20,
-        "unlock_type": "gems",
-        "cost": 700,
-        "rarity": "Rare",
-        "rank": "Platinum",
-        "sprite_path": "weapons/platinum_staff.png"
-    },
-    "platinum_dagger": {
-        "name": "Platinum Dagger",
-        "attack_bonus": 38,
-        "defense_bonus": 2,
-        "crit_chance": 25,
-        "speed_bonus": 15,
-        "poison_damage": 8,
-        "unlock_level": 21,
-        "unlock_type": "gems",
-        "cost": 680,
-        "rarity": "Rare",
-        "rank": "Platinum",
-        "sprite_path": "weapons/platinum_dagger.png"
-    },
-    "platinum_scythe": {
-        "name": "Platinum Scythe",
-        "attack_bonus": 42,
-        "defense_bonus": 6,
-        "life_steal": 12,
-        "soul_harvest": 5,
-        "dark_damage": 15,
-        "unlock_level": 22,
-        "unlock_type": "gems",
-        "cost": 720,
-        "rarity": "Rare",
-        "rank": "Platinum",
-        "sprite_path": "weapons/platinum_scythe.png"
-    },
 
-    # ========== EMERALD RANK ==========
+    # ========== EMERALD RANK (Session End Rewards) ==========
     "emerald_sword": {
         "name": "Emerald Sword",
         "attack_bonus": 60,
@@ -568,10 +487,13 @@ WEAPONS = {
         "nature_damage": 20,
         "healing_aura": 3,
         "unlock_level": 25,
-        "unlock_type": "gems",
-        "cost": 1000,
+        "unlock_type": "session_reward",
+        "acquisition_method": "session_end_reward",
+        "cost": 0,
         "rarity": "Epic",
         "rank": "Emerald",
+        "max_level": 120,
+        "level": 1,
         "sprite_path": "weapons/emerald_sword.png"
     },
     "emerald_bow": {
@@ -584,59 +506,17 @@ WEAPONS = {
         "nature_arrows": 25,
         "entangle_chance": 15,
         "unlock_level": 26,
-        "unlock_type": "gems",
-        "cost": 1100,
+        "unlock_type": "session_reward",
+        "acquisition_method": "session_end_reward",
+        "cost": 0,
         "rarity": "Epic",
         "rank": "Emerald",
+        "max_level": 120,
+        "level": 1,
         "sprite_path": "weapons/emerald_bow.png"
     },
-    "emerald_staff": {
-        "name": "Emerald Staff",
-        "attack_bonus": 50,
-        "defense_bonus": 15,
-        "spell_power": 75,
-        "mana_regen": 8,
-        "spell_crit": 20,
-        "nature_spells": 30,
-        "growth_aura": 10,
-        "unlock_level": 27,
-        "unlock_type": "gems",
-        "cost": 1200,
-        "rarity": "Epic",
-        "rank": "Emerald",
-        "sprite_path": "weapons/emerald_staff.png"
-    },
-    "emerald_hammer": {
-        "name": "Emerald Hammer",
-        "attack_bonus": 70,
-        "defense_bonus": 18,
-        "stun_chance": 20,
-        "area_damage": 30,
-        "earth_shatter": 25,
-        "unlock_level": 28,
-        "unlock_type": "gems",
-        "cost": 1150,
-        "rarity": "Epic",
-        "rank": "Emerald",
-        "sprite_path": "weapons/emerald_hammer.png"
-    },
-    "emerald_spear": {
-        "name": "Emerald Spear",
-        "attack_bonus": 58,
-        "defense_bonus": 8,
-        "reach": 2,
-        "crit_chance": 18,
-        "wind_strike": 20,
-        "charge_damage": 40,
-        "unlock_level": 29,
-        "unlock_type": "gems",
-        "cost": 1080,
-        "rarity": "Epic",
-        "rank": "Emerald",
-        "sprite_path": "weapons/emerald_spear.png"
-    },
 
-    # ========== DIAMOND RANK ==========
+    # ========== DIAMOND RANK (Store with Gems) ==========
     "diamond_sword": {
         "name": "Diamond Sword",
         "attack_bonus": 85,
@@ -648,9 +528,12 @@ WEAPONS = {
         "light_aura": 15,
         "unlock_level": 32,
         "unlock_type": "gems",
+        "acquisition_method": "gem_store",
         "cost": 1500,
         "rarity": "Epic",
         "rank": "Diamond",
+        "max_level": 120,
+        "level": 1,
         "sprite_path": "weapons/diamond_sword.png"
     },
     "diamond_bow": {
@@ -664,59 +547,16 @@ WEAPONS = {
         "shatter_shot": 20,
         "unlock_level": 33,
         "unlock_type": "gems",
+        "acquisition_method": "gem_store",
         "cost": 1600,
         "rarity": "Epic",
         "rank": "Diamond",
+        "max_level": 120,
+        "level": 1,
         "sprite_path": "weapons/diamond_bow.png"
     },
-    "diamond_staff": {
-        "name": "Diamond Staff",
-        "attack_bonus": 70,
-        "defense_bonus": 22,
-        "spell_power": 100,
-        "mana_regen": 12,
-        "spell_crit": 25,
-        "arcane_mastery": 40,
-        "spell_echo": 15,
-        "unlock_level": 34,
-        "unlock_type": "gems",
-        "cost": 1700,
-        "rarity": "Epic",
-        "rank": "Diamond",
-        "sprite_path": "weapons/diamond_staff.png"
-    },
-    "diamond_dagger": {
-        "name": "Diamond Dagger",
-        "attack_bonus": 80,
-        "defense_bonus": 5,
-        "crit_chance": 35,
-        "speed_bonus": 25,
-        "assassination": 20,
-        "shadow_step": 15,
-        "unlock_level": 35,
-        "unlock_type": "gems",
-        "cost": 1550,
-        "rarity": "Epic",
-        "rank": "Diamond",
-        "sprite_path": "weapons/diamond_dagger.png"
-    },
-    "diamond_fists": {
-        "name": "Diamond Fists",
-        "attack_bonus": 75,
-        "defense_bonus": 12,
-        "speed_bonus": 20,
-        "combo_multiplier": 1.5,
-        "diamond_strikes": 30,
-        "chi_burst": 25,
-        "unlock_level": 36,
-        "unlock_type": "gems",
-        "cost": 1650,
-        "rarity": "Epic",
-        "rank": "Diamond",
-        "sprite_path": "weapons/diamond_fists.png"
-    },
 
-    # ========== ELITE RANK ==========
+    # ========== ELITE RANK (Events Only) ==========
     "elite_blade": {
         "name": "Elite Blade",
         "attack_bonus": 110,
@@ -727,10 +567,13 @@ WEAPONS = {
         "perfect_balance": 20,
         "energy_wave": 25,
         "unlock_level": 40,
-        "unlock_type": "gems",
-        "cost": 2200,
+        "unlock_type": "event",
+        "acquisition_method": "special_event_only",
+        "cost": 0,
         "rarity": "Legendary",
         "rank": "Elite",
+        "max_level": 120,
+        "level": 1,
         "sprite_path": "weapons/elite_blade.png"
     },
     "elite_crossbow": {
@@ -743,60 +586,17 @@ WEAPONS = {
         "explosive_bolts": 40,
         "auto_reload": 1,
         "unlock_level": 41,
-        "unlock_type": "gems",
-        "cost": 2300,
+        "unlock_type": "event",
+        "acquisition_method": "special_event_only",
+        "cost": 0,
         "rarity": "Legendary",
         "rank": "Elite",
+        "max_level": 120,
+        "level": 1,
         "sprite_path": "weapons/elite_crossbow.png"
     },
-    "elite_orb": {
-        "name": "Elite Orb",
-        "attack_bonus": 95,
-        "defense_bonus": 30,
-        "spell_power": 130,
-        "mana_regen": 15,
-        "spell_crit": 30,
-        "reality_warp": 50,
-        "cosmic_energy": 35,
-        "unlock_level": 42,
-        "unlock_type": "gems",
-        "cost": 2400,
-        "rarity": "Legendary",
-        "rank": "Elite",
-        "sprite_path": "weapons/elite_orb.png"
-    },
-    "elite_gauntlets": {
-        "name": "Elite Gauntlets",
-        "attack_bonus": 105,
-        "defense_bonus": 20,
-        "speed_bonus": 30,
-        "combo_multiplier": 1.8,
-        "elite_combat": 40,
-        "energy_fists": 35,
-        "unlock_level": 43,
-        "unlock_type": "gems",
-        "cost": 2250,
-        "rarity": "Legendary",
-        "rank": "Elite",
-        "sprite_path": "weapons/elite_gauntlets.png"
-    },
-    "elite_reaper": {
-        "name": "Elite Reaper",
-        "attack_bonus": 120,
-        "defense_bonus": 15,
-        "life_steal": 25,
-        "soul_harvest": 15,
-        "death_aura": 40,
-        "soul_rend": 30,
-        "unlock_level": 44,
-        "unlock_type": "gems",
-        "cost": 2350,
-        "rarity": "Legendary",
-        "rank": "Elite",
-        "sprite_path": "weapons/elite_reaper.png"
-    },
 
-    # ========== HYPER RANK ==========
+    # ========== HYPER RANK (Money Only) ==========
     "hyper_katana": {
         "name": "Hyper Katana",
         "attack_bonus": 140,
@@ -807,10 +607,13 @@ WEAPONS = {
         "time_cut": 35,
         "perfect_edge": 40,
         "unlock_level": 48,
-        "unlock_type": "gems",
-        "cost": 3000,
+        "unlock_type": "money",
+        "acquisition_method": "real_money_only",
+        "cost": 9.99,  # USD
         "rarity": "Legendary",
         "rank": "Hyper",
+        "max_level": 120,
+        "level": 1,
         "sprite_path": "weapons/hyper_katana.png"
     },
     "hyper_railgun": {
@@ -823,61 +626,17 @@ WEAPONS = {
         "plasma_shots": 60,
         "electromagnetic_pulse": 45,
         "unlock_level": 49,
-        "unlock_type": "gems",
-        "cost": 3200,
+        "unlock_type": "money",
+        "acquisition_method": "real_money_only",
+        "cost": 12.99,
         "rarity": "Legendary",
         "rank": "Hyper",
+        "max_level": 120,
+        "level": 1,
         "sprite_path": "weapons/hyper_railgun.png"
     },
-    "hyper_nexus": {
-        "name": "Hyper Nexus",
-        "attack_bonus": 125,
-        "defense_bonus": 40,
-        "spell_power": 180,
-        "mana_regen": 20,
-        "spell_crit": 40,
-        "dimensional_magic": 70,
-        "nexus_core": 50,
-        "unlock_level": 50,
-        "unlock_type": "gems",
-        "cost": 3400,
-        "rarity": "Legendary",
-        "rank": "Hyper",
-        "sprite_path": "weapons/hyper_nexus.png"
-    },
-    "hyper_destroyer": {
-        "name": "Hyper Destroyer",
-        "attack_bonus": 160,
-        "defense_bonus": 35,
-        "stun_chance": 35,
-        "area_damage": 60,
-        "destruction_wave": 55,
-        "reality_break": 40,
-        "unlock_level": 51,
-        "unlock_type": "gems",
-        "cost": 3300,
-        "rarity": "Legendary",
-        "rank": "Hyper",
-        "sprite_path": "weapons/hyper_destroyer.png"
-    },
-    "hyper_phantom": {
-        "name": "Hyper Phantom",
-        "attack_bonus": 135,
-        "defense_bonus": 10,
-        "crit_chance": 45,
-        "speed_bonus": 40,
-        "phase_strike": 50,
-        "phantom_form": 35,
-        "void_step": 45,
-        "unlock_level": 52,
-        "unlock_type": "gems",
-        "cost": 3100,
-        "rarity": "Legendary",
-        "rank": "Hyper",
-        "sprite_path": "weapons/hyper_phantom.png"
-    },
 
-    # ========== LEGENDARY RANK ==========
+    # ========== LEGENDARY RANK (Money Only) ==========
     "legendary_excalibur": {
         "name": "Legendary Excalibur",
         "attack_bonus": 200,
@@ -889,10 +648,13 @@ WEAPONS = {
         "righteous_fury": 70,
         "blessing_of_kings": 50,
         "unlock_level": 55,
-        "unlock_type": "gems",
-        "cost": 5000,
+        "unlock_type": "money",
+        "acquisition_method": "real_money_only",
+        "cost": 19.99,
         "rarity": "Legendary",
         "rank": "Legendary",
+        "max_level": 120,
+        "level": 1,
         "sprite_path": "weapons/legendary_excalibur.png"
     },
     "legendary_worldbreaker": {
@@ -906,61 +668,14 @@ WEAPONS = {
         "dimensional_arrow": 80,
         "reality_pierce": 90,
         "unlock_level": 56,
-        "unlock_type": "gems",
-        "cost": 5500,
+        "unlock_type": "money",
+        "acquisition_method": "real_money_only",
+        "cost": 24.99,
         "rarity": "Legendary",
         "rank": "Legendary",
+        "max_level": 120,
+        "level": 1,
         "sprite_path": "weapons/legendary_worldbreaker.png"
-    },
-    "legendary_omniscience": {
-        "name": "Legendary Omniscience",
-        "attack_bonus": 180,
-        "defense_bonus": 60,
-        "spell_power": 250,
-        "mana_regen": 30,
-        "spell_crit": 50,
-        "omniscient_magic": 100,
-        "universal_knowledge": 80,
-        "infinite_wisdom": 90,
-        "unlock_level": 57,
-        "unlock_type": "gems",
-        "cost": 6000,
-        "rarity": "Legendary",
-        "rank": "Legendary",
-        "sprite_path": "weapons/legendary_omniscience.png"
-    },
-    "legendary_apocalypse": {
-        "name": "Legendary Apocalypse",
-        "attack_bonus": 240,
-        "defense_bonus": 55,
-        "stun_chance": 50,
-        "area_damage": 100,
-        "apocalypse_strike": 120,
-        "end_times": 100,
-        "cataclysm": 110,
-        "unlock_level": 58,
-        "unlock_type": "gems",
-        "cost": 5800,
-        "rarity": "Legendary",
-        "rank": "Legendary",
-        "sprite_path": "weapons/legendary_apocalypse.png"
-    },
-    "legendary_infinity": {
-        "name": "Legendary Infinity",
-        "attack_bonus": 190,
-        "defense_bonus": 35,
-        "crit_chance": 55,
-        "speed_bonus": 50,
-        "infinite_strikes": 100,
-        "eternal_combo": 2.5,
-        "boundless_power": 80,
-        "transcendence": 70,
-        "unlock_level": 59,
-        "unlock_type": "gems",
-        "cost": 5200,
-        "rarity": "Legendary",
-        "rank": "Legendary",
-        "sprite_path": "weapons/legendary_infinity.png"
     },
     "legendary_voidbringer": {
         "name": "Legendary Voidbringer",
@@ -973,10 +688,13 @@ WEAPONS = {
         "existence_drain": 80,
         "entropy_field": 85,
         "unlock_level": 60,
-        "unlock_type": "gems",
-        "cost": 6500,
+        "unlock_type": "money",
+        "acquisition_method": "real_money_only",
+        "cost": 29.99,
         "rarity": "Legendary",
         "rank": "Legendary",
+        "max_level": 120,
+        "level": 1,
         "sprite_path": "weapons/legendary_voidbringer.png"
     },
 
@@ -987,8 +705,11 @@ WEAPONS = {
         "defense_bonus": 0,
         "unlock_level": 1,
         "unlock_type": "default",
+        "acquisition_method": "default",
         "cost": 0,
         "rarity": "Common",
+        "max_level": 120,
+        "level": 1,
         "sprite_path": "weapons/rusty_sword.png"
     },
     "steel_sword": {
@@ -997,8 +718,11 @@ WEAPONS = {
         "defense_bonus": 2,
         "unlock_level": 3,
         "unlock_type": "gold",
+        "acquisition_method": "store",
         "cost": 500,
         "rarity": "Common",
+        "max_level": 120,
+        "level": 1,
         "sprite_path": "weapons/steel_sword.png"
     },
     "enchanted_blade": {
@@ -1007,30 +731,12 @@ WEAPONS = {
         "defense_bonus": 5,
         "unlock_level": 8,
         "unlock_type": "gems",
-        "cost": 1500,
+        "acquisition_method": "gem_store",
+        "cost": 300,
         "rarity": "Rare",
+        "max_level": 120,
+        "level": 1,
         "sprite_path": "weapons/enchanted_blade.png"
-    },
-    "dragon_slayer": {
-        "name": "Dragon Slayer",
-        "attack_bonus": 35,
-        "defense_bonus": 8,
-        "unlock_level": 15,
-        "unlock_type": "gems",
-        "cost": 5000,
-        "rarity": "Epic",
-        "sprite_path": "weapons/dragon_slayer.png"
-    },
-    "shadow_dagger": {
-        "name": "Shadow Dagger",
-        "attack_bonus": 20,
-        "defense_bonus": 0,
-        "crit_chance": 25,
-        "unlock_level": 12,
-        "unlock_type": "gems",
-        "cost": 3000,
-        "rarity": "Rare",
-        "sprite_path": "weapons/shadow_dagger.png"
     },
     # Merge premium weapons
     **PREMIUM_WEAPONS
@@ -1506,4 +1212,58 @@ STORY_SESSIONS = {
             }
         ]
     }
+}
+
+# Weapon Leveling System Configuration
+WEAPON_LEVELING = {
+    "max_level": 120,
+    "gold_cost_base": 100,  # Base gold cost for level 1->2
+    "gold_cost_multiplier": 1.15,  # Multiplier per level
+    "ether_required_levels": [5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100, 105, 110, 115, 120],  # Levels that require ether
+    "ether_cost_base": 1,  # Base ether cost
+    "ether_cost_multiplier": 1.1,  # Ether cost multiplier
+    "stat_increase_per_level": 0.02,  # 2% stat increase per level
+    "visual_upgrade_levels": [30, 60, 90, 120],  # Levels where weapon appearance changes
+    "color_effects": {
+        30: {"color": "#FFD700", "glow": "golden", "effect": "sparkle"},  # Golden
+        60: {"color": "#9400D3", "glow": "purple", "effect": "energy_waves"},  # Purple
+        90: {"color": "#00CED1", "glow": "cyan", "effect": "lightning"},  # Cyan
+        120: {"color": "#FF4500", "glow": "orange", "effect": "fire_aura"}  # Orange-red
+    }
+}
+
+# Ether Store Configuration
+ETHER_STORE = {
+    "ether_small": {"name": "Small Ether Crystal", "amount": 1, "gems": 10},
+    "ether_medium": {"name": "Medium Ether Crystal", "amount": 5, "gems": 45},
+    "ether_large": {"name": "Large Ether Crystal", "amount": 10, "gems": 85},
+    "ether_mega": {"name": "Mega Ether Crystal", "amount": 25, "gems": 200}
+}
+
+# Ad Event Configuration
+AD_EVENTS = {
+    "daily_silver_lottery": {
+        "name": "Daily Silver Lottery",
+        "ads_required": 10,
+        "reset_time": "daily",  # resets at midnight
+        "winner_selection_time": "23:00",  # last hour of day
+        "prizes": ["silver_sword", "silver_bow", "silver_staff", "silver_dagger", "silver_scythe"],
+        "notification_method": "in_game_email"
+    },
+    "weekly_gold_lottery": {
+        "name": "Weekly Gold Lottery", 
+        "ads_required": 30,
+        "reset_time": "weekly",  # resets on Sunday
+        "winner_selection_time": "sunday_23:00",
+        "prizes": ["golden_sword", "golden_bow", "golden_staff", "golden_hammer", "golden_fists"],
+        "notification_method": "in_game_email"
+    }
+}
+
+# Session End Rewards Configuration
+SESSION_REWARDS = {
+    "emerald_weapon_chance": 0.15,  # 15% chance to get emerald weapon on session end
+    "min_session_time": 300,  # 5 minutes minimum session time
+    "cooldown_hours": 6,  # 6 hour cooldown between rewards
+    "emerald_weapons": ["emerald_sword", "emerald_bow", "emerald_staff", "emerald_hammer", "emerald_spear"]
 }
