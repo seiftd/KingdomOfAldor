@@ -27,6 +27,16 @@ class WeaponType(Enum):
     SCYTHE = "scythe"
     FIST = "fist"
     SPEAR = "spear"
+    CROSSBOW = "crossbow"
+    ORB = "orb"
+    GAUNTLETS = "gauntlets"
+    KATANA = "katana"
+    RAILGUN = "railgun"
+    NEXUS = "nexus"
+    DESTROYER = "destroyer"
+    PHANTOM = "phantom"
+    BLADE = "blade"
+    REAPER = "reaper"
 
 # Premium Heroes (Legendary Rarity, Gems Only)
 PREMIUM_HEROES = {
@@ -452,7 +462,7 @@ PREMIUM_WEAPONS = {
         "id": "dragon_fists",
         "name": "Gauntlets of the Dragon",
         "description": "Mystical gauntlets infused with dragon essence",
-        "type": WeaponType.FIST,
+        "type": WeaponType.GAUNTLETS,
         "rarity": Rarity.LEGENDARY,
         "cost": {"currency": CurrencyType.GEMS, "amount": 1700},
         "payment_only": True,
@@ -492,6 +502,243 @@ PREMIUM_WEAPONS = {
         },
         "unlock_level": 26,
         "sprite_path": "assets/images/weapons/lightning_spear.webp"
+    },
+    
+    # ========== ELITE TIER PREMIUM WEAPONS ==========
+    "elite_cosmic_blade": {
+        "id": "elite_cosmic_blade",
+        "name": "Elite Cosmic Blade",
+        "description": "A blade forged from stardust and cosmic energy",
+        "type": WeaponType.BLADE,
+        "rarity": Rarity.LEGENDARY,
+        "cost": {"currency": CurrencyType.GEMS, "amount": 2200},
+        "payment_only": True,
+        "compatible_classes": [HeroClass.KNIGHT, HeroClass.PALADIN, HeroClass.BERSERKER],
+        "stats": {
+            "attack": 110,
+            "critical_chance": 30,
+            "critical_damage": 90,
+            "cosmic_power": 35
+        },
+        "special_effect": {
+            "name": "Stellar Strike",
+            "description": "25% chance to deal cosmic damage that ignores all resistances"
+        },
+        "unlock_level": 40,
+        "sprite_path": "assets/images/weapons/elite_cosmic_blade.webp"
+    },
+    
+    "elite_void_crossbow": {
+        "id": "elite_void_crossbow",
+        "name": "Elite Void Crossbow",
+        "description": "A crossbow that fires bolts from the void itself",
+        "type": WeaponType.CROSSBOW,
+        "rarity": Rarity.LEGENDARY,
+        "cost": {"currency": CurrencyType.GEMS, "amount": 2300},
+        "payment_only": True,
+        "compatible_classes": [HeroClass.ARCHER, HeroClass.ASSASSIN],
+        "stats": {
+            "attack": 115,
+            "critical_chance": 32,
+            "range": 12,
+            "void_damage": 40
+        },
+        "special_effect": {
+            "name": "Void Bolts",
+            "description": "Bolts pierce through reality, hitting all enemies in a line"
+        },
+        "unlock_level": 41,
+        "sprite_path": "assets/images/weapons/elite_void_crossbow.webp"
+    },
+    
+    "elite_reality_orb": {
+        "id": "elite_reality_orb",
+        "name": "Elite Reality Orb",
+        "description": "An orb containing fragments of reality itself",
+        "type": WeaponType.ORB,
+        "rarity": Rarity.LEGENDARY,
+        "cost": {"currency": CurrencyType.GEMS, "amount": 2400},
+        "payment_only": True,
+        "compatible_classes": [HeroClass.MAGE, HeroClass.NECROMANCER],
+        "stats": {
+            "attack": 95,
+            "spell_power": 130,
+            "critical_chance": 30,
+            "reality_control": 50
+        },
+        "special_effect": {
+            "name": "Reality Warp",
+            "description": "Spells have 20% chance to reset all cooldowns and restore full mana"
+        },
+        "unlock_level": 42,
+        "sprite_path": "assets/images/weapons/elite_reality_orb.webp"
+    },
+
+    # ========== HYPER TIER PREMIUM WEAPONS ==========
+    "hyper_quantum_katana": {
+        "id": "hyper_quantum_katana",
+        "name": "Hyper Quantum Katana",
+        "description": "A katana that exists in multiple dimensions simultaneously",
+        "type": WeaponType.KATANA,
+        "rarity": Rarity.LEGENDARY,
+        "cost": {"currency": CurrencyType.GEMS, "amount": 3000},
+        "payment_only": True,
+        "compatible_classes": [HeroClass.ASSASSIN, HeroClass.MONK, HeroClass.BERSERKER],
+        "stats": {
+            "attack": 140,
+            "critical_chance": 40,
+            "critical_damage": 120,
+            "quantum_power": 50
+        },
+        "special_effect": {
+            "name": "Quantum Slash",
+            "description": "Attacks hit multiple dimensional versions of enemies for 300% damage"
+        },
+        "unlock_level": 48,
+        "sprite_path": "assets/images/weapons/hyper_quantum_katana.webp"
+    },
+    
+    "hyper_plasma_railgun": {
+        "id": "hyper_plasma_railgun",
+        "name": "Hyper Plasma Railgun",
+        "description": "An advanced energy weapon from the far future",
+        "type": WeaponType.RAILGUN,
+        "rarity": Rarity.LEGENDARY,
+        "cost": {"currency": CurrencyType.GEMS, "amount": 3200},
+        "payment_only": True,
+        "compatible_classes": [HeroClass.ARCHER],
+        "stats": {
+            "attack": 150,
+            "critical_chance": 35,
+            "range": 15,
+            "plasma_damage": 60
+        },
+        "special_effect": {
+            "name": "Plasma Storm",
+            "description": "Critical hits create plasma explosions that damage all nearby enemies"
+        },
+        "unlock_level": 49,
+        "sprite_path": "assets/images/weapons/hyper_plasma_railgun.webp"
+    },
+    
+    "hyper_dimensional_nexus": {
+        "id": "hyper_dimensional_nexus",
+        "name": "Hyper Dimensional Nexus",
+        "description": "A nexus that channels power from infinite dimensions",
+        "type": WeaponType.NEXUS,
+        "rarity": Rarity.LEGENDARY,
+        "cost": {"currency": CurrencyType.GEMS, "amount": 3400},
+        "payment_only": True,
+        "compatible_classes": [HeroClass.MAGE, HeroClass.NECROMANCER],
+        "stats": {
+            "attack": 125,
+            "spell_power": 180,
+            "critical_chance": 40,
+            "dimensional_power": 70
+        },
+        "special_effect": {
+            "name": "Dimensional Convergence",
+            "description": "Spells draw power from other dimensions, doubling effectiveness"
+        },
+        "unlock_level": 50,
+        "sprite_path": "assets/images/weapons/hyper_dimensional_nexus.webp"
+    },
+
+    # ========== LEGENDARY TIER PREMIUM WEAPONS ==========
+    "legendary_godslayer_excalibur": {
+        "id": "legendary_godslayer_excalibur",
+        "name": "Legendary Godslayer Excalibur",
+        "description": "The ultimate evolution of Excalibur, capable of slaying gods",
+        "type": WeaponType.SWORD,
+        "rarity": Rarity.LEGENDARY,
+        "cost": {"currency": CurrencyType.GEMS, "amount": 5000},
+        "payment_only": True,
+        "compatible_classes": [HeroClass.KNIGHT, HeroClass.PALADIN],
+        "stats": {
+            "attack": 200,
+            "critical_chance": 50,
+            "critical_damage": 150,
+            "divine_power": 80,
+            "godslayer": 100
+        },
+        "special_effect": {
+            "name": "Divine Judgment",
+            "description": "Attacks deal true damage and heal all allies for 20% of damage dealt"
+        },
+        "unlock_level": 55,
+        "sprite_path": "assets/images/weapons/legendary_godslayer_excalibur.webp"
+    },
+    
+    "legendary_worldender_bow": {
+        "id": "legendary_worldender_bow",
+        "name": "Legendary Worldender Bow",
+        "description": "A bow capable of piercing through the fabric of reality itself",
+        "type": WeaponType.BOW,
+        "rarity": Rarity.LEGENDARY,
+        "cost": {"currency": CurrencyType.GEMS, "amount": 5500},
+        "payment_only": True,
+        "compatible_classes": [HeroClass.ARCHER],
+        "stats": {
+            "attack": 220,
+            "critical_chance": 45,
+            "range": 20,
+            "reality_damage": 100,
+            "piercing": 10
+        },
+        "special_effect": {
+            "name": "Reality Shatter",
+            "description": "Arrows shatter reality, dealing massive damage to all enemies in their path"
+        },
+        "unlock_level": 56,
+        "sprite_path": "assets/images/weapons/legendary_worldender_bow.webp"
+    },
+    
+    "legendary_omniscience_staff": {
+        "id": "legendary_omniscience_staff",
+        "name": "Legendary Staff of Omniscience",
+        "description": "A staff containing all knowledge of magic across infinite universes",
+        "type": WeaponType.STAFF,
+        "rarity": Rarity.LEGENDARY,
+        "cost": {"currency": CurrencyType.GEMS, "amount": 6000},
+        "payment_only": True,
+        "compatible_classes": [HeroClass.MAGE, HeroClass.NECROMANCER],
+        "stats": {
+            "attack": 180,
+            "spell_power": 250,
+            "critical_chance": 50,
+            "omniscience": 100,
+            "infinite_knowledge": 80
+        },
+        "special_effect": {
+            "name": "Universal Magic",
+            "description": "Can cast any spell ever created, with infinite variations"
+        },
+        "unlock_level": 57,
+        "sprite_path": "assets/images/weapons/legendary_omniscience_staff.webp"
+    },
+    
+    "legendary_void_reaper": {
+        "id": "legendary_void_reaper",
+        "name": "Legendary Void Reaper",
+        "description": "The ultimate scythe that harvests souls across all dimensions",
+        "type": WeaponType.REAPER,
+        "rarity": Rarity.LEGENDARY,
+        "cost": {"currency": CurrencyType.GEMS, "amount": 6500},
+        "payment_only": True,
+        "compatible_classes": [HeroClass.NECROMANCER, HeroClass.ASSASSIN],
+        "stats": {
+            "attack": 210,
+            "critical_chance": 45,
+            "life_steal": 40,
+            "soul_power": 100,
+            "void_mastery": 100
+        },
+        "special_effect": {
+            "name": "Omniversal Harvest",
+            "description": "Harvests souls from all dimensions, granting immense power"
+        },
+        "unlock_level": 60,
+        "sprite_path": "assets/images/weapons/legendary_void_reaper.webp"
     }
 }
 

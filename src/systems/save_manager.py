@@ -121,7 +121,7 @@ class SaveManager:
                 "defense": Config.PLAYER_START_DEFENSE,
                 "speed": Config.PLAYER_START_SPEED,
                 "current_skin": "default",
-                "current_weapon": "bronze_sword"
+                "current_weapon": "wooden_sword"
             },
             
             # Game progress
@@ -148,11 +148,11 @@ class SaveManager:
             
             # Inventory
             "inventory": {
-                "weapons": ["bronze_sword"],
+                "weapons": ["wooden_sword"],
                 "skins": ["default"],
                 "items": {},
                 "equipped": {
-                    "weapon": "bronze_sword",
+                    "weapon": "wooden_sword",
                     "skin": "default"
                 }
             },
