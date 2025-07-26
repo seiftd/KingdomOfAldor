@@ -1,0 +1,17 @@
+{
+  "combat": [
+    "sword_slash.wav",
+    "magic_spell.wav",
+    "enemy_hit.wav"
+  ],
+  "ui": [
+    "button_click.wav",
+    "coin_pickup.wav",
+    "level_up.wav",
+    "victory.wav"
+  ],
+  "music": [
+    "background_loop.wav",
+    "boss_battle.wav"
+  ]
+}

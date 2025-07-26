@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kingdom of Aldoria - Admin Dashboard</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="icon" type="image/x-icon" href="../assets/favicon.ico">
+</head>
+<body>
+    <!-- Login Screen -->
+    <div id="login-screen" class="login-container">
+        <div class="login-card">
+            <div class="login-header">
+                <img src="../assets/logo.png" alt="Kingdom of Aldoria" class="login-logo">
+                <h1>Kingdom of Aldoria</h1>
+                <p>Admin Dashboard</p>
+            </div>
+            <form id="login-form" class="login-form">
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" required autocomplete="username">
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required autocomplete="current-password">
+                </div>
+                <button type="submit" class="login-btn">
+                    <span class="login-text">Access Dashboard</span>
+                    <span class="login-loading" style="display: none;">Authenticating...</span>
+                </button>
+            </form>
+            <div id="login-error" class="login-error" style="display: none;"></div>
+        </div>
+    </div>
+
+    <!-- Main Dashboard -->
+    <div id="dashboard" class="dashboard-container" style="display: none;">
+        <!-- Header -->
+        <header class="dashboard-header">
+            <div class="header-left">
+                <img src="../assets/logo.png" alt="Kingdom of Aldoria" class="header-logo">
+                <div class="header-title">
+                    <h1>Kingdom of Aldoria</h1>
+                    <p>Admin Dashboard</p>
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="admin-info">
+                    <span class="admin-name">Seif Touati</span>
+                    <span class="admin-role">Game Administrator</span>
+                </div>
+                <button class="logout-btn" onclick="logout()">Logout</button>
+            </div>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="dashboard-nav">
+            <div class="nav-container">
+                <button class="nav-btn active" onclick="switchTab('overview')">📊 Overview</button>
+                <button class="nav-btn" onclick="switchTab('revenue')">💰 Revenue</button>
+                <button class="nav-btn" onclick="switchTab('ads')">📺 Ads & Sources</button>
+                <button class="nav-btn" onclick="switchTab('players')">👥 Players</button>
+                <button class="nav-btn" onclick="switchTab('subscriptions')">👑 Subscriptions</button>
+                <button class="nav-btn" onclick="switchTab('codes')">🎫 Promo Codes</button>
+                <button class="nav-btn" onclick="switchTab('sync')">🔄 Data Sync</button>
+                <button class="nav-btn" onclick="switchTab('settings')">⚙️ Settings</button>
+            </div>
+        </nav>
+
+        <!-- Overview Tab -->
+        <div id="overview-tab" class="tab-content active">
+            <div class="dashboard-grid">
+                <!-- Key Metrics -->
+                <div class="metric-cards">
+                    <div class="metric-card revenue">
+                        <div class="metric-icon">💰</div>
+                        <div class="metric-content">
+                            <h3>Total Revenue</h3>
+                            <div class="metric-value" id="total-revenue">$0</div>
+                            <div class="metric-change positive">+12.5% this month</div>
+                        </div>
+                    </div>
+                    
+                    <div class="metric-card players">
+                        <div class="metric-icon">👥</div>
+                        <div class="metric-content">
+                            <h3>Active Players</h3>
+                            <div class="metric-value" id="active-players">0</div>
+                            <div class="metric-change positive">+8.3% this week</div>
+                        </div>
+                    </div>
+                    
+                    <div class="metric-card ads">
+                        <div class="metric-icon">📺</div>
+                        <div class="metric-content">
+                            <h3>Ads Watched Today</h3>
+                            <div class="metric-value" id="ads-today">0</div>
+                            <div class="metric-change neutral">Daily target: 1,000</div>
+                        </div>
+                    </div>
+                    
+                    <div class="metric-card conversions">
+                        <div class="metric-icon">📈</div>
+                        <div class="metric-content">
+                            <h3>Conversion Rate</h3>
+                            <div class="metric-value" id="conversion-rate">0%</div>
+                            <div class="metric-change positive">Above industry avg</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts Section -->
+                <div class="charts-section">
+                    <div class="chart-container">
+                        <h3>Revenue Trend (Last 30 Days)</h3>
+                        <canvas id="revenue-chart"></canvas>
+                    </div>
+                    
+                    <div class="chart-container">
+                        <h3>Player Activity</h3>
+                        <canvas id="activity-chart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Recent Activity -->
+                <div class="activity-section">
+                    <h3>Recent Activity</h3>
+                    <div class="activity-list" id="recent-activity">
+                        <!-- Activity items will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Revenue Tab -->
+        <div id="revenue-tab" class="tab-content">
+            <div class="revenue-dashboard">
+                <div class="revenue-summary">
+                    <div class="revenue-card">
+                        <h3>Subscription Revenue</h3>
+                        <div class="revenue-amount" id="subscription-revenue">$0</div>
+                        <div class="revenue-breakdown">
+                            <div class="breakdown-item">
+                                <span>Weekly Passes</span>
+                                <span id="weekly-revenue">$0</span>
+                            </div>
+                            <div class="breakdown-item">
+                                <span>Monthly VIP</span>
+                                <span id="monthly-revenue">$0</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="revenue-card">
+                        <h3>In-App Purchases</h3>
+                        <div class="revenue-amount" id="iap-revenue">$0</div>
+                        <div class="revenue-breakdown">
+                            <div class="breakdown-item">
+                                <span>Legendary Items</span>
+                                <span id="legendary-revenue">$0</span>
+                            </div>
+                            <div class="breakdown-item">
+                                <span>Starter Packs</span>
+                                <span id="starter-revenue">$0</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="revenue-card">
+                        <h3>Ad Revenue</h3>
+                        <div class="revenue-amount" id="ad-revenue">$0</div>
+                        <div class="revenue-breakdown">
+                            <div class="breakdown-item">
+                                <span>Rewarded Ads</span>
+                                <span id="rewarded-ad-revenue">$0</span>
+                            </div>
+                            <div class="breakdown-item">
+                                <span>Interstitial Ads</span>
+                                <span id="interstitial-revenue">$0</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="revenue-chart-container">
+                    <h3>Revenue by Source</h3>
+                    <canvas id="revenue-source-chart"></canvas>
+                </div>
+
+                <div class="top-spenders">
+                    <h3>Top Spenders</h3>
+                    <div class="spenders-list" id="top-spenders-list">
+                        <!-- Top spenders will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Ads & Sources Tab -->
+        <div id="ads-tab" class="tab-content">
+            <div class="ads-dashboard">
+                <div class="ads-controls">
+                    <h3>Ad Sources Management</h3>
+                    <div class="source-controls">
+                        <select id="active-ad-source" onchange="changeAdSource()">
+                            <option value="AdMob">AdMob</option>
+                            <option value="Unity Ads">Unity Ads</option>
+                            <option value="AppLovin">AppLovin</option>
+                            <option value="IronSource">IronSource</option>
+                            <option value="Vungle">Vungle</option>
+                            <option value="Facebook Audience Network">Facebook Audience Network</option>
+                            <option value="TikTok Ads">TikTok Ads</option>
+                            <option value="Chartboost">Chartboost</option>
+                        </select>
+                        <button class="control-btn" onclick="refreshAds()">Refresh Ads</button>
+                    </div>
+                </div>
+
+                <div class="ads-performance">
+                    <div class="performance-cards">
+                        <div class="perf-card">
+                            <h4>Daily Ad Views</h4>
+                            <div class="perf-value" id="daily-ad-views">0</div>
+                        </div>
+                        <div class="perf-card">
+                            <h4>Success Rate</h4>
+                            <div class="perf-value" id="ad-success-rate">0%</div>
+                        </div>
+                        <div class="perf-card">
+                            <h4>Revenue/1000 Views</h4>
+                            <div class="perf-value" id="ad-rpm">$0</div>
+                        </div>
+                        <div class="perf-card">
+                            <h4>Fill Rate</h4>
+                            <div class="perf-value" id="ad-fill-rate">0%</div>
+                        </div>
+                    </div>
+
+                    <div class="source-performance">
+                        <h3>Source Performance</h3>
+                        <div class="source-table" id="source-performance-table">
+                            <!-- Source performance will be populated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ads-settings">
+                    <h3>Ad Configuration</h3>
+                    <div class="setting-group">
+                        <label for="daily-ad-limit">Daily Ad Limit per Player</label>
+                        <input type="number" id="daily-ad-limit" min="1" max="100" value="30">
+                        <button onclick="updateAdLimit()">Update</button>
+                    </div>
+                    <div class="setting-group">
+                        <label for="ad-cooldown">Ad Cooldown (seconds)</label>
+                        <input type="number" id="ad-cooldown" min="5" max="300" value="30">
+                        <button onclick="updateAdCooldown()">Update</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Players Tab -->
+        <div id="players-tab" class="tab-content">
+            <div class="players-dashboard">
+                <div class="player-stats">
+                    <div class="stat-card">
+                        <h4>Total Registered</h4>
+                        <div class="stat-value" id="total-players">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <h4>Daily Active Users</h4>
+                        <div class="stat-value" id="dau">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <h4>Weekly Active Users</h4>
+                        <div class="stat-value" id="wau">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <h4>Monthly Active Users</h4>
+                        <div class="stat-value" id="mau">0</div>
+                    </div>
+                </div>
+
+                <div class="player-activity-chart">
+                    <h3>Player Activity Over Time</h3>
+                    <canvas id="player-activity-chart"></canvas>
+                </div>
+
+                <div class="player-search">
+                    <h3>Player Search</h3>
+                    <div class="search-controls">
+                        <input type="text" id="player-search-input" placeholder="Search by Player ID, Email, or Name">
+                        <button onclick="searchPlayer()">Search</button>
+                    </div>
+                    <div class="search-results" id="player-search-results">
+                        <!-- Search results will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Subscriptions Tab -->
+        <div id="subscriptions-tab" class="tab-content">
+            <div class="subscriptions-dashboard">
+                <div class="subscription-overview">
+                    <div class="sub-card weekly">
+                        <h4>Weekly Pass</h4>
+                        <div class="sub-stats">
+                            <div class="sub-stat">
+                                <span>Active Subscribers</span>
+                                <span id="weekly-subs">0</span>
+                            </div>
+                            <div class="sub-stat">
+                                <span>Monthly Revenue</span>
+                                <span id="weekly-monthly-revenue">$0</span>
+                            </div>
+                            <div class="sub-stat">
+                                <span>Conversion Rate</span>
+                                <span id="weekly-conversion">0%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="sub-card monthly">
+                        <h4>Monthly VIP</h4>
+                        <div class="sub-stats">
+                            <div class="sub-stat">
+                                <span>Active Subscribers</span>
+                                <span id="monthly-subs">0</span>
+                            </div>
+                            <div class="sub-stat">
+                                <span>Monthly Revenue</span>
+                                <span id="monthly-monthly-revenue">$0</span>
+                            </div>
+                            <div class="sub-stat">
+                                <span>Conversion Rate</span>
+                                <span id="monthly-conversion">0%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="expiring-subscriptions">
+                    <h3>Expiring Soon</h3>
+                    <div class="expiring-list" id="expiring-subscriptions-list">
+                        <!-- Expiring subscriptions will be populated by JavaScript -->
+                    </div>
+                </div>
+
+                <div class="subscription-analytics">
+                    <h3>Subscription Trends</h3>
+                    <canvas id="subscription-chart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Promo Codes Tab -->
+        <div id="codes-tab" class="tab-content">
+            <div class="codes-dashboard">
+                <div class="codes-header">
+                    <h3>Promo Code Management</h3>
+                    <button class="create-code-btn" onclick="showCreateCodeModal()">+ Create New Code</button>
+                </div>
+
+                <div class="codes-stats">
+                    <div class="code-stat-card">
+                        <h4>Total Codes</h4>
+                        <div class="stat-value" id="total-codes">0</div>
+                    </div>
+                    <div class="code-stat-card">
+                        <h4>Active Codes</h4>
+                        <div class="stat-value" id="active-codes">0</div>
+                    </div>
+                    <div class="code-stat-card">
+                        <h4>Total Redemptions</h4>
+                        <div class="stat-value" id="total-redemptions">0</div>
+                    </div>
+                    <div class="code-stat-card">
+                        <h4>Gems Distributed</h4>
+                        <div class="stat-value" id="total-gems-distributed">0</div>
+                    </div>
+                </div>
+
+                <div class="codes-table">
+                    <h3>All Codes</h3>
+                    <div class="table-container">
+                        <table id="codes-table">
+                            <thead>
+                                <tr>
+                                    <th>Code</th>
+                                    <th>Name</th>
+                                    <th>Type</th>
+                                    <th>Rewards</th>
+                                    <th>Usage</th>
+                                    <th>Status</th>
+                                    <th>Expires</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="codes-table-body">
+                                <!-- Code rows will be populated by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Data Sync Tab -->
+        <div id="sync-tab" class="tab-content">
+            <div class="sync-dashboard">
+                <div class="sync-status">
+                    <h3>Online/Offline Status</h3>
+                    <div class="status-cards">
+                        <div class="status-card online">
+                            <h4>Online Players</h4>
+                            <div class="status-value" id="online-players">0</div>
+                            <div class="status-detail">Currently connected</div>
+                        </div>
+                        <div class="status-card offline">
+                            <h4>Offline Players</h4>
+                            <div class="status-value" id="offline-players">0</div>
+                            <div class="status-detail">Last seen >1h ago</div>
+                        </div>
+                        <div class="status-card sync">
+                            <h4>Pending Syncs</h4>
+                            <div class="status-value" id="pending-syncs">0</div>
+                            <div class="status-detail">Awaiting connection</div>
+                        </div>
+                        <div class="status-card firebase">
+                            <h4>Firebase Status</h4>
+                            <div class="status-value" id="firebase-status">●</div>
+                            <div class="status-detail">Real-time database</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sync-analytics">
+                    <div class="sync-chart-container">
+                        <h3>Sync Activity (Last 24h)</h3>
+                        <canvas id="sync-activity-chart"></canvas>
+                    </div>
+                    
+                    <div class="data-distribution">
+                        <h3>Data Distribution</h3>
+                        <canvas id="data-distribution-chart"></canvas>
+                    </div>
+                </div>
+
+                <div class="recent-syncs">
+                    <h3>Recent Sync Events</h3>
+                    <div class="sync-events-list" id="sync-events-list">
+                        <!-- Sync events will be populated by JavaScript -->
+                    </div>
+                </div>
+
+                <div class="sync-controls">
+                    <h3>Sync Management</h3>
+                    <div class="sync-actions">
+                        <button class="sync-btn" onclick="forceSyncAll()">Force Sync All</button>
+                        <button class="sync-btn" onclick="clearSyncCache()">Clear Sync Cache</button>
+                        <button class="sync-btn" onclick="resetConflictData()">Reset Conflicts</button>
+                        <button class="sync-btn danger" onclick="emergencyOfflineMode()">Emergency Offline</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Settings Tab -->
+        <div id="settings-tab" class="tab-content">
+            <div class="settings-dashboard">
+                <div class="settings-section">
+                    <h3>Game Configuration</h3>
+                    <div class="settings-grid">
+                        <div class="setting-item">
+                            <label for="gem-reward-min">Min Gems per Ad</label>
+                            <input type="number" id="gem-reward-min" min="1" max="10" value="1">
+                        </div>
+                        <div class="setting-item">
+                            <label for="gem-reward-max">Max Gems per Ad</label>
+                            <input type="number" id="gem-reward-max" min="1" max="10" value="5">
+                        </div>
+                        <div class="setting-item">
+                            <label for="gold-reward-min">Min Gold per Ad</label>
+                            <input type="number" id="gold-reward-min" min="10" max="500" value="50">
+                        </div>
+                        <div class="setting-item">
+                            <label for="gold-reward-max">Max Gold per Ad</label>
+                            <input type="number" id="gold-reward-max" min="10" max="500" value="200">
+                        </div>
+                    </div>
+                    <button class="save-settings-btn" onclick="saveGameSettings()">Save Settings</button>
+                </div>
+
+                <div class="settings-section">
+                    <h3>Pricing Configuration</h3>
+                    <div class="pricing-grid">
+                        <div class="price-item">
+                            <label for="weekly-price">Weekly Pass Price ($)</label>
+                            <input type="number" id="weekly-price" step="0.01" value="4.99">
+                        </div>
+                        <div class="price-item">
+                            <label for="monthly-price">Monthly VIP Price ($)</label>
+                            <input type="number" id="monthly-price" step="0.01" value="15.99">
+                        </div>
+                        <div class="price-item">
+                            <label for="starter-price">Starter Pack Price ($)</label>
+                            <input type="number" id="starter-price" step="0.01" value="0.99">
+                        </div>
+                    </div>
+                    <button class="save-settings-btn" onclick="savePricingSettings()">Save Pricing</button>
+                </div>
+
+                <div class="settings-section">
+                    <h3>System Tools</h3>
+                    <div class="tools-grid">
+                        <button class="tool-btn" onclick="clearAdCache()">Clear Ad Cache</button>
+                        <button class="tool-btn" onclick="resetDailyLimits()">Reset Daily Limits</button>
+                        <button class="tool-btn" onclick="exportAnalytics()">Export Analytics</button>
+                        <button class="tool-btn danger" onclick="emergencyStop()">Emergency Stop</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Code Creation Modal -->
+    <div id="code-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Create New Promo Code</h3>
+                <span class="close" onclick="closeCodeModal()">&times;</span>
+            </div>
+            <form id="create-code-form" class="modal-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="code-name">Code</label>
+                        <input type="text" id="code-name" required maxlength="20" placeholder="EXAMPLE2024">
+                    </div>
+                    <div class="form-group">
+                        <label for="code-type">Type</label>
+                        <select id="code-type">
+                            <option value="welcome">Welcome</option>
+                            <option value="daily">Daily</option>
+                            <option value="weekly">Weekly</option>
+                            <option value="event">Event</option>
+                            <option value="premium">Premium</option>
+                            <option value="vip">VIP</option>
+                            <option value="custom">Custom</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="code-display-name">Display Name</label>
+                    <input type="text" id="code-display-name" required placeholder="Special Event Code">
+                </div>
+                
+                <div class="form-group">
+                    <label for="code-description">Description</label>
+                    <textarea id="code-description" placeholder="Limited time bonus for players"></textarea>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="reward-gems">Gems Reward</label>
+                        <input type="number" id="reward-gems" min="0" value="100">
+                    </div>
+                    <div class="form-group">
+                        <label for="reward-gold">Gold Reward</label>
+                        <input type="number" id="reward-gold" min="0" value="1000">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="usage-limit">Usage Limit</label>
+                        <input type="number" id="usage-limit" min="1" value="100">
+                    </div>
+                    <div class="form-group">
+                        <label for="duration-days">Duration (Days)</label>
+                        <input type="number" id="duration-days" min="1" value="30">
+                    </div>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="button" onclick="closeCodeModal()">Cancel</button>
+                    <button type="submit">Create Code</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="dashboard-footer">
+        <p>&copy; 2024 Kingdom of Aldoria Admin Dashboard. Last updated: <span id="last-updated"></span></p>
+    </footer>
+
+    <script src="dashboard.js"></script>
+</body>
+</html>

@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kingdom of Aldoria - Admin Dashboard</title>
+    <link rel="stylesheet" href="dashboard-styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Login Screen -->
+    <div id="login-screen" class="login-screen">
+        <div class="login-container">
+            <div class="login-header">
+                <i class="fas fa-crown"></i>
+                <h1>Kingdom of Aldoria</h1>
+                <p>Admin Dashboard</p>
+            </div>
+            <form id="login-form" class="login-form">
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" required>
+                    <i class="fas fa-envelope"></i>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required>
+                    <i class="fas fa-lock"></i>
+                </div>
+                <button type="submit" class="login-btn">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Access Dashboard
+                </button>
+                <div id="login-error" class="error-message" style="display: none;">
+                    Invalid credentials. Access denied.
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Dashboard Content -->
+    <div id="dashboard-content" class="dashboard-content" style="display: none;">
+        <!-- Header -->
+        <header class="dashboard-header">
+            <div class="header-left">
+                <h1><i class="fas fa-crown"></i> Kingdom of Aldoria Dashboard</h1>
+                <p>Admin Control Panel</p>
+            </div>
+            <div class="header-right">
+                <div class="admin-info">
+                    <i class="fas fa-user-crown"></i>
+                    <span>Welcome, Admin</span>
+                </div>
+                <button id="logout-btn" class="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i>
+                    Logout
+                </button>
+            </div>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="dashboard-nav">
+            <button class="nav-btn active" data-section="overview">
+                <i class="fas fa-chart-line"></i>
+                Overview
+            </button>
+            <button class="nav-btn" data-section="revenue">
+                <i class="fas fa-coins"></i>
+                Revenue
+            </button>
+            <button class="nav-btn" data-section="ads">
+                <i class="fas fa-ad"></i>
+                Advertising
+            </button>
+            <button class="nav-btn" data-section="subscriptions">
+                <i class="fas fa-crown"></i>
+                Subscriptions
+            </button>
+            <button class="nav-btn" data-section="users">
+                <i class="fas fa-users"></i>
+                Players
+            </button>
+            <button class="nav-btn" data-section="analytics">
+                <i class="fas fa-chart-pie"></i>
+                Analytics
+            </button>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="dashboard-main">
+            <!-- Overview Section -->
+            <section id="overview-section" class="dashboard-section active">
+                <h2>Dashboard Overview</h2>
+                <div class="stats-grid">
+                    <div class="stat-card revenue">
+                        <div class="stat-icon">
+                            <i class="fas fa-dollar-sign"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3>Total Revenue</h3>
+                            <p class="stat-value" id="total-revenue">$12,847.50</p>
+                            <span class="stat-change positive">+15.2% this month</span>
+                        </div>
+                    </div>
+                    <div class="stat-card users">
+                        <div class="stat-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3>Active Players</h3>
+                            <p class="stat-value" id="active-players">2,847</p>
+                            <span class="stat-change positive">+8.7% this week</span>
+                        </div>
+                    </div>
+                    <div class="stat-card subscriptions">
+                        <div class="stat-icon">
+                            <i class="fas fa-crown"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3>VIP Subscribers</h3>
+                            <p class="stat-value" id="vip-subscribers">342</p>
+                            <span class="stat-change positive">+12.3% this month</span>
+                        </div>
+                    </div>
+                    <div class="stat-card ads">
+                        <div class="stat-icon">
+                            <i class="fas fa-eye"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3>Ad Impressions</h3>
+                            <p class="stat-value" id="ad-impressions">847,291</p>
+                            <span class="stat-change positive">+5.4% today</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="charts-grid">
+                    <div class="chart-container">
+                        <h3>Revenue Trend (Last 30 Days)</h3>
+                        <canvas id="revenue-chart"></canvas>
+                    </div>
+                    <div class="chart-container">
+                        <h3>Player Activity</h3>
+                        <canvas id="activity-chart"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Revenue Section -->
+            <section id="revenue-section" class="dashboard-section">
+                <h2>Revenue Analytics</h2>
+                <div class="revenue-grid">
+                    <div class="revenue-breakdown">
+                        <h3>Revenue Breakdown</h3>
+                        <div class="breakdown-item">
+                            <span>Subscriptions</span>
+                            <span class="amount">$8,450.00 (65.8%)</span>
+                        </div>
+                        <div class="breakdown-item">
+                            <span>Gem Purchases</span>
+                            <span class="amount">$3,120.50 (24.3%)</span>
+                        </div>
+                        <div class="breakdown-item">
+                            <span>Premium Items</span>
+                            <span class="amount">$1,277.00 (9.9%)</span>
+                        </div>
+                    </div>
+                    <div class="payment-methods">
+                        <h3>Payment Methods</h3>
+                        <div class="method-item">
+                            <span>RedotPay</span>
+                            <span class="amount">$7,230.25 (56.3%)</span>
+                        </div>
+                        <div class="method-item">
+                            <span>Binance Pay</span>
+                            <span class="amount">$4,120.75 (32.1%)</span>
+                        </div>
+                        <div class="method-item">
+                            <span>Credit Cards</span>
+                            <span class="amount">$1,496.50 (11.6%)</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Ads Section -->
+            <section id="ads-section" class="dashboard-section">
+                <h2>Advertising Metrics</h2>
+                <div class="ads-grid">
+                    <div class="ad-stats">
+                        <div class="ad-stat-item">
+                            <h4>Total Ad Revenue</h4>
+                            <p class="ad-value">$2,847.92</p>
+                        </div>
+                        <div class="ad-stat-item">
+                            <h4>Total Impressions</h4>
+                            <p class="ad-value">847,291</p>
+                        </div>
+                        <div class="ad-stat-item">
+                            <h4>Click-Through Rate</h4>
+                            <p class="ad-value">3.2%</p>
+                        </div>
+                        <div class="ad-stat-item">
+                            <h4>Revenue Per Mille (RPM)</h4>
+                            <p class="ad-value">$3.36</p>
+                        </div>
+                    </div>
+                    <div class="ad-sources">
+                        <h3>Ad Network Performance</h3>
+                        <div class="ad-source-item">
+                            <span>AdMob</span>
+                            <span class="ad-revenue">$1,542.30</span>
+                            <span class="ad-percentage">54.2%</span>
+                        </div>
+                        <div class="ad-source-item">
+                            <span>Unity Ads</span>
+                            <span class="ad-revenue">$892.15</span>
+                            <span class="ad-percentage">31.3%</span>
+                        </div>
+                        <div class="ad-source-item">
+                            <span>IronSource</span>
+                            <span class="ad-revenue">$413.47</span>
+                            <span class="ad-percentage">14.5%</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="ad-types">
+                    <h3>Ad Type Performance</h3>
+                    <table class="ad-table">
+                        <thead>
+                            <tr>
+                                <th>Ad Type</th>
+                                <th>Impressions</th>
+                                <th>Revenue</th>
+                                <th>eCPM</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Rewarded Video</td>
+                                <td>324,847</td>
+                                <td>$1,847.20</td>
+                                <td>$5.68</td>
+                            </tr>
+                            <tr>
+                                <td>Interstitial</td>
+                                <td>287,194</td>
+                                <td>$712.45</td>
+                                <td>$2.48</td>
+                            </tr>
+                            <tr>
+                                <td>Banner</td>
+                                <td>235,250</td>
+                                <td>$288.27</td>
+                                <td>$1.23</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Subscriptions Section -->
+            <section id="subscriptions-section" class="dashboard-section">
+                <h2>Subscription Management</h2>
+                <div class="subscription-stats">
+                    <div class="sub-stat">
+                        <h4>Weekly Subscribers</h4>
+                        <p>127 active</p>
+                    </div>
+                    <div class="sub-stat">
+                        <h4>Monthly Subscribers</h4>
+                        <p>215 active</p>
+                    </div>
+                    <div class="sub-stat">
+                        <h4>Churn Rate</h4>
+                        <p>8.2%</p>
+                    </div>
+                </div>
+                
+                <div class="subscription-table-container">
+                    <h3>Active Subscriptions</h3>
+                    <table class="subscription-table">
+                        <thead>
+                            <tr>
+                                <th>Player ID</th>
+                                <th>Name</th>
+                                <th>Type</th>
+                                <th>Start Date</th>
+                                <th>End Date</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="subscription-list">
+                            <!-- Will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Users Section -->
+            <section id="users-section" class="dashboard-section">
+                <h2>Player Management</h2>
+                <div class="user-filters">
+                    <select id="user-filter">
+                        <option value="all">All Players</option>
+                        <option value="vip">VIP Players</option>
+                        <option value="paying">Paying Players</option>
+                        <option value="free">Free Players</option>
+                    </select>
+                </div>
+                
+                <div class="vip-players">
+                    <h3>VIP Players</h3>
+                    <div class="vip-grid" id="vip-list">
+                        <!-- Will be populated by JavaScript -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Analytics Section -->
+            <section id="analytics-section" class="dashboard-section">
+                <h2>Game Analytics</h2>
+                <div class="analytics-grid">
+                    <div class="game-stats">
+                        <h3>Game Statistics</h3>
+                        <div class="game-stat-item">
+                            <span>Total Playtime</span>
+                            <span>84,732 hours</span>
+                        </div>
+                        <div class="game-stat-item">
+                            <span>Average Session Length</span>
+                            <span>23.4 minutes</span>
+                        </div>
+                        <div class="game-stat-item">
+                            <span>Worlds Completed</span>
+                            <span>12,847</span>
+                        </div>
+                        <div class="game-stat-item">
+                            <span>Bosses Defeated</span>
+                            <span>28,394</span>
+                        </div>
+                    </div>
+                    <div class="retention-stats">
+                        <h3>Player Retention</h3>
+                        <div class="retention-item">
+                            <span>Day 1</span>
+                            <span>78.2%</span>
+                        </div>
+                        <div class="retention-item">
+                            <span>Day 7</span>
+                            <span>34.5%</span>
+                        </div>
+                        <div class="retention-item">
+                            <span>Day 30</span>
+                            <span>12.8%</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="dashboard-script.js"></script>
+</body>
+</html>
