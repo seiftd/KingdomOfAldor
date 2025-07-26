@@ -242,15 +242,474 @@ HEROES = {
 
 # Enhanced Weapons System with Premium Integration
 WEAPONS = {
-    # Existing weapons
+    # ========== WOOD RANK (Free/Default) ==========
+    "wooden_sword": {
+        "name": "Wooden Sword",
+        "attack_bonus": 3,
+        "defense_bonus": 0,
+        "unlock_level": 1,
+        "unlock_type": "default",
+        "acquisition_method": "default",
+        "cost": 0,
+        "rarity": "Common",
+        "rank": "Wood",
+        "max_level": 120,
+        "level": 1,
+        "sprite_path": "weapons/wooden_sword.png"
+    },
+    "wooden_bow": {
+        "name": "Wooden Bow",
+        "attack_bonus": 4,
+        "defense_bonus": 0,
+        "unlock_level": 1,
+        "unlock_type": "gold",
+        "acquisition_method": "store",
+        "cost": 50,
+        "rarity": "Common",
+        "rank": "Wood",
+        "max_level": 120,
+        "level": 1,
+        "sprite_path": "weapons/wooden_bow.png"
+    },
+    "wooden_staff": {
+        "name": "Wooden Staff",
+        "attack_bonus": 2,
+        "defense_bonus": 1,
+        "spell_power": 5,
+        "unlock_level": 1,
+        "unlock_type": "gold",
+        "acquisition_method": "store",
+        "cost": 75,
+        "rarity": "Common",
+        "rank": "Wood",
+        "max_level": 120,
+        "level": 1,
+        "sprite_path": "weapons/wooden_staff.png"
+    },
+
+    # ========== IRON RANK (Store Purchase) ==========
+    "iron_sword": {
+        "name": "Iron Sword",
+        "attack_bonus": 8,
+        "defense_bonus": 1,
+        "unlock_level": 3,
+        "unlock_type": "gold",
+        "acquisition_method": "store",
+        "cost": 200,
+        "rarity": "Common",
+        "rank": "Iron",
+        "max_level": 120,
+        "level": 1,
+        "sprite_path": "weapons/iron_sword.png"
+    },
+    "iron_bow": {
+        "name": "Iron Bow",
+        "attack_bonus": 10,
+        "defense_bonus": 0,
+        "range_bonus": 2,
+        "unlock_level": 3,
+        "unlock_type": "gold",
+        "acquisition_method": "store",
+        "cost": 250,
+        "rarity": "Common",
+        "rank": "Iron",
+        "max_level": 120,
+        "level": 1,
+        "sprite_path": "weapons/iron_bow.png"
+    },
+    "iron_staff": {
+        "name": "Iron Staff",
+        "attack_bonus": 6,
+        "defense_bonus": 2,
+        "spell_power": 12,
+        "unlock_level": 4,
+        "unlock_type": "gold",
+        "acquisition_method": "store",
+        "cost": 300,
+        "rarity": "Common",
+        "rank": "Iron",
+        "max_level": 120,
+        "level": 1,
+        "sprite_path": "weapons/iron_staff.png"
+    },
+
+    # ========== SILVER RANK (Daily Ad Events + Gem Store) ==========
+    "silver_sword": {
+        "name": "Silver Sword",
+        "attack_bonus": 15,
+        "defense_bonus": 3,
+        "crit_chance": 5,
+        "unlock_level": 6,
+        "unlock_type": "gems",
+        "acquisition_method": "daily_ad_event_or_gems",
+        "cost": 150,  # gems
+        "ad_requirement": 10,  # daily ads
+        "rarity": "Uncommon",
+        "rank": "Silver",
+        "max_level": 120,
+        "level": 1,
+        "sprite_path": "weapons/silver_sword.png"
+    },
+    "silver_bow": {
+        "name": "Silver Bow",
+        "attack_bonus": 18,
+        "defense_bonus": 1,
+        "range_bonus": 3,
+        "crit_chance": 8,
+        "unlock_level": 7,
+        "unlock_type": "gems",
+        "acquisition_method": "daily_ad_event_or_gems",
+        "cost": 175,
+        "ad_requirement": 10,
+        "rarity": "Uncommon",
+        "rank": "Silver",
+        "max_level": 120,
+        "level": 1,
+        "sprite_path": "weapons/silver_bow.png"
+    },
+    "silver_staff": {
+        "name": "Silver Staff",
+        "attack_bonus": 12,
+        "defense_bonus": 4,
+        "spell_power": 20,
+        "mana_regen": 2,
+        "unlock_level": 8,
+        "unlock_type": "gems",
+        "acquisition_method": "daily_ad_event_or_gems",
+        "cost": 200,
+        "ad_requirement": 10,
+        "rarity": "Uncommon",
+        "rank": "Silver",
+        "max_level": 120,
+        "level": 1,
+        "sprite_path": "weapons/silver_staff.png"
+    },
+
+    # ========== GOLD RANK (Weekly Ad Events) ==========
+    "golden_sword": {
+        "name": "Golden Sword",
+        "attack_bonus": 25,
+        "defense_bonus": 5,
+        "crit_chance": 10,
+        "crit_damage": 20,
+        "unlock_level": 12,
+        "unlock_type": "event",
+        "acquisition_method": "weekly_ad_event",
+        "cost": 0,
+        "ad_requirement": 30,  # weekly ads
+        "rarity": "Rare",
+        "rank": "Gold",
+        "max_level": 120,
+        "level": 1,
+        "sprite_path": "weapons/golden_sword.png"
+    },
+    "golden_bow": {
+        "name": "Golden Bow",
+        "attack_bonus": 28,
+        "defense_bonus": 2,
+        "range_bonus": 4,
+        "crit_chance": 12,
+        "piercing": 1,
+        "unlock_level": 13,
+        "unlock_type": "event",
+        "acquisition_method": "weekly_ad_event",
+        "cost": 0,
+        "ad_requirement": 30,
+        "rarity": "Rare",
+        "rank": "Gold",
+        "max_level": 120,
+        "level": 1,
+        "sprite_path": "weapons/golden_bow.png"
+    },
+    "golden_staff": {
+        "name": "Golden Staff",
+        "attack_bonus": 20,
+        "defense_bonus": 6,
+        "spell_power": 35,
+        "mana_regen": 4,
+        "spell_crit": 8,
+        "unlock_level": 14,
+        "unlock_type": "event",
+        "acquisition_method": "weekly_ad_event",
+        "cost": 0,
+        "ad_requirement": 30,
+        "rarity": "Rare",
+        "rank": "Gold",
+        "max_level": 120,
+        "level": 1,
+        "sprite_path": "weapons/golden_staff.png"
+    },
+
+    # ========== PLATINUM RANK (Store with Gems) ==========
+    "platinum_sword": {
+        "name": "Platinum Sword",
+        "attack_bonus": 40,
+        "defense_bonus": 8,
+        "crit_chance": 15,
+        "crit_damage": 35,
+        "elemental_damage": 10,
+        "unlock_level": 18,
+        "unlock_type": "gems",
+        "acquisition_method": "gem_store",
+        "cost": 600,
+        "rarity": "Rare",
+        "rank": "Platinum",
+        "max_level": 120,
+        "level": 1,
+        "sprite_path": "weapons/platinum_sword.png"
+    },
+    "platinum_bow": {
+        "name": "Platinum Bow",
+        "attack_bonus": 45,
+        "defense_bonus": 3,
+        "range_bonus": 6,
+        "crit_chance": 18,
+        "piercing": 2,
+        "multishot": 2,
+        "unlock_level": 19,
+        "unlock_type": "gems",
+        "acquisition_method": "gem_store",
+        "cost": 650,
+        "rarity": "Rare",
+        "rank": "Platinum",
+        "max_level": 120,
+        "level": 1,
+        "sprite_path": "weapons/platinum_bow.png"
+    },
+
+    # ========== EMERALD RANK (Session End Rewards) ==========
+    "emerald_sword": {
+        "name": "Emerald Sword",
+        "attack_bonus": 60,
+        "defense_bonus": 12,
+        "crit_chance": 20,
+        "crit_damage": 50,
+        "nature_damage": 20,
+        "healing_aura": 3,
+        "unlock_level": 25,
+        "unlock_type": "session_reward",
+        "acquisition_method": "session_end_reward",
+        "cost": 0,
+        "rarity": "Epic",
+        "rank": "Emerald",
+        "max_level": 120,
+        "level": 1,
+        "sprite_path": "weapons/emerald_sword.png"
+    },
+    "emerald_bow": {
+        "name": "Emerald Bow",
+        "attack_bonus": 65,
+        "defense_bonus": 5,
+        "range_bonus": 8,
+        "crit_chance": 22,
+        "piercing": 3,
+        "nature_arrows": 25,
+        "entangle_chance": 15,
+        "unlock_level": 26,
+        "unlock_type": "session_reward",
+        "acquisition_method": "session_end_reward",
+        "cost": 0,
+        "rarity": "Epic",
+        "rank": "Emerald",
+        "max_level": 120,
+        "level": 1,
+        "sprite_path": "weapons/emerald_bow.png"
+    },
+
+    # ========== DIAMOND RANK (Store with Gems) ==========
+    "diamond_sword": {
+        "name": "Diamond Sword",
+        "attack_bonus": 85,
+        "defense_bonus": 18,
+        "crit_chance": 25,
+        "crit_damage": 70,
+        "pure_damage": 25,
+        "armor_pierce": 30,
+        "light_aura": 15,
+        "unlock_level": 32,
+        "unlock_type": "gems",
+        "acquisition_method": "gem_store",
+        "cost": 1500,
+        "rarity": "Epic",
+        "rank": "Diamond",
+        "max_level": 120,
+        "level": 1,
+        "sprite_path": "weapons/diamond_sword.png"
+    },
+    "diamond_bow": {
+        "name": "Diamond Bow",
+        "attack_bonus": 90,
+        "defense_bonus": 8,
+        "range_bonus": 10,
+        "crit_chance": 28,
+        "piercing": 4,
+        "crystal_arrows": 35,
+        "shatter_shot": 20,
+        "unlock_level": 33,
+        "unlock_type": "gems",
+        "acquisition_method": "gem_store",
+        "cost": 1600,
+        "rarity": "Epic",
+        "rank": "Diamond",
+        "max_level": 120,
+        "level": 1,
+        "sprite_path": "weapons/diamond_bow.png"
+    },
+
+    # ========== ELITE RANK (Events Only) ==========
+    "elite_blade": {
+        "name": "Elite Blade",
+        "attack_bonus": 110,
+        "defense_bonus": 25,
+        "crit_chance": 30,
+        "crit_damage": 90,
+        "elite_mastery": 35,
+        "perfect_balance": 20,
+        "energy_wave": 25,
+        "unlock_level": 40,
+        "unlock_type": "event",
+        "acquisition_method": "special_event_only",
+        "cost": 0,
+        "rarity": "Legendary",
+        "rank": "Elite",
+        "max_level": 120,
+        "level": 1,
+        "sprite_path": "weapons/elite_blade.png"
+    },
+    "elite_crossbow": {
+        "name": "Elite Crossbow",
+        "attack_bonus": 115,
+        "defense_bonus": 12,
+        "range_bonus": 12,
+        "crit_chance": 32,
+        "piercing": 5,
+        "explosive_bolts": 40,
+        "auto_reload": 1,
+        "unlock_level": 41,
+        "unlock_type": "event",
+        "acquisition_method": "special_event_only",
+        "cost": 0,
+        "rarity": "Legendary",
+        "rank": "Elite",
+        "max_level": 120,
+        "level": 1,
+        "sprite_path": "weapons/elite_crossbow.png"
+    },
+
+    # ========== HYPER RANK (Money Only) ==========
+    "hyper_katana": {
+        "name": "Hyper Katana",
+        "attack_bonus": 140,
+        "defense_bonus": 30,
+        "crit_chance": 40,
+        "crit_damage": 120,
+        "hyper_slash": 50,
+        "time_cut": 35,
+        "perfect_edge": 40,
+        "unlock_level": 48,
+        "unlock_type": "money",
+        "acquisition_method": "real_money_only",
+        "cost": 9.99,  # USD
+        "rarity": "Legendary",
+        "rank": "Hyper",
+        "max_level": 120,
+        "level": 1,
+        "sprite_path": "weapons/hyper_katana.png"
+    },
+    "hyper_railgun": {
+        "name": "Hyper Railgun",
+        "attack_bonus": 150,
+        "defense_bonus": 15,
+        "range_bonus": 15,
+        "crit_chance": 35,
+        "piercing": 8,
+        "plasma_shots": 60,
+        "electromagnetic_pulse": 45,
+        "unlock_level": 49,
+        "unlock_type": "money",
+        "acquisition_method": "real_money_only",
+        "cost": 12.99,
+        "rarity": "Legendary",
+        "rank": "Hyper",
+        "max_level": 120,
+        "level": 1,
+        "sprite_path": "weapons/hyper_railgun.png"
+    },
+
+    # ========== LEGENDARY RANK (Money Only) ==========
+    "legendary_excalibur": {
+        "name": "Legendary Excalibur",
+        "attack_bonus": 200,
+        "defense_bonus": 50,
+        "crit_chance": 50,
+        "crit_damage": 150,
+        "divine_light": 80,
+        "holy_aura": 60,
+        "righteous_fury": 70,
+        "blessing_of_kings": 50,
+        "unlock_level": 55,
+        "unlock_type": "money",
+        "acquisition_method": "real_money_only",
+        "cost": 19.99,
+        "rarity": "Legendary",
+        "rank": "Legendary",
+        "max_level": 120,
+        "level": 1,
+        "sprite_path": "weapons/legendary_excalibur.png"
+    },
+    "legendary_worldbreaker": {
+        "name": "Legendary Worldbreaker",
+        "attack_bonus": 220,
+        "defense_bonus": 40,
+        "range_bonus": 20,
+        "crit_chance": 45,
+        "piercing": 10,
+        "world_shatter": 100,
+        "dimensional_arrow": 80,
+        "reality_pierce": 90,
+        "unlock_level": 56,
+        "unlock_type": "money",
+        "acquisition_method": "real_money_only",
+        "cost": 24.99,
+        "rarity": "Legendary",
+        "rank": "Legendary",
+        "max_level": 120,
+        "level": 1,
+        "sprite_path": "weapons/legendary_worldbreaker.png"
+    },
+    "legendary_voidbringer": {
+        "name": "Legendary Voidbringer",
+        "attack_bonus": 210,
+        "defense_bonus": 45,
+        "life_steal": 40,
+        "soul_harvest": 30,
+        "void_mastery": 100,
+        "reality_tear": 90,
+        "existence_drain": 80,
+        "entropy_field": 85,
+        "unlock_level": 60,
+        "unlock_type": "money",
+        "acquisition_method": "real_money_only",
+        "cost": 29.99,
+        "rarity": "Legendary",
+        "rank": "Legendary",
+        "max_level": 120,
+        "level": 1,
+        "sprite_path": "weapons/legendary_voidbringer.png"
+    },
+
+    # Existing weapons for compatibility
     "rusty_sword": {
         "name": "Rusty Sword",
         "attack_bonus": 5,
         "defense_bonus": 0,
         "unlock_level": 1,
         "unlock_type": "default",
+        "acquisition_method": "default",
         "cost": 0,
         "rarity": "Common",
+        "max_level": 120,
+        "level": 1,
         "sprite_path": "weapons/rusty_sword.png"
     },
     "steel_sword": {
@@ -259,8 +718,11 @@ WEAPONS = {
         "defense_bonus": 2,
         "unlock_level": 3,
         "unlock_type": "gold",
+        "acquisition_method": "store",
         "cost": 500,
         "rarity": "Common",
+        "max_level": 120,
+        "level": 1,
         "sprite_path": "weapons/steel_sword.png"
     },
     "enchanted_blade": {
@@ -269,30 +731,12 @@ WEAPONS = {
         "defense_bonus": 5,
         "unlock_level": 8,
         "unlock_type": "gems",
-        "cost": 1500,
+        "acquisition_method": "gem_store",
+        "cost": 300,
         "rarity": "Rare",
+        "max_level": 120,
+        "level": 1,
         "sprite_path": "weapons/enchanted_blade.png"
-    },
-    "dragon_slayer": {
-        "name": "Dragon Slayer",
-        "attack_bonus": 35,
-        "defense_bonus": 8,
-        "unlock_level": 15,
-        "unlock_type": "gems",
-        "cost": 5000,
-        "rarity": "Epic",
-        "sprite_path": "weapons/dragon_slayer.png"
-    },
-    "shadow_dagger": {
-        "name": "Shadow Dagger",
-        "attack_bonus": 20,
-        "defense_bonus": 0,
-        "crit_chance": 25,
-        "unlock_level": 12,
-        "unlock_type": "gems",
-        "cost": 3000,
-        "rarity": "Rare",
-        "sprite_path": "weapons/shadow_dagger.png"
     },
     # Merge premium weapons
     **PREMIUM_WEAPONS
@@ -768,4 +1212,58 @@ STORY_SESSIONS = {
             }
         ]
     }
+}
+
+# Weapon Leveling System Configuration
+WEAPON_LEVELING = {
+    "max_level": 120,
+    "gold_cost_base": 100,  # Base gold cost for level 1->2
+    "gold_cost_multiplier": 1.15,  # Multiplier per level
+    "ether_required_levels": [5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100, 105, 110, 115, 120],  # Levels that require ether
+    "ether_cost_base": 1,  # Base ether cost
+    "ether_cost_multiplier": 1.1,  # Ether cost multiplier
+    "stat_increase_per_level": 0.02,  # 2% stat increase per level
+    "visual_upgrade_levels": [30, 60, 90, 120],  # Levels where weapon appearance changes
+    "color_effects": {
+        30: {"color": "#FFD700", "glow": "golden", "effect": "sparkle"},  # Golden
+        60: {"color": "#9400D3", "glow": "purple", "effect": "energy_waves"},  # Purple
+        90: {"color": "#00CED1", "glow": "cyan", "effect": "lightning"},  # Cyan
+        120: {"color": "#FF4500", "glow": "orange", "effect": "fire_aura"}  # Orange-red
+    }
+}
+
+# Ether Store Configuration
+ETHER_STORE = {
+    "ether_small": {"name": "Small Ether Crystal", "amount": 1, "gems": 10},
+    "ether_medium": {"name": "Medium Ether Crystal", "amount": 5, "gems": 45},
+    "ether_large": {"name": "Large Ether Crystal", "amount": 10, "gems": 85},
+    "ether_mega": {"name": "Mega Ether Crystal", "amount": 25, "gems": 200}
+}
+
+# Ad Event Configuration
+AD_EVENTS = {
+    "daily_silver_lottery": {
+        "name": "Daily Silver Lottery",
+        "ads_required": 10,
+        "reset_time": "daily",  # resets at midnight
+        "winner_selection_time": "23:00",  # last hour of day
+        "prizes": ["silver_sword", "silver_bow", "silver_staff", "silver_dagger", "silver_scythe"],
+        "notification_method": "in_game_email"
+    },
+    "weekly_gold_lottery": {
+        "name": "Weekly Gold Lottery", 
+        "ads_required": 30,
+        "reset_time": "weekly",  # resets on Sunday
+        "winner_selection_time": "sunday_23:00",
+        "prizes": ["golden_sword", "golden_bow", "golden_staff", "golden_hammer", "golden_fists"],
+        "notification_method": "in_game_email"
+    }
+}
+
+# Session End Rewards Configuration
+SESSION_REWARDS = {
+    "emerald_weapon_chance": 0.15,  # 15% chance to get emerald weapon on session end
+    "min_session_time": 300,  # 5 minutes minimum session time
+    "cooldown_hours": 6,  # 6 hour cooldown between rewards
+    "emerald_weapons": ["emerald_sword", "emerald_bow", "emerald_staff", "emerald_hammer", "emerald_spear"]
 }
