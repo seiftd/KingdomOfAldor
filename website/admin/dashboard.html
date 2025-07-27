@@ -69,6 +69,7 @@
                 <button class="nav-btn" onclick="switchTab('events')">🎉 Events</button>
                 <button class="nav-btn" onclick="switchTab('weapons')">⚔️ Weapons</button>
                 <button class="nav-btn" onclick="switchTab('heroes')">🦸 Heroes</button>
+                <button class="nav-btn" onclick="switchTab('pixellab')">🎨 AI Assets</button>
                 <button class="nav-btn" onclick="switchTab('codes')">🎫 Promo Codes</button>
                 <button class="nav-btn" onclick="switchTab('sync')">🔄 Data Sync</button>
                 <button class="nav-btn" onclick="switchTab('settings')">⚙️ Settings</button>
@@ -591,6 +592,248 @@
 
                 <div class="heroes-grid" id="heroes-grid">
                     <!-- Heroes will be populated here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- PixelLab.ai Asset Generation Tab -->
+        <div id="pixellab-tab" class="tab-content">
+            <div class="pixellab-dashboard">
+                <div class="dashboard-header">
+                    <h2>🎨 PixelLab.ai Asset Generation</h2>
+                    <div class="action-buttons">
+                        <button class="action-btn primary" onclick="showAssetGeneratorModal()">🎨 Generate New Asset</button>
+                        <button class="action-btn secondary" onclick="checkPixelLabStatus()">🔄 Check Status</button>
+                    </div>
+                </div>
+
+                <div class="pixellab-status" id="pixellab-status">
+                    <div class="status-indicator offline" id="status-indicator">
+                        <div class="status-dot"></div>
+                        <span id="status-text">Checking connection...</span>
+                    </div>
+                </div>
+
+                <div class="pixellab-stats">
+                    <div class="stat-card">
+                        <h3>Generated Assets</h3>
+                        <div class="stat-value" id="total-generated-assets">0</div>
+                        <div class="stat-change neutral">All time</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Active Generations</h3>
+                        <div class="stat-value" id="active-generations">0</div>
+                        <div class="stat-change positive">In progress</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Success Rate</h3>
+                        <div class="stat-value" id="generation-success-rate">100%</div>
+                        <div class="stat-change positive">Last 24h</div>
+                    </div>
+                </div>
+
+                <div class="pixellab-content">
+                    <!-- Quick Templates Section -->
+                    <div class="quick-templates-section">
+                        <h3>🚀 Quick Generation Templates</h3>
+                        <div class="template-categories">
+                            <div class="template-category">
+                                <h4>⚔️ Legendary Weapons</h4>
+                                <div class="template-grid">
+                                    <div class="template-item" onclick="generateFromTemplate('legendary_weapons', 0)">
+                                        <div class="template-icon">⚔️</div>
+                                        <h5>Godslayer Excalibur</h5>
+                                        <p>Divine sword with holy fire</p>
+                                        <button class="template-btn">Generate</button>
+                                    </div>
+                                    <div class="template-item" onclick="generateFromTemplate('legendary_weapons', 1)">
+                                        <div class="template-icon">🏹</div>
+                                        <h5>Worldender Bow</h5>
+                                        <p>Cosmic bow with void energy</p>
+                                        <button class="template-btn">Generate</button>
+                                    </div>
+                                    <div class="template-item" onclick="generateFromTemplate('legendary_weapons', 2)">
+                                        <div class="template-icon">🔮</div>
+                                        <h5>Staff of Omniscience</h5>
+                                        <p>Reality-bending wizard staff</p>
+                                        <button class="template-btn">Generate</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="template-category">
+                                <h4>🦸 Hero Transformations</h4>
+                                <div class="template-grid">
+                                    <div class="template-item" onclick="generateFromTemplate('hero_transformations', 0)">
+                                        <div class="template-icon">🐉</div>
+                                        <h5>Dragon Lord Arin</h5>
+                                        <p>Dragon scale armor transformation</p>
+                                        <button class="template-btn">Generate</button>
+                                    </div>
+                                    <div class="template-item" onclick="generateFromTemplate('hero_transformations', 1)">
+                                        <div class="template-icon">🌌</div>
+                                        <h5>Cosmic Emperor Arin</h5>
+                                        <p>Starlight armor ascension</p>
+                                        <button class="template-btn">Generate</button>
+                                    </div>
+                                    <div class="template-item" onclick="generateFromTemplate('hero_transformations', 2)">
+                                        <div class="template-icon">🖤</div>
+                                        <h5>Void Knight Arin</h5>
+                                        <p>Dark void energy armor</p>
+                                        <button class="template-btn">Generate</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="template-category">
+                                <h4>🗺️ Game Environments</h4>
+                                <div class="template-grid">
+                                    <div class="template-item" onclick="generateFromTemplate('game_environments', 0)">
+                                        <div class="template-icon">🌲</div>
+                                        <h5>Forest of Shadows</h5>
+                                        <p>Dark mystical forest</p>
+                                        <button class="template-btn">Generate</button>
+                                    </div>
+                                    <div class="template-item" onclick="generateFromTemplate('game_environments', 1)">
+                                        <div class="template-icon">🏔️</div>
+                                        <h5>Ice Peaks</h5>
+                                        <p>Frozen mountain peaks</p>
+                                        <button class="template-btn">Generate</button>
+                                    </div>
+                                    <div class="template-item" onclick="generateFromTemplate('game_environments', 2)">
+                                        <div class="template-icon">🌋</div>
+                                        <h5>Volcanic Wasteland</h5>
+                                        <p>Hellscape with lava flows</p>
+                                        <button class="template-btn">Generate</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Advanced Generation Section -->
+                    <div class="advanced-generation-section">
+                        <h3>🔧 Advanced Asset Generation</h3>
+                        <div class="generation-controls">
+                            <div class="control-group">
+                                <label>Asset Type</label>
+                                <select id="asset-type-select">
+                                    <option value="weapon">⚔️ Weapon</option>
+                                    <option value="hero">🦸 Hero</option>
+                                    <option value="map">🗺️ Map</option>
+                                    <option value="gem">💎 Gem</option>
+                                    <option value="icon">🎯 Icon</option>
+                                    <option value="skin">🎭 Skin</option>
+                                    <option value="boss">🐉 Boss</option>
+                                </select>
+                            </div>
+                            
+                            <div class="control-group">
+                                <label>Rarity</label>
+                                <select id="rarity-select">
+                                    <option value="legendary">🌟 Legendary</option>
+                                    <option value="hyper">⚡ Hyper</option>
+                                    <option value="elite">👑 Elite</option>
+                                    <option value="diamond">💎 Diamond</option>
+                                    <option value="emerald">🟢 Emerald</option>
+                                    <option value="platinum">⚪ Platinum</option>
+                                    <option value="gold">🟡 Gold</option>
+                                    <option value="silver">⚫ Silver</option>
+                                    <option value="iron">🔘 Iron</option>
+                                    <option value="wood">🟤 Wood</option>
+                                </select>
+                            </div>
+                            
+                            <div class="control-group">
+                                <label>Style</label>
+                                <select id="style-select">
+                                    <option value="fantasy">Fantasy</option>
+                                    <option value="sci-fi">Sci-Fi</option>
+                                    <option value="cartoon">Cartoon</option>
+                                    <option value="realistic">Realistic</option>
+                                    <option value="anime">Anime</option>
+                                    <option value="pixelart">Pixel Art</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="generation-form">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="asset-name">Asset Name</label>
+                                    <input type="text" id="asset-name" placeholder="e.g., Legendary Flame Sword">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="asset-dimensions">Dimensions</label>
+                                    <div class="dimension-inputs">
+                                        <input type="number" id="asset-width" placeholder="Width" value="1024">
+                                        <span>×</span>
+                                        <input type="number" id="asset-height" placeholder="Height" value="1024">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="asset-description">Description / Prompt</label>
+                                <textarea id="asset-description" rows="3" placeholder="Describe the asset you want to generate..."></textarea>
+                            </div>
+                            
+                            <div class="generation-actions">
+                                <button class="generate-btn primary" onclick="generateCustomAsset()">
+                                    <span class="btn-icon">🎨</span>
+                                    Generate Asset
+                                </button>
+                                <button class="generate-btn secondary" onclick="generateAssetSet()">
+                                    <span class="btn-icon">📦</span>
+                                    Generate Set
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Generated Assets Gallery -->
+                    <div class="assets-gallery-section">
+                        <div class="gallery-header">
+                            <h3>🖼️ Generated Assets</h3>
+                            <div class="gallery-controls">
+                                <select id="gallery-filter" onchange="filterAssetGallery()">
+                                    <option value="all">All Assets</option>
+                                    <option value="weapon">Weapons</option>
+                                    <option value="hero">Heroes</option>
+                                    <option value="map">Maps</option>
+                                    <option value="gem">Gems</option>
+                                </select>
+                                <button class="refresh-btn" onclick="refreshAssetGallery()">🔄</button>
+                            </div>
+                        </div>
+                        
+                        <div class="assets-gallery" id="assets-gallery">
+                            <!-- Generated assets will be populated here -->
+                        </div>
+                    </div>
+
+                    <!-- Batch Generation Section -->
+                    <div class="batch-generation-section">
+                        <h3>⚡ Batch Generation</h3>
+                        <div class="batch-controls">
+                            <button class="batch-btn" onclick="showBatchGenerationModal()">
+                                📦 Start Batch Generation
+                            </button>
+                            <button class="batch-btn secondary" onclick="generateGameAssetPack()">
+                                🎮 Generate Complete Game Pack
+                            </button>
+                        </div>
+                        
+                        <div class="batch-status" id="batch-status" style="display: none;">
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="batch-progress"></div>
+                            </div>
+                            <div class="batch-info">
+                                <span id="batch-current">0</span> / <span id="batch-total">0</span> assets generated
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
