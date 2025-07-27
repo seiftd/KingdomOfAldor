@@ -1,0 +1,24 @@
+{
+  "version": "1.0",
+  "audio": {
+    "master_volume": 0.7,
+    "music_volume": 0.6,
+    "sfx_volume": 0.8
+  },
+  "graphics": {
+    "fullscreen": false,
+    "resolution": [
+      1280,
+      720
+    ]
+  },
+  "gameplay": {
+    "language": "en",
+    "auto_save": true,
+    "notifications": true
+  },
+  "controls": {
+    "touch_sensitivity": 1.0,
+    "haptic_feedback": true
+  }
+}

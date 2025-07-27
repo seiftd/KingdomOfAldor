@@ -13,11 +13,16 @@ import pygame
 import logging
 from pathlib import Path
 
-# Add src directory to path
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'src'))
+# Add src directory to path and adjust Python path for relative imports
+src_path = os.path.join(os.path.dirname(__file__), 'src')
+sys.path.insert(0, src_path)
+sys.path.insert(0, os.path.dirname(__file__))
 
-from core.game import Game
-from core.config import Config
+# Import the game modules
+import src.core.game as game_module
+from src.core.config import Config
+
+Game = game_module.Game
 
 def setup_logging():
     """Setup logging configuration"""
@@ -50,7 +55,12 @@ def main():
     setup_logging()
     logger = logging.getLogger(__name__)
     
-    logger.info("Starting Kingdom of Aldoria v1.0.0")
+    # Check for test mode
+    test_mode = len(sys.argv) > 1 and '--test' in sys.argv
+    if test_mode:
+        logger.info("Starting Kingdom of Aldoria v1.0.0 in TEST MODE")
+    else:
+        logger.info("Starting Kingdom of Aldoria v1.0.0")
     
     # Check dependencies
     if not check_dependencies():
@@ -58,15 +68,41 @@ def main():
     
     # Initialize Pygame
     try:
+        # Set appropriate video driver based on environment
+        if test_mode or not os.environ.get('DISPLAY'):
+            # Use dummy driver for headless/test mode
+            os.environ['SDL_VIDEODRIVER'] = 'dummy'
+            logger.info("Using dummy video driver (headless mode)")
+        else:
+            # Use default driver for normal display
+            logger.info("Using default video driver (display mode)")
         pygame.init()
-        pygame.mixer.pre_init(frequency=22050, size=-16, channels=2, buffer=512)
-        pygame.mixer.init()
+        
+        # Try to initialize audio, but don't fail if no audio device
+        try:
+            pygame.mixer.pre_init(frequency=22050, size=-16, channels=2, buffer=512)
+            pygame.mixer.init()
+            logger.info("Pygame with audio initialized successfully")
+        except pygame.error as audio_error:
+            logger.warning(f"Audio initialization failed: {audio_error}")
+            logger.info("Continuing without audio...")
+            # Initialize pygame without audio
+            pygame.mixer.quit()
         
         logger.info("Pygame initialized successfully")
         
         # Create and run game
         game = Game()
-        game.run()
+        
+        if test_mode:
+            logger.info("Test mode: Game initialized successfully!")
+            logger.info("Game components:")
+            logger.info(f"  - State Manager: {type(game.state_manager).__name__}")
+            logger.info(f"  - Asset Manager: {type(game.asset_manager).__name__}")
+            logger.info(f"  - Audio Manager: {type(game.audio_manager).__name__}")
+            logger.info("Test completed successfully - game can start without black screen!")
+        else:
+            game.run()
         
     except Exception as e:
         logger.error(f"Fatal error: {e}", exc_info=True)

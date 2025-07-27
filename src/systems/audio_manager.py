@@ -22,7 +22,14 @@ class AudioManager:
         
         # Channel management
         self.max_channels = Config.MAX_SOUNDS_CONCURRENT
-        pygame.mixer.set_num_channels(self.max_channels)
+        
+        # Check if mixer is available
+        self.audio_available = pygame.mixer.get_init() is not None
+        
+        if self.audio_available:
+            pygame.mixer.set_num_channels(self.max_channels)
+        else:
+            self.logger.warning("Audio mixer not available - running in silent mode")
         
         # Currently playing sounds
         self.playing_sounds: Dict[str, pygame.mixer.Channel] = {}
@@ -46,7 +53,7 @@ class AudioManager:
         Returns:
             True if sound started playing
         """
-        if not sound:
+        if not self.audio_available or not sound:
             return False
         
         try:
@@ -115,6 +122,9 @@ class AudioManager:
             loops: Number of loops (-1 for infinite)
             volume: Music volume (None to use current setting)
         """
+        if not self.audio_available:
+            return
+            
         try:
             if volume is not None:
                 self.set_music_volume(volume)
@@ -132,6 +142,8 @@ class AudioManager:
     
     def stop_music(self):
         """Stop background music"""
+        if not self.audio_available:
+            return
         pygame.mixer.music.stop()
         self.current_music = None
         self.music_paused = False
@@ -139,6 +151,8 @@ class AudioManager:
     
     def pause_music(self):
         """Pause background music"""
+        if not self.audio_available:
+            return
         if self.current_music and not self.music_paused:
             pygame.mixer.music.pause()
             self.music_paused = True
@@ -146,6 +160,8 @@ class AudioManager:
     
     def resume_music(self):
         """Resume background music"""
+        if not self.audio_available:
+            return
         if self.current_music and self.music_paused:
             pygame.mixer.music.unpause()
             self.music_paused = False
