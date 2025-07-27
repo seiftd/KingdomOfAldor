@@ -396,13 +396,13 @@ class Config:
     
 
 
-# Add directory constants for backward compatibility
-Config.ASSETS_DIR = Config.get_assets_dir()
-Config.SAVE_DIR = Config.get_saves_dir()  
-Config.AUDIO_DIR = Config.get_audio_dir()
-Config.SPRITES_DIR = os.path.join(Config.get_images_dir(), "sprites")
-Config.UI_DIR = os.path.join(Config.get_images_dir(), "ui")
-Config.WORLDS_DIR = os.path.join(Config.get_images_dir(), "worlds")
+# Add directory constants for backward compatibility (as Path objects)
+Config.ASSETS_DIR = Path(Config.get_assets_dir())
+Config.SAVE_DIR = Path(Config.get_saves_dir())  
+Config.AUDIO_DIR = Path(Config.get_audio_dir())
+Config.SPRITES_DIR = Path(Config.get_images_dir()) / "sprites"
+Config.UI_DIR = Path(Config.get_images_dir()) / "ui"
+Config.WORLDS_DIR = Path(Config.get_images_dir()) / "worlds"
 
 # === BASIC GAME SETTINGS ===
 VERSION = "1.2.0"
