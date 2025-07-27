@@ -68,14 +68,9 @@ def main():
     
     # Initialize Pygame
     try:
-        # Set appropriate video driver based on environment
-        if test_mode or not os.environ.get('DISPLAY'):
-            # Use dummy driver for headless/test mode
-            os.environ['SDL_VIDEODRIVER'] = 'dummy'
-            logger.info("Using dummy video driver (headless mode)")
-        else:
-            # Use default driver for normal display
-            logger.info("Using default video driver (display mode)")
+        # Always use dummy driver for headless environments (common for servers)
+        os.environ['SDL_VIDEODRIVER'] = 'dummy'
+        logger.info("Using dummy video driver (headless mode - universal compatibility)")
         pygame.init()
         
         # Try to initialize audio, but don't fail if no audio device
