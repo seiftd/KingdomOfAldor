@@ -20,19 +20,277 @@ from pathlib import Path
 
 # Import premium content
 try:
-    from src.content.premium_content import (
+    # Try relative import first
+    from ..content.premium_content import (
         PREMIUM_HEROES, PREMIUM_WEAPONS, PREMIUM_SKINS, PREMIUM_BUNDLES,
         get_premium_content_by_type, get_premium_item_by_id
     )
 except ImportError:
-    PREMIUM_HEROES = {}
-    PREMIUM_WEAPONS = {}
-    PREMIUM_SKINS = {}
-    PREMIUM_BUNDLES = {}
+    try:
+        # Try absolute import as fallback
+        from content.premium_content import (
+            PREMIUM_HEROES, PREMIUM_WEAPONS, PREMIUM_SKINS, PREMIUM_BUNDLES,
+            get_premium_content_by_type, get_premium_item_by_id
+        )
+    except ImportError:
+        # If both fail, use empty defaults
+        PREMIUM_HEROES = {}
+        PREMIUM_WEAPONS = {}
+        PREMIUM_SKINS = {}
+        PREMIUM_BUNDLES = {}
+        
+        def get_premium_content_by_type(content_type: str):
+            return {}
+        
+        def get_premium_item_by_id(item_id: str):
+            return None
 
 # Game Version and Info
 GAME_VERSION = "1.0.0"
 GAME_TITLE = "Kingdom of Aldoria"
+
+# === ENUMS AND CLASSES ===
+
+class GameStates(Enum):
+    """Game state enumeration for state management"""
+    MAIN_MENU = "main_menu"
+    WORLD_MAP = "world_map"
+    BATTLE = "battle"
+    SHOP = "shop"
+    INVENTORY = "inventory"
+    SETTINGS = "settings"
+    PAUSE = "pause"
+    GAME_OVER = "game_over"
+    VICTORY = "victory"
+    LOADING = "loading"
+    CUTSCENE = "cutscene"
+
+class SkillTypes(Enum):
+    """Skill type enumeration"""
+    ATTACK = "attack"
+    DEFENSE = "defense"
+    HEAL = "heal"
+    SPECIAL = "special"
+    BUFF = "buff"
+    DEBUFF = "debuff"
+
+class ItemRarity(Enum):
+    """Item rarity enumeration"""
+    WOOD = "wood"
+    IRON = "iron"
+    SILVER = "silver"
+    GOLD = "gold"
+    PLATINUM = "platinum"
+    EMERALD = "emerald"
+    DIAMOND = "diamond"
+    ELITE = "elite"
+    HYPER = "hyper"
+    LEGENDARY = "legendary"
+
+class Rarity(Enum):
+    """Alternative rarity enumeration for compatibility"""
+    COMMON = "common"
+    UNCOMMON = "uncommon"
+    RARE = "rare"
+    EPIC = "epic"
+    LEGENDARY = "legendary"
+    MYTHIC = "mythic"
+
+class SkillType(Enum):
+    """Individual skill type enumeration"""
+    SLASH = "slash"
+    THRUST = "thrust"
+    MAGIC = "magic"
+    HEAL = "heal"
+    BUFF = "buff"
+    DEBUFF = "debuff"
+    SPECIAL = "special"
+    ULTIMATE = "ultimate"
+
+class ItemType(Enum):
+    """Item type enumeration"""
+    WEAPON = "weapon"
+    ARMOR = "armor"
+    ACCESSORY = "accessory"
+    CONSUMABLE = "consumable"
+    MATERIAL = "material"
+    KEY_ITEM = "key_item"
+    SKIN = "skin"
+
+class CurrencyType(Enum):
+    """Currency type enumeration"""
+    GOLD = "gold"
+    GEMS = "gems"
+    ETHER = "ether"
+    EXPERIENCE = "experience"
+    STAMINA = "stamina"
+
+class WeaponType(Enum):
+    """Weapon type enumeration"""
+    SWORD = "sword"
+    BOW = "bow"
+    STAFF = "staff"
+    DAGGER = "dagger"
+    HAMMER = "hammer"
+    SCYTHE = "scythe"
+    FIST = "fist"
+    CROSSBOW = "crossbow"
+    ORB = "orb"
+    GAUNTLETS = "gauntlets"
+    KATANA = "katana"
+    RAILGUN = "railgun"
+    NEXUS = "nexus"
+    DESTROYER = "destroyer"
+    PHANTOM = "phantom"
+    BLADE = "blade"
+    REAPER = "reaper"
+
+class HeroClass(Enum):
+    """Hero class enumeration"""
+    KNIGHT = "knight"
+    MAGE = "mage"
+    ARCHER = "archer"
+    ASSASSIN = "assassin"
+    BERSERKER = "berserker"
+    PALADIN = "paladin"
+    PYROMANCER = "pyromancer"
+    VOID_ASSASSIN = "void_assassin"
+    ICE_WARDEN = "ice_warden"
+
+class DifficultyLevel(Enum):
+    """Difficulty level enumeration"""
+    EASY = "easy"
+    NORMAL = "normal"
+    HARD = "hard"
+    EXPERT = "expert"
+    LEGENDARY = "legendary"
+
+class BattlePhase(Enum):
+    """Battle phase enumeration"""
+    PREPARATION = "preparation"
+    PLAYER_TURN = "player_turn"
+    ENEMY_TURN = "enemy_turn"
+    SKILL_ANIMATION = "skill_animation"
+    VICTORY = "victory"
+    DEFEAT = "defeat"
+
+class GameMode(Enum):
+    """Game mode enumeration"""
+    STORY = "story"
+    ARENA = "arena"
+    SURVIVAL = "survival"
+    BOSS_RUSH = "boss_rush"
+    TOURNAMENT = "tournament"
+
+# === ADDITIONAL CONSTANTS ===
+
+# Colors (RGB tuples)
+class Colors:
+    """Color constants for UI elements"""
+    WHITE = (255, 255, 255)
+    BLACK = (0, 0, 0)
+    RED = (255, 0, 0)
+    GREEN = (0, 255, 0)
+    BLUE = (0, 0, 255)
+    YELLOW = (255, 255, 0)
+    PURPLE = (128, 0, 128)
+    ORANGE = (255, 165, 0)
+    GRAY = (128, 128, 128)
+    DARK_GRAY = (64, 64, 64)
+    LIGHT_GRAY = (192, 192, 192)
+    
+    # Game-specific colors
+    GOLD = (255, 215, 0)
+    SILVER = (192, 192, 192)
+    BRONZE = (205, 127, 50)
+    
+    # Rarity colors
+    LEGENDARY_GOLD = (255, 215, 0)
+    EPIC_PURPLE = (128, 0, 128)
+    RARE_BLUE = (0, 0, 255)
+    COMMON_GRAY = (128, 128, 128)
+
+# Input Constants
+class InputActions:
+    """Input action constants"""
+    MOVE_UP = "move_up"
+    MOVE_DOWN = "move_down"
+    MOVE_LEFT = "move_left"
+    MOVE_RIGHT = "move_right"
+    ATTACK = "attack"
+    DEFEND = "defend"
+    USE_SKILL = "use_skill"
+    OPEN_MENU = "open_menu"
+    CONFIRM = "confirm"
+    CANCEL = "cancel"
+    PAUSE = "pause"
+
+class Config:
+    """Main configuration class for Kingdom of Aldoria"""
+    
+    # Game Settings
+    VERSION = "1.2.0"
+    TITLE = "Kingdom of Aldoria"
+    
+    # Display Settings
+    SCREEN_WIDTH = 1280
+    SCREEN_HEIGHT = 720
+    FPS = 60
+    FULLSCREEN = False
+    
+    # Audio Settings
+    MASTER_VOLUME = 0.7
+    MUSIC_VOLUME = 0.6
+    SFX_VOLUME = 0.8
+    
+    # Game Mechanics
+    DEBUG = False  # Added DEBUG attribute
+    DEBUG_MODE = False
+    AUTO_SAVE = True
+    AUTO_SAVE_INTERVAL = 300  # seconds
+    
+    # Player Settings
+    MAX_LEVEL = 100
+    STARTING_GOLD = 100
+    STARTING_GEMS = 50
+    STARTING_STAMINA = 10
+    MAX_STAMINA = 25
+    
+    # Combat Settings
+    TURN_TIME_LIMIT = 30  # seconds
+    CRITICAL_HIT_CHANCE = 0.15
+    CRITICAL_HIT_MULTIPLIER = 1.5
+    
+    # Progression Settings
+    XP_MULTIPLIER = 1.0
+    GOLD_MULTIPLIER = 1.0
+    
+    # VIP Settings
+    VIP_DAILY_GEMS = 40
+    VIP_STAMINA_BONUS = 5
+    VIP_XP_BONUS = 0.25
+    VIP_GOLD_BONUS = 0.20
+    
+    # Paths
+    @staticmethod
+    def get_base_dir():
+        return os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    
+    @staticmethod
+    def get_assets_dir():
+        return os.path.join(Config.get_base_dir(), "assets")
+    
+    @staticmethod
+    def get_saves_dir():
+        return os.path.join(Config.get_base_dir(), "saves")
+    
+    @staticmethod
+    def get_audio_dir():
+        return os.path.join(Config.get_assets_dir(), "audio")
+    
+    @staticmethod
+    def get_images_dir():
+        return os.path.join(Config.get_assets_dir(), "images")
 
 # === BASIC GAME SETTINGS ===
 VERSION = "1.2.0"
