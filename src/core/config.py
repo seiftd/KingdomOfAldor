@@ -276,6 +276,41 @@ class Config:
     STARTING_STAMINA = 10
     MAX_STAMINA = 25
     
+    # Player Starting Stats
+    PLAYER_START_LEVEL = 1
+    PLAYER_START_HP = 100
+    PLAYER_START_ATTACK = 25
+    PLAYER_START_DEFENSE = 15
+    PLAYER_START_SPEED = 10
+    
+    # Player Progression
+    STAT_INCREASE_PER_LEVEL = 0.1  # 10% increase per level
+    XP_PER_LEVEL_BASE = 100
+    XP_PER_LEVEL_MULTIPLIER = 1.2
+    
+    # Enemy Scaling
+    ENEMY_POWER_SCALE_PER_STAGE = 1.05  # 5% increase per stage
+    BOSS_POWER_MULTIPLIER = 2.5  # Bosses are 2.5x stronger
+    
+    # Asset Management
+    ASSET_CACHE_SIZE = 128  # MB
+    MAX_LOADED_TEXTURES = 50
+    TEXTURE_COMPRESSION = True
+    PRELOAD_COMMON_ASSETS = True
+    
+    # Save System
+    MAX_SAVE_SLOTS = 5
+    SAVE_BACKUP_COUNT = 3
+    AUTO_SAVE_FREQUENCY = 300  # seconds
+    SAVE_COMPRESSION = True
+    
+    # Audio Settings Extended
+    AUDIO_BUFFER_SIZE = 1024
+    AUDIO_FREQUENCY = 44100
+    AUDIO_CHANNELS = 2
+    AUDIO_SAMPLE_SIZE = 16
+    MAX_SOUNDS_CONCURRENT = 8
+    
     # Combat Settings
     TURN_TIME_LIMIT = 30  # seconds
     CRITICAL_HIT_CHANCE = 0.15
@@ -284,6 +319,37 @@ class Config:
     # Progression Settings
     XP_MULTIPLIER = 1.0
     GOLD_MULTIPLIER = 1.0
+    XP_PER_LEVEL = 100  # Base XP required per level
+    
+    # Game Mechanics Extended  
+    SKILL_HEAL_PERCENTAGE = 0.25  # Heal skill restores 25% HP
+    TURN_DURATION = 30  # seconds per turn in battle
+    
+    # Stamina System
+    MAX_STAMINA_DEFAULT = 10
+    STAMINA_PER_STAGE = 1
+    STAMINA_RECHARGE_MINUTES = 5  # minutes per stamina point
+    
+    # Subscription Benefits
+    WEEKLY_SUB_GEMS_PER_DAY = 20
+    WEEKLY_SUB_MAX_STAMINA = 15
+    MONTHLY_SUB_GEMS_PER_DAY = 40
+    MONTHLY_SUB_MAX_STAMINA = 25
+    
+    # Ad System
+    AD_DAILY_LIMIT_DEFAULT = 10
+    AD_DAILY_LIMIT_VIP = 20
+    AD_COOLDOWN_SECONDS = 30
+    AD_REWARD_GEMS_MIN = 1
+    AD_REWARD_GEMS_MAX = 5
+    AD_REWARD_GOLD_MIN = 50
+    AD_REWARD_GOLD_MAX = 200
+    AD_SOURCES = ["admob", "unity", "facebook"]
+    
+    # Input Settings
+    DOUBLE_TAP_MAX_INTERVAL = 0.5  # seconds
+    LONG_PRESS_DURATION = 1.0  # seconds
+    TOUCH_DEADZONE = 10  # pixels
     
     # VIP Settings
     VIP_DAILY_GEMS = 40
@@ -305,6 +371,7 @@ class Config:
     ]
     STAGES_PER_WORLD = 40
     BOSS_STAGE_INTERVAL = 10  # Boss every 10 stages
+    WORLDS_COUNT = 9  # Total number of worlds
     
     # Paths
     @staticmethod
@@ -326,6 +393,16 @@ class Config:
     @staticmethod
     def get_images_dir():
         return os.path.join(Config.get_assets_dir(), "images")
+    
+
+
+# Add directory constants for backward compatibility
+Config.ASSETS_DIR = Config.get_assets_dir()
+Config.SAVE_DIR = Config.get_saves_dir()  
+Config.AUDIO_DIR = Config.get_audio_dir()
+Config.SPRITES_DIR = os.path.join(Config.get_images_dir(), "sprites")
+Config.UI_DIR = os.path.join(Config.get_images_dir(), "ui")
+Config.WORLDS_DIR = os.path.join(Config.get_images_dir(), "worlds")
 
 # === BASIC GAME SETTINGS ===
 VERSION = "1.2.0"
