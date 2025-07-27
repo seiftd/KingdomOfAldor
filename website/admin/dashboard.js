@@ -1876,5 +1876,602 @@ window.switchTab = function(tabName) {
         case 'subscriptions':
             loadVIPData();
             break;
+        case 'pixellab':
+            loadPixelLabData();
+            break;
     }
 };
+
+// PixelLab.ai API Configuration
+const PIXELLAB_API_BASE = 'http://localhost:5001/api/pixellab';
+
+// PixelLab.ai Functions
+async function loadPixelLabData() {
+    try {
+        // Check PixelLab.ai status
+        await checkPixelLabStatus();
+        
+        // Load generated assets
+        await refreshAssetGallery();
+        
+        // Update stats
+        await updatePixelLabStats();
+        
+    } catch (error) {
+        console.error('Failed to load PixelLab data:', error);
+        showNotification('❌ Failed to load PixelLab.ai data', 'error');
+    }
+}
+
+async function checkPixelLabStatus() {
+    try {
+        const statusIndicator = document.getElementById('status-indicator');
+        const statusText = document.getElementById('status-text');
+        
+        // Set checking state
+        statusIndicator.className = 'status-indicator checking';
+        statusText.textContent = 'Checking connection...';
+        
+        const response = await fetch(`${PIXELLAB_API_BASE}/status`);
+        const data = await response.json();
+        
+        if (response.ok && data.status === 'online') {
+            statusIndicator.className = 'status-indicator online';
+            statusText.textContent = `PixelLab.ai Online - ${data.version}`;
+            showNotification('✅ PixelLab.ai connection established', 'success');
+        } else {
+            throw new Error(data.message || 'Service unavailable');
+        }
+        
+    } catch (error) {
+        const statusIndicator = document.getElementById('status-indicator');
+        const statusText = document.getElementById('status-text');
+        
+        statusIndicator.className = 'status-indicator offline';
+        statusText.textContent = `Offline - ${error.message}`;
+        showNotification('❌ PixelLab.ai connection failed', 'error');
+    }
+}
+
+async function generateFromTemplate(category, index) {
+    try {
+        showGenerationProgress(`Generating ${category} template...`);
+        
+        const response = await fetch(`${PIXELLAB_API_BASE}/generate/template`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                template_category: category,
+                template_index: index
+            })
+        });
+        
+        const data = await response.json();
+        
+        if (response.ok && data.success) {
+            showNotification(`✅ Generated ${data.template_used} successfully!`, 'success');
+            await refreshAssetGallery();
+            await updatePixelLabStats();
+        } else {
+            throw new Error(data.error || 'Generation failed');
+        }
+        
+    } catch (error) {
+        console.error('Template generation failed:', error);
+        showNotification(`❌ Template generation failed: ${error.message}`, 'error');
+    } finally {
+        hideGenerationProgress();
+    }
+}
+
+async function generateCustomAsset() {
+    try {
+        const assetType = document.getElementById('asset-type-select').value;
+        const rarity = document.getElementById('rarity-select').value;
+        const style = document.getElementById('style-select').value;
+        const name = document.getElementById('asset-name').value;
+        const description = document.getElementById('asset-description').value;
+        const width = parseInt(document.getElementById('asset-width').value);
+        const height = parseInt(document.getElementById('asset-height').value);
+        
+        if (!name || !description) {
+            showNotification('❌ Please fill in asset name and description', 'error');
+            return;
+        }
+        
+        showGenerationProgress(`Generating ${name}...`);
+        
+        const response = await fetch(`${PIXELLAB_API_BASE}/generate`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                asset_type: assetType,
+                name: name,
+                description: description,
+                rarity: rarity,
+                style: style,
+                width: width,
+                height: height
+            })
+        });
+        
+        const data = await response.json();
+        
+        if (response.ok && data.success) {
+            showNotification(`✅ Generated ${name} successfully!`, 'success');
+            await refreshAssetGallery();
+            await updatePixelLabStats();
+            
+            // Clear form
+            clearGenerationForm();
+        } else {
+            throw new Error(data.error || 'Generation failed');
+        }
+        
+    } catch (error) {
+        console.error('Asset generation failed:', error);
+        showNotification(`❌ Asset generation failed: ${error.message}`, 'error');
+    } finally {
+        hideGenerationProgress();
+    }
+}
+
+async function generateAssetSet() {
+    try {
+        const assetType = document.getElementById('asset-type-select').value;
+        const name = document.getElementById('asset-name').value;
+        const rarity = document.getElementById('rarity-select').value;
+        
+        if (!name) {
+            showNotification('❌ Please fill in asset name', 'error');
+            return;
+        }
+        
+        showGenerationProgress(`Generating ${name} asset set...`);
+        
+        let endpoint = '';
+        let payload = {};
+        
+        switch (assetType) {
+            case 'weapon':
+                endpoint = 'weapon-set';
+                payload = { weapon_name: name, rarity: rarity };
+                break;
+            case 'hero':
+                endpoint = 'hero-set';
+                payload = { 
+                    hero_name: name, 
+                    transformations: ['base', 'dragon_lord', 'cosmic_emperor', 'void_knight']
+                };
+                break;
+            case 'map':
+                endpoint = 'map-set';
+                payload = { 
+                    map_name: name, 
+                    areas: ['main', 'entrance', 'depths', 'boss_area']
+                };
+                break;
+            default:
+                throw new Error('Asset sets not supported for this type');
+        }
+        
+        const response = await fetch(`${PIXELLAB_API_BASE}/generate/${endpoint}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(payload)
+        });
+        
+        const data = await response.json();
+        
+        if (response.ok && data.success) {
+            const setData = data.weapon_set || data.hero_set || data.map_set;
+            showNotification(`✅ Generated ${setData.assets.length} assets for ${name}!`, 'success');
+            await refreshAssetGallery();
+            await updatePixelLabStats();
+        } else {
+            throw new Error(data.error || 'Set generation failed');
+        }
+        
+    } catch (error) {
+        console.error('Asset set generation failed:', error);
+        showNotification(`❌ Asset set generation failed: ${error.message}`, 'error');
+    } finally {
+        hideGenerationProgress();
+    }
+}
+
+async function refreshAssetGallery() {
+    try {
+        const gallery = document.getElementById('assets-gallery');
+        const filter = document.getElementById('gallery-filter').value;
+        
+        const url = filter === 'all' ? 
+            `${PIXELLAB_API_BASE}/assets` : 
+            `${PIXELLAB_API_BASE}/assets?type=${filter}`;
+            
+        const response = await fetch(url);
+        const data = await response.json();
+        
+        if (response.ok && data.success) {
+            renderAssetGallery(data.assets);
+        } else {
+            throw new Error(data.error || 'Failed to load assets');
+        }
+        
+    } catch (error) {
+        console.error('Failed to refresh asset gallery:', error);
+        const gallery = document.getElementById('assets-gallery');
+        gallery.innerHTML = '<p>Failed to load assets</p>';
+    }
+}
+
+function renderAssetGallery(assets) {
+    const gallery = document.getElementById('assets-gallery');
+    
+    if (assets.length === 0) {
+        gallery.innerHTML = `
+            <div class="no-assets">
+                <p>No assets generated yet</p>
+                <p>Use the templates or custom generation to create your first asset!</p>
+            </div>
+        `;
+        return;
+    }
+    
+    gallery.innerHTML = assets.map(asset => `
+        <div class="asset-item">
+            <div class="asset-type-badge ${asset.type}">${asset.type.toUpperCase()}</div>
+            <div class="asset-preview">
+                <img src="${asset.url}" alt="${asset.name}" onerror="this.style.display='none'">
+                <div class="asset-placeholder" style="display: none;">
+                    <span class="asset-icon">${getAssetTypeIcon(asset.type)}</span>
+                </div>
+            </div>
+            <div class="asset-info">
+                <h5>${asset.name}</h5>
+                <p>Created: ${new Date(asset.created_at).toLocaleDateString()}</p>
+                <p>Type: ${asset.type} | Status: ${asset.status}</p>
+            </div>
+            <div class="asset-actions">
+                <button class="asset-action-btn download" onclick="downloadAsset('${asset.id}')">
+                    📥 Download
+                </button>
+                <button class="asset-action-btn view" onclick="viewAsset('${asset.id}')">
+                    👁️ View
+                </button>
+            </div>
+        </div>
+    `).join('');
+}
+
+function getAssetTypeIcon(type) {
+    const icons = {
+        weapon: '⚔️',
+        hero: '🦸',
+        map: '🗺️',
+        gem: '💎',
+        icon: '🎯',
+        skin: '🎭',
+        boss: '🐉'
+    };
+    return icons[type] || '🎨';
+}
+
+async function downloadAsset(assetId) {
+    try {
+        const response = await fetch(`${PIXELLAB_API_BASE}/assets/${assetId}/download`);
+        
+        if (response.ok) {
+            const blob = await response.blob();
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = assetId;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+            
+            showNotification('📥 Asset downloaded successfully!', 'success');
+        } else {
+            throw new Error('Download failed');
+        }
+        
+    } catch (error) {
+        showNotification('❌ Failed to download asset', 'error');
+    }
+}
+
+async function viewAsset(assetId) {
+    try {
+        const response = await fetch(`${PIXELLAB_API_BASE}/assets/${assetId}`);
+        const data = await response.json();
+        
+        if (response.ok && data.success) {
+            // Show asset details in modal
+            showAssetDetailsModal(data.asset);
+        } else {
+            throw new Error(data.error || 'Failed to load asset details');
+        }
+        
+    } catch (error) {
+        showNotification('❌ Failed to view asset details', 'error');
+    }
+}
+
+function showAssetDetailsModal(asset) {
+    const modalHtml = `
+        <div class="modal-overlay" onclick="closeModal(event)">
+            <div class="modal-content asset-details-modal" onclick="event.stopPropagation()">
+                <div class="modal-header">
+                    <h3>🎨 Asset Details</h3>
+                    <button class="modal-close" onclick="closeModal()">&times;</button>
+                </div>
+                
+                <div class="asset-details">
+                    <div class="asset-preview-large">
+                        <img src="${asset.path}" alt="Asset Preview">
+                    </div>
+                    
+                    <div class="asset-metadata">
+                        <div class="metadata-item">
+                            <label>Asset ID:</label>
+                            <span>${asset.id}</span>
+                        </div>
+                        <div class="metadata-item">
+                            <label>File Size:</label>
+                            <span>${formatFileSize(asset.size)}</span>
+                        </div>
+                        <div class="metadata-item">
+                            <label>Created:</label>
+                            <span>${new Date(asset.created_at).toLocaleString()}</span>
+                        </div>
+                        <div class="metadata-item">
+                            <label>Modified:</label>
+                            <span>${new Date(asset.modified_at).toLocaleString()}</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="modal-actions">
+                    <button class="form-btn primary" onclick="downloadAsset('${asset.id}')">
+                        📥 Download Asset
+                    </button>
+                    <button class="form-btn secondary" onclick="closeModal()">
+                        Close
+                    </button>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    document.body.insertAdjacentHTML('beforeend', modalHtml);
+}
+
+async function updatePixelLabStats() {
+    try {
+        // Get asset count
+        const assetsResponse = await fetch(`${PIXELLAB_API_BASE}/assets`);
+        const assetsData = await assetsResponse.json();
+        
+        if (assetsResponse.ok && assetsData.success) {
+            updateElementById('total-generated-assets', assetsData.assets.length.toString());
+        }
+        
+        // Update other stats (mock data for now)
+        updateElementById('active-generations', '0');
+        updateElementById('generation-success-rate', '98.5%');
+        
+    } catch (error) {
+        console.error('Failed to update PixelLab stats:', error);
+    }
+}
+
+async function showBatchGenerationModal() {
+    const modalHtml = `
+        <div class="modal-overlay" onclick="closeModal(event)">
+            <div class="modal-content batch-modal" onclick="event.stopPropagation()">
+                <div class="modal-header">
+                    <h3>📦 Batch Asset Generation</h3>
+                    <button class="modal-close" onclick="closeModal()">&times;</button>
+                </div>
+                
+                <div class="batch-form">
+                    <div class="form-group">
+                        <label>Generation Template</label>
+                        <select id="batch-template">
+                            <option value="weapon_pack">⚔️ Complete Weapon Pack (10 weapons)</option>
+                            <option value="hero_pack">🦸 Hero Transformation Pack (4 forms)</option>
+                            <option value="map_pack">🗺️ Environment Pack (6 maps)</option>
+                            <option value="ui_pack">🎮 UI Elements Pack (15 icons)</option>
+                            <option value="complete_game">🎯 Complete Game Assets (50+ items)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Game Theme</label>
+                        <select id="batch-theme">
+                            <option value="fantasy">🏰 Fantasy Medieval</option>
+                            <option value="sci-fi">🚀 Sci-Fi Futuristic</option>
+                            <option value="dark">🌑 Dark Gothic</option>
+                            <option value="cartoon">🎨 Cartoon Style</option>
+                        </select>
+                    </div>
+                    
+                    <div class="batch-preview" id="batch-preview">
+                        <!-- Preview will be populated based on selection -->
+                    </div>
+                </div>
+                
+                <div class="modal-actions">
+                    <button class="form-btn primary" onclick="startBatchGeneration()">
+                        🚀 Start Batch Generation
+                    </button>
+                    <button class="form-btn secondary" onclick="closeModal()">
+                        Cancel
+                    </button>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    document.body.insertAdjacentHTML('beforeend', modalHtml);
+    updateBatchPreview();
+}
+
+async function generateGameAssetPack() {
+    try {
+        showBatchProgress();
+        
+        const gameAssets = [
+            // Legendary Weapons
+            { asset_type: 'weapon', name: 'Godslayer Excalibur', description: 'Epic holy sword', rarity: 'legendary' },
+            { asset_type: 'weapon', name: 'Worldender Bow', description: 'Cosmic void bow', rarity: 'legendary' },
+            { asset_type: 'weapon', name: 'Staff of Omniscience', description: 'Reality-bending staff', rarity: 'legendary' },
+            
+            // Hero Forms
+            { asset_type: 'hero', name: 'Dragon Lord Arin', description: 'Dragon transformation', rarity: 'legendary' },
+            { asset_type: 'hero', name: 'Cosmic Emperor Arin', description: 'Cosmic ascension', rarity: 'legendary' },
+            { asset_type: 'hero', name: 'Void Knight Arin', description: 'Dark void form', rarity: 'legendary' },
+            
+            // Environments
+            { asset_type: 'map', name: 'Forest of Shadows', description: 'Dark mystical forest' },
+            { asset_type: 'map', name: 'Ice Peaks', description: 'Frozen mountain peaks' },
+            { asset_type: 'map', name: 'Volcanic Wasteland', description: 'Hellscape environment' },
+            
+            // Gems and UI
+            { asset_type: 'gem', name: 'Crystal Gem', description: 'Game currency gem' },
+            { asset_type: 'icon', name: 'Health Potion', description: 'Healing item icon' },
+            { asset_type: 'icon', name: 'Mana Crystal', description: 'Magic item icon' }
+        ];
+        
+        const response = await fetch(`${PIXELLAB_API_BASE}/batch-generate`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                requests: gameAssets
+            })
+        });
+        
+        const data = await response.json();
+        
+        if (response.ok && data.success) {
+            showNotification(`✅ Generated ${data.successful} assets successfully!`, 'success');
+            if (data.failed > 0) {
+                showNotification(`⚠️ ${data.failed} assets failed to generate`, 'warning');
+            }
+            await refreshAssetGallery();
+            await updatePixelLabStats();
+        } else {
+            throw new Error(data.error || 'Batch generation failed');
+        }
+        
+    } catch (error) {
+        console.error('Game asset pack generation failed:', error);
+        showNotification(`❌ Game asset pack generation failed: ${error.message}`, 'error');
+    } finally {
+        hideBatchProgress();
+    }
+}
+
+function showGenerationProgress(message) {
+    // Add loading state to buttons
+    const buttons = document.querySelectorAll('.template-btn, .generate-btn');
+    buttons.forEach(btn => {
+        btn.disabled = true;
+        btn.classList.add('generating');
+    });
+    
+    showNotification(`🎨 ${message}`, 'info');
+}
+
+function hideGenerationProgress() {
+    // Remove loading state from buttons
+    const buttons = document.querySelectorAll('.template-btn, .generate-btn');
+    buttons.forEach(btn => {
+        btn.disabled = false;
+        btn.classList.remove('generating');
+    });
+}
+
+function showBatchProgress() {
+    const batchStatus = document.getElementById('batch-status');
+    const progressFill = document.getElementById('batch-progress');
+    const batchCurrent = document.getElementById('batch-current');
+    const batchTotal = document.getElementById('batch-total');
+    
+    batchStatus.style.display = 'block';
+    batchTotal.textContent = '12';
+    batchCurrent.textContent = '0';
+    progressFill.style.width = '0%';
+    
+    // Simulate progress
+    let current = 0;
+    const interval = setInterval(() => {
+        current++;
+        batchCurrent.textContent = current.toString();
+        progressFill.style.width = `${(current / 12) * 100}%`;
+        
+        if (current >= 12) {
+            clearInterval(interval);
+            setTimeout(() => {
+                batchStatus.style.display = 'none';
+            }, 2000);
+        }
+    }, 500);
+}
+
+function hideBatchProgress() {
+    const batchStatus = document.getElementById('batch-status');
+    batchStatus.style.display = 'none';
+}
+
+function clearGenerationForm() {
+    document.getElementById('asset-name').value = '';
+    document.getElementById('asset-description').value = '';
+}
+
+function filterAssetGallery() {
+    refreshAssetGallery();
+}
+
+function formatFileSize(bytes) {
+    if (bytes === 0) return '0 Bytes';
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+}
+
+// Auto-update dimensions based on asset type
+document.addEventListener('DOMContentLoaded', function() {
+    const assetTypeSelect = document.getElementById('asset-type-select');
+    const widthInput = document.getElementById('asset-width');
+    const heightInput = document.getElementById('asset-height');
+    
+    if (assetTypeSelect && widthInput && heightInput) {
+        assetTypeSelect.addEventListener('change', function() {
+            const dimensions = {
+                weapon: { width: 1024, height: 1024 },
+                hero: { width: 512, height: 768 },
+                map: { width: 1920, height: 1080 },
+                gem: { width: 256, height: 256 },
+                icon: { width: 512, height: 512 },
+                skin: { width: 512, height: 768 },
+                boss: { width: 1024, height: 1024 }
+            };
+            
+            const dim = dimensions[this.value] || { width: 1024, height: 1024 };
+            widthInput.value = dim.width;
+            heightInput.value = dim.height;
+        });
+    }
+});
