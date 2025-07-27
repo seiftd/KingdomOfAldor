@@ -20,15 +20,30 @@ from pathlib import Path
 
 # Import premium content
 try:
-    from src.content.premium_content import (
+    # Try relative import first
+    from ..content.premium_content import (
         PREMIUM_HEROES, PREMIUM_WEAPONS, PREMIUM_SKINS, PREMIUM_BUNDLES,
         get_premium_content_by_type, get_premium_item_by_id
     )
 except ImportError:
-    PREMIUM_HEROES = {}
-    PREMIUM_WEAPONS = {}
-    PREMIUM_SKINS = {}
-    PREMIUM_BUNDLES = {}
+    try:
+        # Try absolute import as fallback
+        from content.premium_content import (
+            PREMIUM_HEROES, PREMIUM_WEAPONS, PREMIUM_SKINS, PREMIUM_BUNDLES,
+            get_premium_content_by_type, get_premium_item_by_id
+        )
+    except ImportError:
+        # If both fail, use empty defaults
+        PREMIUM_HEROES = {}
+        PREMIUM_WEAPONS = {}
+        PREMIUM_SKINS = {}
+        PREMIUM_BUNDLES = {}
+        
+        def get_premium_content_by_type(content_type: str):
+            return {}
+        
+        def get_premium_item_by_id(item_id: str):
+            return None
 
 # Game Version and Info
 GAME_VERSION = "1.0.0"
@@ -229,6 +244,7 @@ class Config:
     SFX_VOLUME = 0.8
     
     # Game Mechanics
+    DEBUG = False  # Added DEBUG attribute
     DEBUG_MODE = False
     AUTO_SAVE = True
     AUTO_SAVE_INTERVAL = 300  # seconds
