@@ -303,6 +303,7 @@ class Config:
     SAVE_BACKUP_COUNT = 3
     AUTO_SAVE_FREQUENCY = 300  # seconds
     SAVE_COMPRESSION = True
+    SAVE_VERSION = "1.0"  # Save file format version
     
     # Audio Settings Extended
     AUDIO_BUFFER_SIZE = 1024
@@ -323,6 +324,8 @@ class Config:
     
     # Game Mechanics Extended  
     SKILL_HEAL_PERCENTAGE = 0.25  # Heal skill restores 25% HP
+    SKILL_DAMAGE_DOUBLE_DURATION = 3  # seconds for damage doubler skill
+    SKILL_SPEED_BOOST_DURATION = 5  # seconds for speed boost skill
     TURN_DURATION = 30  # seconds per turn in battle
     
     # Stamina System
@@ -350,6 +353,9 @@ class Config:
     DOUBLE_TAP_MAX_INTERVAL = 0.5  # seconds
     LONG_PRESS_DURATION = 1.0  # seconds
     TOUCH_DEADZONE = 10  # pixels
+    
+    # Localization
+    DEFAULT_LANGUAGE = "en"  # Default language code
     
     # VIP Settings
     VIP_DAILY_GEMS = 40
@@ -403,6 +409,11 @@ Config.AUDIO_DIR = Path(Config.get_audio_dir())
 Config.SPRITES_DIR = Path(Config.get_images_dir()) / "sprites"
 Config.UI_DIR = Path(Config.get_images_dir()) / "ui"
 Config.WORLDS_DIR = Path(Config.get_images_dir()) / "worlds"
+
+# Add content references for backward compatibility
+Config.HEROES = PREMIUM_HEROES  # Reference to premium heroes
+Config.WEAPONS = PREMIUM_WEAPONS  # Reference to premium weapons  
+Config.SKINS = PREMIUM_SKINS  # Reference to premium skins
 
 # === BASIC GAME SETTINGS ===
 VERSION = "1.2.0"

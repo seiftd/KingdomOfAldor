@@ -1,12 +1,13 @@
 # Kingdom of Aldoria - Config Attributes Added
 
 ## Summary
-Fixed ALL missing Config attributes that were causing game crashes. Total of **71 attributes** now properly defined.
+Fixed ALL missing Config attributes that were causing game crashes. Total of **77 attributes** now properly defined.
 
 ## Original Issues Fixed
 - ✅ `Config.DEBUG` - Missing debug attribute
 - ✅ `Config.GAME_TITLE` - Missing game title attribute 
 - ✅ `Config.ASSET_CACHE_SIZE` - Missing asset cache size
+- ✅ `Config.SAVE_VERSION` - Missing save version attribute
 - ✅ `Config.SAVE_DIR.mkdir` - No attribute mkdir (fixed by using Path objects)
 - ✅ Premium content module import errors
 
@@ -67,6 +68,8 @@ Fixed ALL missing Config attributes that were causing game crashes. Total of **7
 - `CRITICAL_HIT_CHANCE` = 0.15
 - `CRITICAL_HIT_MULTIPLIER` = 1.5
 - `SKILL_HEAL_PERCENTAGE` = 0.25
+- `SKILL_DAMAGE_DOUBLE_DURATION` = 3 (seconds)
+- `SKILL_SPEED_BOOST_DURATION` = 5 (seconds)
 - `TURN_DURATION` = 30 (seconds)
 
 ### Player Settings
@@ -104,6 +107,7 @@ Fixed ALL missing Config attributes that were causing game crashes. Total of **7
 - `SAVE_BACKUP_COUNT` = 3
 - `AUTO_SAVE_FREQUENCY` = 300 (seconds)
 - `SAVE_COMPRESSION` = True
+- `SAVE_VERSION` = "1.0" (Save file format version)
 
 ### Stamina System
 - `MAX_STAMINA_DEFAULT` = 10
@@ -137,6 +141,9 @@ Fixed ALL missing Config attributes that were causing game crashes. Total of **7
 - `LONG_PRESS_DURATION` = 1.0 (seconds)
 - `TOUCH_DEADZONE` = 10 (pixels)
 
+### Localization
+- `DEFAULT_LANGUAGE` = "en" (Default language code)
+
 ### World & Stage Settings
 - `WORLD_NAMES` = ["Forest of Shadows", "Desert of Souls", ...] (9 worlds)
 - `STAGES_PER_WORLD` = 40
@@ -151,6 +158,11 @@ Fixed ALL missing Config attributes that were causing game crashes. Total of **7
 - `UI_DIR` = Path object to UI directory (supports .mkdir())
 - `WORLDS_DIR` = Path object to worlds directory (supports .mkdir())
 
+### Content References
+- `HEROES` = Reference to premium heroes collection (5 items)
+- `WEAPONS` = Reference to premium weapons collection (10 items)
+- `SKINS` = Reference to premium skins collection (6 items)
+
 ## Premium Content Integration
 - ✅ 5 Premium Heroes (Dragon Lord Arin, Cosmic Emperor, etc.)
 - ✅ 10 Premium Weapons (Elite, Hyper, Legendary tiers)
@@ -158,8 +170,9 @@ Fixed ALL missing Config attributes that were causing game crashes. Total of **7
 - ✅ 3 Premium Bundles (Ultimate Power, Starter Champion, etc.)
 
 ## Verification Status
-- ✅ All 71 Config attributes confirmed present
+- ✅ All 77 Config attributes confirmed present
 - ✅ Premium content import working
+- ✅ Directory mkdir functionality working
 - ✅ Game initialization simulation successful
 - ✅ No missing attribute errors
 
