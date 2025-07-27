@@ -7,6 +7,7 @@ Fixed ALL missing Config attributes that were causing game crashes. Total of **7
 - ✅ `Config.DEBUG` - Missing debug attribute
 - ✅ `Config.GAME_TITLE` - Missing game title attribute 
 - ✅ `Config.ASSET_CACHE_SIZE` - Missing asset cache size
+- ✅ `Config.SAVE_DIR.mkdir` - No attribute mkdir (fixed by using Path objects)
 - ✅ Premium content module import errors
 
 ## Complete List of Config Attributes Added
@@ -142,13 +143,13 @@ Fixed ALL missing Config attributes that were causing game crashes. Total of **7
 - `BOSS_STAGE_INTERVAL` = 10 (Boss every 10 stages)
 - `WORLDS_COUNT` = 9
 
-### Directory Paths
-- `ASSETS_DIR` = Dynamic path to assets directory
-- `SAVE_DIR` = Dynamic path to saves directory
-- `AUDIO_DIR` = Dynamic path to audio directory
-- `SPRITES_DIR` = Dynamic path to sprites directory
-- `UI_DIR` = Dynamic path to UI directory
-- `WORLDS_DIR` = Dynamic path to worlds directory
+### Directory Paths (Path Objects with mkdir support)
+- `ASSETS_DIR` = Path object to assets directory (supports .mkdir())
+- `SAVE_DIR` = Path object to saves directory (supports .mkdir())
+- `AUDIO_DIR` = Path object to audio directory (supports .mkdir())
+- `SPRITES_DIR` = Path object to sprites directory (supports .mkdir())
+- `UI_DIR` = Path object to UI directory (supports .mkdir())
+- `WORLDS_DIR` = Path object to worlds directory (supports .mkdir())
 
 ## Premium Content Integration
 - ✅ 5 Premium Heroes (Dragon Lord Arin, Cosmic Emperor, etc.)
