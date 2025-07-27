@@ -184,31 +184,22 @@ class GameMode(Enum):
 
 # === ADDITIONAL CONSTANTS ===
 
-# Colors (RGB tuples)
-class Colors:
-    """Color constants for UI elements"""
-    WHITE = (255, 255, 255)
-    BLACK = (0, 0, 0)
-    RED = (255, 0, 0)
-    GREEN = (0, 255, 0)
-    BLUE = (0, 0, 255)
-    YELLOW = (255, 255, 0)
-    PURPLE = (128, 0, 128)
-    ORANGE = (255, 165, 0)
-    GRAY = (128, 128, 128)
-    DARK_GRAY = (64, 64, 64)
-    LIGHT_GRAY = (192, 192, 192)
-    
-    # Game-specific colors
-    GOLD = (255, 215, 0)
-    SILVER = (192, 192, 192)
-    BRONZE = (205, 127, 50)
-    
-    # Rarity colors
-    LEGENDARY_GOLD = (255, 215, 0)
-    EPIC_PURPLE = (128, 0, 128)
-    RARE_BLUE = (0, 0, 255)
-    COMMON_GRAY = (128, 128, 128)
+# Rarity-specific colors (for external use)
+RARITY_COLORS = {
+    "legendary": (255, 215, 0),  # Gold
+    "epic": (128, 0, 128),       # Purple  
+    "rare": (0, 0, 255),         # Blue
+    "common": (128, 128, 128),   # Gray
+    "wood": (139, 69, 19),       # Brown
+    "iron": (169, 169, 169),     # Dark gray
+    "silver": (192, 192, 192),   # Silver
+    "gold": (255, 215, 0),       # Gold
+    "platinum": (229, 228, 226), # Platinum
+    "emerald": (80, 200, 120),   # Emerald green
+    "diamond": (185, 242, 255),  # Diamond blue
+    "elite": (255, 140, 0),      # Dark orange
+    "hyper": (255, 20, 147),     # Deep pink
+}
 
 # Input Constants
 class InputActions:
@@ -231,12 +222,41 @@ class Config:
     # Game Settings
     VERSION = "1.2.0"
     TITLE = "Kingdom of Aldoria"
+    GAME_TITLE = "Kingdom of Aldoria"  # Added missing GAME_TITLE attribute
     
     # Display Settings
     SCREEN_WIDTH = 1280
     SCREEN_HEIGHT = 720
     FPS = 60
     FULLSCREEN = False
+    
+    # Color Constants (RGB tuples)
+    WHITE = (255, 255, 255)
+    BLACK = (0, 0, 0)
+    RED = (255, 0, 0)
+    GREEN = (0, 255, 0)
+    BLUE = (0, 0, 255)
+    YELLOW = (255, 255, 0)
+    PURPLE = (128, 0, 128)
+    ORANGE = (255, 165, 0)
+    GRAY = (128, 128, 128)
+    DARK_GRAY = (64, 64, 64)
+    LIGHT_GRAY = (192, 192, 192)
+    
+    # Game-specific colors
+    GOLD = (255, 215, 0)
+    SILVER = (192, 192, 192)
+    BRONZE = (205, 127, 50)
+    
+    # UI Color Scheme
+    UI_BACKGROUND = (20, 25, 40)
+    UI_PANEL = (40, 50, 70)
+    UI_BUTTON = (60, 80, 120)
+    UI_BUTTON_HOVER = (80, 100, 150)
+    UI_ACCENT = (100, 150, 255)
+    UI_TEXT = (255, 255, 255)
+    UI_TEXT_SECONDARY = (180, 180, 180)
+    UI_BORDER = (100, 150, 255)
     
     # Audio Settings
     MASTER_VOLUME = 0.7
@@ -270,6 +290,21 @@ class Config:
     VIP_STAMINA_BONUS = 5
     VIP_XP_BONUS = 0.25
     VIP_GOLD_BONUS = 0.20
+    
+    # World and Stage Settings
+    WORLD_NAMES = [
+        "Forest of Shadows",
+        "Desert of Souls", 
+        "Crystal Caverns",
+        "Frozen Peaks",
+        "Volcanic Realm",
+        "Sky Citadel",
+        "Abyssal Depths",
+        "Celestial Gardens",
+        "Shadow Realm"
+    ]
+    STAGES_PER_WORLD = 40
+    BOSS_STAGE_INTERVAL = 10  # Boss every 10 stages
     
     # Paths
     @staticmethod
