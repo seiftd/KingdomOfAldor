@@ -27,12 +27,27 @@ class Game:
         self.logger = logging.getLogger(__name__)
         self.logger.info("Initializing Kingdom of Aldoria")
         
-        # Initialize Pygame display
-        self.screen = pygame.display.set_mode(
-            (Config.SCREEN_WIDTH, Config.SCREEN_HEIGHT),
-            pygame.FULLSCREEN if Config.FULLSCREEN else 0
-        )
-        pygame.display.set_caption(Config.GAME_TITLE)
+        # Initialize Pygame display with fallback handling
+        try:
+            self.screen = pygame.display.set_mode(
+                (Config.SCREEN_WIDTH, Config.SCREEN_HEIGHT),
+                pygame.FULLSCREEN if Config.FULLSCREEN else 0
+            )
+            pygame.display.set_caption(Config.GAME_TITLE)
+            self.logger.info(f"Display initialized: {Config.SCREEN_WIDTH}x{Config.SCREEN_HEIGHT}")
+        except pygame.error as e:
+            self.logger.error(f"Failed to initialize display: {e}")
+            # Fallback to dummy driver
+            import os
+            os.environ['SDL_VIDEODRIVER'] = 'dummy'
+            pygame.quit()
+            pygame.init()
+            self.screen = pygame.display.set_mode(
+                (Config.SCREEN_WIDTH, Config.SCREEN_HEIGHT),
+                pygame.FULLSCREEN if Config.FULLSCREEN else 0
+            )
+            pygame.display.set_caption(Config.GAME_TITLE)
+            self.logger.info("Fallback to headless mode successful")
         
         # Clock for FPS control
         self.clock = pygame.time.Clock()
