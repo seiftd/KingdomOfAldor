@@ -109,7 +109,8 @@ class AudioManager:
     
     def stop_all_sounds(self):
         """Stop all playing sound effects"""
-        pygame.mixer.stop()
+        if self.audio_available:
+            pygame.mixer.stop()
         self.playing_sounds.clear()
         self.sound_instances.clear()
         self.logger.debug("All sounds stopped")
@@ -184,7 +185,8 @@ class AudioManager:
             volume: Volume level (0.0 to 1.0)
         """
         self.music_volume = max(0.0, min(1.0, volume))
-        pygame.mixer.music.set_volume(self.music_volume * self.master_volume)
+        if self.audio_available:
+            pygame.mixer.music.set_volume(self.music_volume * self.master_volume)
         self.logger.debug(f"Music volume set to: {self.music_volume}")
     
     def set_sfx_volume(self, volume: float):
@@ -199,7 +201,8 @@ class AudioManager:
     def _update_all_volumes(self):
         """Update volumes for all currently playing sounds"""
         # Update music volume
-        pygame.mixer.music.set_volume(self.music_volume * self.master_volume)
+        if self.audio_available:
+            pygame.mixer.music.set_volume(self.music_volume * self.master_volume)
         
         # Note: Individual sound volumes are set when they're played
         # Running sounds can't have their volume changed in pygame
@@ -217,7 +220,7 @@ class AudioManager:
         Returns:
             True if music is playing
         """
-        return pygame.mixer.music.get_busy()
+        return self.audio_available and pygame.mixer.music.get_busy()
     
     def is_music_paused(self) -> bool:
         """Check if music is paused

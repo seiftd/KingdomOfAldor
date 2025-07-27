@@ -150,8 +150,12 @@ class AssetManager:
                 self.logger.warning(f"Sound not found: {path}")
                 return None
             
-            sound = pygame.mixer.Sound(str(actual_path))
-            sound.set_volume(Config.SFX_VOLUME)
+            if pygame.mixer.get_init():
+                sound = pygame.mixer.Sound(str(actual_path))
+                sound.set_volume(Config.SFX_VOLUME)
+            else:
+                self.logger.warning(f"Cannot load sound {path} - audio not available")
+                return None
             
             self.sounds[path] = sound
             self.logger.debug(f"Loaded sound: {path}")
@@ -380,6 +384,10 @@ class AssetManager:
             loops: Number of loops (-1 for infinite)
             volume: Music volume (None to use default)
         """
+        if not pygame.mixer.get_init():
+            self.logger.warning("Cannot play music - audio not available")
+            return
+            
         if self.load_music(path):
             file_path = self.music[path]
             try:
@@ -395,14 +403,22 @@ class AssetManager:
     
     def stop_music(self):
         """Stop background music"""
-        pygame.mixer.music.stop()
+        try:
+            if pygame.mixer.get_init():
+                pygame.mixer.music.stop()
+        except pygame.error:
+            pass  # Audio not available
     
     def cleanup(self):
         """Clean up all cached assets"""
         self.logger.info("Cleaning up AssetManager")
         
-        # Stop any playing music
-        pygame.mixer.music.stop()
+        # Stop any playing music (if audio is available)
+        try:
+            if pygame.mixer.get_init():
+                pygame.mixer.music.stop()
+        except pygame.error:
+            pass  # Audio not available
         
         # Clear all caches
         self.images.clear()

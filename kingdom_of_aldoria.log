@@ -119,3 +119,166 @@ pygame.error: mixer not initialized
 2025-07-27 13:14:30,453 - __main__ - INFO -   - Audio Manager: AudioManager
 2025-07-27 13:14:30,453 - __main__ - INFO - Test completed successfully - game can start without black screen!
 2025-07-27 13:14:30,480 - __main__ - INFO - Game shutdown complete
+2025-07-27 13:34:01,237 - __main__ - INFO - Starting Kingdom of Aldoria v1.0.0
+2025-07-27 13:34:01,237 - __main__ - INFO - Using default video driver (display mode)
+2025-07-27 13:34:01,357 - __main__ - WARNING - Audio initialization failed: ALSA: Couldn't open audio device: No such file or directory
+2025-07-27 13:34:01,357 - __main__ - INFO - Continuing without audio...
+2025-07-27 13:34:01,357 - __main__ - INFO - Pygame initialized successfully
+2025-07-27 13:34:01,357 - src.core.game - INFO - Initializing Kingdom of Aldoria
+2025-07-27 13:34:01,362 - __main__ - ERROR - Fatal error: Unknown window pixel format
+Traceback (most recent call last):
+  File "/workspace/main.py", line 95, in main
+    game = Game()
+  File "/workspace/src/core/game.py", line 31, in __init__
+    self.screen = pygame.display.set_mode(
+                  ~~~~~~~~~~~~~~~~~~~~~~~^
+        (Config.SCREEN_WIDTH, Config.SCREEN_HEIGHT),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        pygame.FULLSCREEN if Config.FULLSCREEN else 0
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+pygame.error: Unknown window pixel format
+2025-07-27 13:34:01,377 - __main__ - INFO - Game shutdown complete
+2025-07-27 13:34:17,114 - __main__ - INFO - Starting Kingdom of Aldoria v1.0.0
+2025-07-27 13:34:17,114 - __main__ - INFO - Using dummy video driver (headless mode - universal compatibility)
+2025-07-27 13:34:17,322 - __main__ - WARNING - Audio initialization failed: ALSA: Couldn't open audio device: No such file or directory
+2025-07-27 13:34:17,322 - __main__ - INFO - Continuing without audio...
+2025-07-27 13:34:17,322 - __main__ - INFO - Pygame initialized successfully
+2025-07-27 13:34:17,322 - src.core.game - INFO - Initializing Kingdom of Aldoria
+2025-07-27 13:34:17,325 - src.systems.asset_manager - INFO - AssetManager initialized
+2025-07-27 13:34:17,325 - src.systems.audio_manager - WARNING - Audio mixer not available - running in silent mode
+2025-07-27 13:34:17,325 - src.systems.audio_manager - INFO - AudioManager initialized
+2025-07-27 13:34:17,325 - src.systems.save_manager - INFO - SaveManager initialized
+2025-07-27 13:34:17,327 - src.systems.save_manager - INFO - Player data loaded successfully
+2025-07-27 13:34:17,327 - src.systems.save_manager - INFO - Settings loaded successfully
+2025-07-27 13:34:17,327 - src.systems.input_manager - INFO - InputManager initialized
+2025-07-27 13:34:17,327 - src.core.state_manager - INFO - StateManager initialized
+2025-07-27 13:34:17,327 - MainMenuState - INFO - MainMenuState initialized
+2025-07-27 13:34:17,327 - WorldMapState - INFO - WorldMapState initialized
+2025-07-27 13:34:17,327 - BattleState - INFO - BattleState initialized
+2025-07-27 13:34:17,327 - src.ui.shop - INFO - Enhanced Shop initialized
+2025-07-27 13:34:17,327 - src.core.game - INFO - Game initialization complete
+2025-07-27 13:34:17,327 - src.core.game - INFO - Starting main game loop
+2025-07-27 13:34:27,010 - src.core.game - INFO - Game quit requested
+2025-07-27 13:34:27,027 - src.core.game - INFO - Cleaning up game resources
+2025-07-27 13:34:27,028 - src.systems.save_manager - INFO - Game data saved successfully
+2025-07-27 13:34:27,028 - src.core.game - INFO - Game data saved successfully
+2025-07-27 13:34:27,028 - src.systems.audio_manager - INFO - Cleaning up AudioManager
+2025-07-27 13:34:27,028 - __main__ - ERROR - Fatal error: mixer not initialized
+Traceback (most recent call last):
+  File "/workspace/main.py", line 100, in main
+    game.run()
+    ~~~~~~~~^^
+  File "/workspace/src/core/game.py", line 100, in run
+    self._cleanup()
+    ~~~~~~~~~~~~~^^
+  File "/workspace/src/core/game.py", line 206, in _cleanup
+    self.audio_manager.cleanup()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/workspace/src/systems/audio_manager.py", line 243, in cleanup
+    self.stop_all_sounds()
+    ~~~~~~~~~~~~~~~~~~~~^^
+  File "/workspace/src/systems/audio_manager.py", line 112, in stop_all_sounds
+    pygame.mixer.stop()
+    ~~~~~~~~~~~~~~~~~^^
+pygame.error: mixer not initialized
+2025-07-27 13:34:27,047 - __main__ - INFO - Game shutdown complete
+2025-07-27 13:35:58,779 - __main__ - INFO - Starting Kingdom of Aldoria v1.0.0
+2025-07-27 13:35:58,779 - __main__ - INFO - Using dummy video driver (headless mode - universal compatibility)
+2025-07-27 13:35:58,988 - __main__ - WARNING - Audio initialization failed: ALSA: Couldn't open audio device: No such file or directory
+2025-07-27 13:35:58,988 - __main__ - INFO - Continuing without audio...
+2025-07-27 13:35:58,988 - __main__ - INFO - Pygame initialized successfully
+2025-07-27 13:35:58,988 - src.core.game - INFO - Initializing Kingdom of Aldoria
+2025-07-27 13:35:58,990 - src.systems.asset_manager - INFO - AssetManager initialized
+2025-07-27 13:35:58,990 - src.systems.audio_manager - WARNING - Audio mixer not available - running in silent mode
+2025-07-27 13:35:58,990 - src.systems.audio_manager - INFO - AudioManager initialized
+2025-07-27 13:35:58,991 - src.systems.save_manager - INFO - SaveManager initialized
+2025-07-27 13:35:58,992 - src.systems.save_manager - INFO - Player data loaded successfully
+2025-07-27 13:35:58,992 - src.systems.save_manager - INFO - Settings loaded successfully
+2025-07-27 13:35:58,992 - src.systems.input_manager - INFO - InputManager initialized
+2025-07-27 13:35:58,992 - src.core.state_manager - INFO - StateManager initialized
+2025-07-27 13:35:58,992 - MainMenuState - INFO - MainMenuState initialized
+2025-07-27 13:35:58,992 - WorldMapState - INFO - WorldMapState initialized
+2025-07-27 13:35:58,992 - BattleState - INFO - BattleState initialized
+2025-07-27 13:35:58,992 - src.ui.shop - INFO - Enhanced Shop initialized
+2025-07-27 13:35:58,992 - src.core.game - INFO - Game initialization complete
+2025-07-27 13:35:58,992 - src.core.game - INFO - Starting main game loop
+2025-07-27 13:36:03,670 - src.core.game - INFO - Game quit requested
+2025-07-27 13:36:03,685 - src.core.game - INFO - Cleaning up game resources
+2025-07-27 13:36:03,687 - src.systems.save_manager - INFO - Game data saved successfully
+2025-07-27 13:36:03,687 - src.core.game - INFO - Game data saved successfully
+2025-07-27 13:36:03,687 - src.systems.audio_manager - INFO - Cleaning up AudioManager
+2025-07-27 13:36:03,687 - src.systems.audio_manager - INFO - AudioManager cleanup complete
+2025-07-27 13:36:03,687 - src.systems.asset_manager - INFO - Cleaning up AssetManager
+2025-07-27 13:36:03,687 - __main__ - ERROR - Fatal error: mixer not initialized
+Traceback (most recent call last):
+  File "/workspace/main.py", line 100, in main
+    game.run()
+    ~~~~~~~~^^
+  File "/workspace/src/core/game.py", line 100, in run
+    self._cleanup()
+    ~~~~~~~~~~~~~^^
+  File "/workspace/src/core/game.py", line 209, in _cleanup
+    self.asset_manager.cleanup()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/workspace/src/systems/asset_manager.py", line 405, in cleanup
+    pygame.mixer.music.stop()
+    ~~~~~~~~~~~~~~~~~~~~~~~^^
+pygame.error: mixer not initialized
+2025-07-27 13:36:03,689 - __main__ - INFO - Game shutdown complete
+2025-07-27 13:37:04,821 - __main__ - INFO - Starting Kingdom of Aldoria v1.0.0
+2025-07-27 13:37:04,821 - __main__ - INFO - Using dummy video driver (headless mode - universal compatibility)
+2025-07-27 13:37:05,029 - __main__ - WARNING - Audio initialization failed: ALSA: Couldn't open audio device: No such file or directory
+2025-07-27 13:37:05,029 - __main__ - INFO - Continuing without audio...
+2025-07-27 13:37:05,029 - __main__ - INFO - Pygame initialized successfully
+2025-07-27 13:37:05,029 - src.core.game - INFO - Initializing Kingdom of Aldoria
+2025-07-27 13:37:05,032 - src.systems.asset_manager - INFO - AssetManager initialized
+2025-07-27 13:37:05,032 - src.systems.audio_manager - WARNING - Audio mixer not available - running in silent mode
+2025-07-27 13:37:05,032 - src.systems.audio_manager - INFO - AudioManager initialized
+2025-07-27 13:37:05,032 - src.systems.save_manager - INFO - SaveManager initialized
+2025-07-27 13:37:05,033 - src.systems.save_manager - INFO - Player data loaded successfully
+2025-07-27 13:37:05,033 - src.systems.save_manager - INFO - Settings loaded successfully
+2025-07-27 13:37:05,033 - src.systems.input_manager - INFO - InputManager initialized
+2025-07-27 13:37:05,033 - src.core.state_manager - INFO - StateManager initialized
+2025-07-27 13:37:05,033 - MainMenuState - INFO - MainMenuState initialized
+2025-07-27 13:37:05,033 - WorldMapState - INFO - WorldMapState initialized
+2025-07-27 13:37:05,033 - BattleState - INFO - BattleState initialized
+2025-07-27 13:37:05,033 - src.ui.shop - INFO - Enhanced Shop initialized
+2025-07-27 13:37:05,033 - src.core.game - INFO - Game initialization complete
+2025-07-27 13:37:05,033 - src.core.game - INFO - Starting main game loop
+2025-07-27 13:37:07,708 - src.core.game - INFO - Game quit requested
+2025-07-27 13:37:07,724 - src.core.game - INFO - Cleaning up game resources
+2025-07-27 13:37:07,725 - src.systems.save_manager - INFO - Game data saved successfully
+2025-07-27 13:37:07,725 - src.core.game - INFO - Game data saved successfully
+2025-07-27 13:37:07,725 - src.systems.audio_manager - INFO - Cleaning up AudioManager
+2025-07-27 13:37:07,725 - src.systems.audio_manager - INFO - AudioManager cleanup complete
+2025-07-27 13:37:07,725 - src.systems.asset_manager - INFO - Cleaning up AssetManager
+2025-07-27 13:37:07,725 - src.systems.asset_manager - INFO - AssetManager cleanup complete
+2025-07-27 13:37:07,740 - __main__ - INFO - Game shutdown complete
+2025-07-27 13:37:15,813 - __main__ - INFO - Starting Kingdom of Aldoria v1.0.0 in TEST MODE
+2025-07-27 13:37:15,813 - __main__ - INFO - Using dummy video driver (headless mode - universal compatibility)
+2025-07-27 13:37:16,021 - __main__ - WARNING - Audio initialization failed: ALSA: Couldn't open audio device: No such file or directory
+2025-07-27 13:37:16,021 - __main__ - INFO - Continuing without audio...
+2025-07-27 13:37:16,021 - __main__ - INFO - Pygame initialized successfully
+2025-07-27 13:37:16,021 - src.core.game - INFO - Initializing Kingdom of Aldoria
+2025-07-27 13:37:16,023 - src.systems.asset_manager - INFO - AssetManager initialized
+2025-07-27 13:37:16,023 - src.systems.audio_manager - WARNING - Audio mixer not available - running in silent mode
+2025-07-27 13:37:16,023 - src.systems.audio_manager - INFO - AudioManager initialized
+2025-07-27 13:37:16,023 - src.systems.save_manager - INFO - SaveManager initialized
+2025-07-27 13:37:16,024 - src.systems.save_manager - INFO - Player data loaded successfully
+2025-07-27 13:37:16,024 - src.systems.save_manager - INFO - Settings loaded successfully
+2025-07-27 13:37:16,025 - src.systems.input_manager - INFO - InputManager initialized
+2025-07-27 13:37:16,025 - src.core.state_manager - INFO - StateManager initialized
+2025-07-27 13:37:16,025 - MainMenuState - INFO - MainMenuState initialized
+2025-07-27 13:37:16,025 - WorldMapState - INFO - WorldMapState initialized
+2025-07-27 13:37:16,025 - BattleState - INFO - BattleState initialized
+2025-07-27 13:37:16,025 - src.ui.shop - INFO - Enhanced Shop initialized
+2025-07-27 13:37:16,025 - src.core.game - INFO - Game initialization complete
+2025-07-27 13:37:16,025 - __main__ - INFO - Test mode: Game initialized successfully!
+2025-07-27 13:37:16,025 - __main__ - INFO - Game components:
+2025-07-27 13:37:16,025 - __main__ - INFO -   - State Manager: StateManager
+2025-07-27 13:37:16,025 - __main__ - INFO -   - Asset Manager: AssetManager
+2025-07-27 13:37:16,025 - __main__ - INFO -   - Audio Manager: AudioManager
+2025-07-27 13:37:16,025 - __main__ - INFO - Test completed successfully - game can start without black screen!
+2025-07-27 13:37:16,026 - __main__ - INFO - Game shutdown complete
