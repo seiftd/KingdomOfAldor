@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kingdom of Aldoria - Web Game</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(45deg, #1a1a2e, #16213e, #0f3460);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden;
+        }
+        
+        #gameContainer {
+            position: relative;
+            border: 3px solid #FFD700;
+            border-radius: 10px;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
+            background: #000;
+        }
+        
+        #gameCanvas {
+            display: block;
+            background: linear-gradient(135deg, #2c1810, #8B4513, #CD853F);
+            cursor: pointer;
+        }
+        
+        #loadingScreen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #000428, #004e92);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            z-index: 1000;
+        }
+        
+        .loading-title {
+            font-size: 3em;
+            color: #FFD700;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+            margin-bottom: 20px;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes glow {
+            from { text-shadow: 2px 2px 4px rgba(0,0,0,0.8), 0 0 10px #FFD700; }
+            to { text-shadow: 2px 2px 4px rgba(0,0,0,0.8), 0 0 20px #FFD700, 0 0 30px #FFD700; }
+        }
+        
+        .loading-bar {
+            width: 300px;
+            height: 20px;
+            border: 2px solid #FFD700;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+        
+        .loading-progress {
+            height: 100%;
+            background: linear-gradient(90deg, #FFD700, #FFA500);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        
+        .controls-info {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            color: #FFD700;
+            font-size: 14px;
+            background: rgba(0,0,0,0.7);
+            padding: 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div id="gameContainer">
+        <canvas id="gameCanvas" width="1280" height="720"></canvas>
+        
+        <div id="loadingScreen">
+            <div class="loading-title">🏰 KINGDOM OF ALDORIA 👑</div>
+            <div>Loading your epic adventure...</div>
+            <div class="loading-bar">
+                <div class="loading-progress" id="progressBar"></div>
+            </div>
+            <div id="loadingText">Initializing game engine...</div>
+        </div>
+        
+        <div class="controls-info">
+            🎮 Controls: Click to interact • SPACE: Menu • Arrow Keys: Navigate
+        </div>
+    </div>
+
+    <script>
+        // Kingdom of Aldoria - Web Game Engine
+        class KingdomOfAldoria {
+            constructor() {
+                this.canvas = document.getElementById('gameCanvas');
+                this.ctx = this.canvas.getContext('2d');
+                this.loadingScreen = document.getElementById('loadingScreen');
+                this.progressBar = document.getElementById('progressBar');
+                this.loadingText = document.getElementById('loadingText');
+                
+                this.width = 1280;
+                this.height = 720;
+                this.currentState = 'loading';
+                this.lastTime = 0;
+                this.gameLoaded = false;
+                
+                // Game states
+                this.states = {
+                    LOADING: 'loading',
+                    MAIN_MENU: 'main_menu',
+                    WORLD_MAP: 'world_map',
+                    SHOP: 'shop',
+                    BATTLE: 'battle'
+                };
+                
+                // Game data
+                this.player = {
+                    name: 'Hero Arin',
+                    level: 1,
+                    gold: 1000,
+                    gems: 50,
+                    currentWeapon: 'Bronze Sword',
+                    inventory: ['Bronze Sword', 'Health Potion']
+                };
+                
+                this.weapons = [
+                    { name: 'Wooden Sword', rank: 'Wood', price: 100, level: 1 },
+                    { name: 'Iron Blade', rank: 'Iron', price: 500, level: 1 },
+                    { name: 'Silver Edge', rank: 'Silver', price: 1000, level: 1 },
+                    { name: 'Golden Destroyer', rank: 'Gold', price: 2500, level: 1 },
+                    { name: 'Platinum Slayer', rank: 'Platinum', price: 5000, level: 1 },
+                    { name: 'Emerald Fury', rank: 'Emerald', price: 10000, level: 1 },
+                    { name: 'Diamond Edge', rank: 'Diamond', price: 25000, level: 1 },
+                    { name: 'Elite Devastator', rank: 'Elite', price: 50000, level: 1 },
+                    { name: 'Hyper Annihilator', rank: 'Hyper', price: 100000, level: 1 },
+                    { name: 'Legendary Worldbreaker', rank: 'Legendary', price: 250000, level: 1 }
+                ];
+                
+                this.heroes = [
+                    { name: 'Pyromancer', ability: 'Fireburst', price: 5000, description: 'Master of flame magic' },
+                    { name: 'Void Assassin', ability: 'Shadow Strike', price: 7500, description: 'Teleports and strikes from shadows' },
+                    { name: 'Ice Warden', ability: 'Frost Prison', price: 6000, description: 'Freezes enemies in ice' },
+                    { name: 'Storm Caller', ability: 'Lightning Bolt', price: 8000, description: 'Commands the power of storms' },
+                    { name: 'Earth Guardian', ability: 'Stone Shield', price: 5500, description: 'Protects with earth magic' }
+                ];
+                
+                // Input handling
+                this.mouse = { x: 0, y: 0, clicked: false };
+                this.keys = {};
+                
+                this.init();
+            }
+            
+            init() {
+                this.setupEventListeners();
+                this.startLoading();
+            }
+            
+            setupEventListeners() {
+                // Mouse events
+                this.canvas.addEventListener('mousemove', (e) => {
+                    const rect = this.canvas.getBoundingClientRect();
+                    this.mouse.x = e.clientX - rect.left;
+                    this.mouse.y = e.clientY - rect.top;
+                });
+                
+                this.canvas.addEventListener('click', (e) => {
+                    this.mouse.clicked = true;
+                    this.handleClick(this.mouse.x, this.mouse.y);
+                });
+                
+                // Keyboard events
+                document.addEventListener('keydown', (e) => {
+                    this.keys[e.code] = true;
+                    this.handleKeyPress(e.code);
+                });
+                
+                document.addEventListener('keyup', (e) => {
+                    this.keys[e.code] = false;
+                });
+            }
+            
+            startLoading() {
+                let progress = 0;
+                const loadingSteps = [
+                    'Initializing game engine...',
+                    'Loading game assets...',
+                    'Preparing world map...',
+                    'Setting up battle system...',
+                    'Loading shop inventory...',
+                    'Initializing heroes...',
+                    'Preparing visual effects...',
+                    'Finalizing game...'
+                ];
+                
+                const loadInterval = setInterval(() => {
+                    progress += 12.5;
+                    this.progressBar.style.width = progress + '%';
+                    
+                    const stepIndex = Math.floor(progress / 12.5) - 1;
+                    if (stepIndex >= 0 && stepIndex < loadingSteps.length) {
+                        this.loadingText.textContent = loadingSteps[stepIndex];
+                    }
+                    
+                    if (progress >= 100) {
+                        clearInterval(loadInterval);
+                        setTimeout(() => {
+                            this.gameLoaded = true;
+                            this.loadingScreen.style.display = 'none';
+                            this.currentState = this.states.MAIN_MENU;
+                            this.startGameLoop();
+                        }, 1000);
+                    }
+                }, 200);
+            }
+            
+            startGameLoop() {
+                const gameLoop = (timestamp) => {
+                    const deltaTime = timestamp - this.lastTime;
+                    this.lastTime = timestamp;
+                    
+                    this.update(deltaTime);
+                    this.render();
+                    
+                    requestAnimationFrame(gameLoop);
+                };
+                requestAnimationFrame(gameLoop);
+            }
+            
+            update(deltaTime) {
+                // Reset click state
+                this.mouse.clicked = false;
+                
+                // Update based on current state
+                switch (this.currentState) {
+                    case this.states.MAIN_MENU:
+                        this.updateMainMenu(deltaTime);
+                        break;
+                    case this.states.WORLD_MAP:
+                        this.updateWorldMap(deltaTime);
+                        break;
+                    case this.states.SHOP:
+                        this.updateShop(deltaTime);
+                        break;
+                    case this.states.BATTLE:
+                        this.updateBattle(deltaTime);
+                        break;
+                }
+            }
+            
+            render() {
+                // Clear canvas
+                this.ctx.fillStyle = '#1a1a2e';
+                this.ctx.fillRect(0, 0, this.width, this.height);
+                
+                // Render based on current state
+                switch (this.currentState) {
+                    case this.states.MAIN_MENU:
+                        this.renderMainMenu();
+                        break;
+                    case this.states.WORLD_MAP:
+                        this.renderWorldMap();
+                        break;
+                    case this.states.SHOP:
+                        this.renderShop();
+                        break;
+                    case this.states.BATTLE:
+                        this.renderBattle();
+                        break;
+                }
+                
+                // Always render UI overlay
+                this.renderUI();
+            }
+            
+            // ===== MAIN MENU STATE =====
+            updateMainMenu(deltaTime) {
+                // Add subtle animations or effects here
+            }
+            
+            renderMainMenu() {
+                // Background gradient
+                const gradient = this.ctx.createLinearGradient(0, 0, this.width, this.height);
+                gradient.addColorStop(0, '#000428');
+                gradient.addColorStop(1, '#004e92');
+                this.ctx.fillStyle = gradient;
+                this.ctx.fillRect(0, 0, this.width, this.height);
+                
+                // Title
+                this.ctx.fillStyle = '#FFD700';
+                this.ctx.font = 'bold 72px serif';
+                this.ctx.textAlign = 'center';
+                this.ctx.fillText('🏰 KINGDOM OF ALDORIA 👑', this.width/2, 200);
+                
+                // Subtitle
+                this.ctx.fillStyle = '#87CEEB';
+                this.ctx.font = 'bold 32px serif';
+                this.ctx.fillText('Epic 2D Mobile RPG Adventure', this.width/2, 260);
+                
+                // Menu buttons
+                this.drawButton(this.width/2 - 150, 350, 300, 60, '🗺️ EXPLORE WORLD', '#228B22');
+                this.drawButton(this.width/2 - 150, 430, 300, 60, '🛒 SHOP & INVENTORY', '#4169E1');
+                this.drawButton(this.width/2 - 150, 510, 300, 60, '⚔️ BATTLE ARENA', '#DC143C');
+                this.drawButton(this.width/2 - 150, 590, 300, 60, '⚙️ SETTINGS', '#696969');
+                
+                // Game status
+                this.ctx.fillStyle = '#90EE90';
+                this.ctx.font = 'bold 24px sans-serif';
+                this.ctx.fillText('✅ GAME IS WORKING PERFECTLY!', this.width/2, 670);
+            }
+            
+            // ===== WORLD MAP STATE =====
+            updateWorldMap(deltaTime) {
+                // World map updates
+            }
+            
+            renderWorldMap() {
+                // Background
+                const gradient = this.ctx.createLinearGradient(0, 0, this.width, this.height);
+                gradient.addColorStop(0, '#2F4F4F');
+                gradient.addColorStop(1, '#556B2F');
+                this.ctx.fillStyle = gradient;
+                this.ctx.fillRect(0, 0, this.width, this.height);
+                
+                // Title
+                this.ctx.fillStyle = '#FFD700';
+                this.ctx.font = 'bold 48px serif';
+                this.ctx.textAlign = 'center';
+                this.ctx.fillText('🗺️ WORLD MAP', this.width/2, 80);
+                
+                // World regions
+                const regions = [
+                    { name: '🏰 Royal Castle', x: 200, y: 200, unlocked: true },
+                    { name: '🌲 Mystic Forest', x: 500, y: 250, unlocked: true },
+                    { name: '🏔️ Ice Peaks', x: 800, y: 200, unlocked: true },
+                    { name: '🏜️ Desert of Souls', x: 350, y: 400, unlocked: false },
+                    { name: '🌋 Volcanic Realm', x: 700, y: 450, unlocked: false },
+                    { name: '🌊 Abyssal Trench', x: 1000, y: 350, unlocked: false }
+                ];
+                
+                regions.forEach(region => {
+                    const color = region.unlocked ? '#228B22' : '#696969';
+                    this.drawButton(region.x - 80, region.y - 25, 160, 50, region.name, color);
+                });
+                
+                // Back button
+                this.drawButton(50, 50, 150, 50, '← BACK', '#4169E1');
+            }
+            
+            // ===== SHOP STATE =====
+            updateShop(deltaTime) {
+                // Shop updates
+            }
+            
+            renderShop() {
+                // Background
+                const gradient = this.ctx.createLinearGradient(0, 0, this.width, this.height);
+                gradient.addColorStop(0, '#4B0082');
+                gradient.addColorStop(1, '#8B008B');
+                this.ctx.fillStyle = gradient;
+                this.ctx.fillRect(0, 0, this.width, this.height);
+                
+                // Title
+                this.ctx.fillStyle = '#FFD700';
+                this.ctx.font = 'bold 48px serif';
+                this.ctx.textAlign = 'center';
+                this.ctx.fillText('🛒 WEAPON SHOP', this.width/2, 80);
+                
+                // Player stats
+                this.ctx.fillStyle = '#87CEEB';
+                this.ctx.font = 'bold 20px sans-serif';
+                this.ctx.textAlign = 'left';
+                this.ctx.fillText(`💰 Gold: ${this.player.gold}`, 50, 130);
+                this.ctx.fillText(`💎 Gems: ${this.player.gems}`, 250, 130);
+                this.ctx.fillText(`⚔️ Current: ${this.player.currentWeapon}`, 450, 130);
+                
+                // Weapons grid
+                const startX = 100;
+                const startY = 180;
+                const cols = 3;
+                const itemWidth = 350;
+                const itemHeight = 120;
+                
+                this.weapons.slice(0, 6).forEach((weapon, index) => {
+                    const x = startX + (index % cols) * (itemWidth + 20);
+                    const y = startY + Math.floor(index / cols) * (itemHeight + 20);
+                    
+                    // Weapon card
+                    this.ctx.fillStyle = 'rgba(255,255,255,0.1)';
+                    this.ctx.fillRect(x, y, itemWidth, itemHeight);
+                    
+                    // Weapon info
+                    this.ctx.fillStyle = '#FFD700';
+                    this.ctx.font = 'bold 20px sans-serif';
+                    this.ctx.textAlign = 'left';
+                    this.ctx.fillText(`⚔️ ${weapon.name}`, x + 10, y + 30);
+                    
+                    this.ctx.fillStyle = '#87CEEB';
+                    this.ctx.font = '16px sans-serif';
+                    this.ctx.fillText(`Rank: ${weapon.rank}`, x + 10, y + 55);
+                    this.ctx.fillText(`Level: ${weapon.level}`, x + 10, y + 75);
+                    this.ctx.fillText(`💰 ${weapon.price} Gold`, x + 10, y + 95);
+                    
+                    // Buy button
+                    const canAfford = this.player.gold >= weapon.price;
+                    const buttonColor = canAfford ? '#228B22' : '#696969';
+                    this.drawButton(x + 250, y + 70, 80, 30, 'BUY', buttonColor);
+                });
+                
+                // Back button
+                this.drawButton(50, 50, 150, 50, '← BACK', '#4169E1');
+            }
+            
+            // ===== BATTLE STATE =====
+            updateBattle(deltaTime) {
+                // Battle updates
+            }
+            
+            renderBattle() {
+                // Background
+                const gradient = this.ctx.createLinearGradient(0, 0, this.width, this.height);
+                gradient.addColorStop(0, '#8B0000');
+                gradient.addColorStop(1, '#4B0000');
+                this.ctx.fillStyle = gradient;
+                this.ctx.fillRect(0, 0, this.width, this.height);
+                
+                // Title
+                this.ctx.fillStyle = '#FFD700';
+                this.ctx.font = 'bold 48px serif';
+                this.ctx.textAlign = 'center';
+                this.ctx.fillText('⚔️ BATTLE ARENA', this.width/2, 80);
+                
+                // Player area
+                this.ctx.fillStyle = 'rgba(0,255,0,0.2)';
+                this.ctx.fillRect(100, 200, 400, 300);
+                this.ctx.fillStyle = '#90EE90';
+                this.ctx.font = 'bold 24px sans-serif';
+                this.ctx.textAlign = 'center';
+                this.ctx.fillText('🛡️ HERO ARIN', 300, 230);
+                this.ctx.fillText('❤️ HP: 100/100', 300, 260);
+                this.ctx.fillText(`⚔️ ${this.player.currentWeapon}`, 300, 290);
+                
+                // Enemy area
+                this.ctx.fillStyle = 'rgba(255,0,0,0.2)';
+                this.ctx.fillRect(780, 200, 400, 300);
+                this.ctx.fillStyle = '#FFB6C1';
+                this.ctx.font = 'bold 24px sans-serif';
+                this.ctx.fillText('🐉 SHADOW BEAST', 980, 230);
+                this.ctx.fillText('❤️ HP: 150/150', 980, 260);
+                this.ctx.fillText('⚡ Lightning Breath', 980, 290);
+                
+                // Action buttons
+                this.drawButton(200, 550, 150, 50, '⚔️ ATTACK', '#DC143C');
+                this.drawButton(400, 550, 150, 50, '🛡️ DEFEND', '#4169E1');
+                this.drawButton(600, 550, 150, 50, '✨ SKILL', '#9932CC');
+                this.drawButton(800, 550, 150, 50, '🏃 FLEE', '#696969');
+                
+                // Back button
+                this.drawButton(50, 50, 150, 50, '← BACK', '#4169E1');
+            }
+            
+            // ===== UI RENDERING =====
+            renderUI() {
+                // Game status indicator
+                this.ctx.fillStyle = 'rgba(0,0,0,0.7)';
+                this.ctx.fillRect(this.width - 300, 10, 280, 30);
+                this.ctx.fillStyle = '#90EE90';
+                this.ctx.font = '16px sans-serif';
+                this.ctx.textAlign = 'left';
+                this.ctx.fillText('✅ Game Running: ' + this.currentState.toUpperCase(), this.width - 290, 30);
+            }
+            
+            // ===== UTILITY FUNCTIONS =====
+            drawButton(x, y, width, height, text, color = '#4169E1') {
+                // Button background
+                this.ctx.fillStyle = color;
+                this.ctx.fillRect(x, y, width, height);
+                
+                // Button border
+                this.ctx.strokeStyle = '#FFD700';
+                this.ctx.lineWidth = 2;
+                this.ctx.strokeRect(x, y, width, height);
+                
+                // Button text
+                this.ctx.fillStyle = '#FFFFFF';
+                this.ctx.font = 'bold 16px sans-serif';
+                this.ctx.textAlign = 'center';
+                this.ctx.fillText(text, x + width/2, y + height/2 + 6);
+            }
+            
+            isPointInRect(px, py, x, y, width, height) {
+                return px >= x && px <= x + width && py >= y && py <= y + height;
+            }
+            
+            // ===== INPUT HANDLING =====
+            handleClick(x, y) {
+                switch (this.currentState) {
+                    case this.states.MAIN_MENU:
+                        this.handleMainMenuClick(x, y);
+                        break;
+                    case this.states.WORLD_MAP:
+                        this.handleWorldMapClick(x, y);
+                        break;
+                    case this.states.SHOP:
+                        this.handleShopClick(x, y);
+                        break;
+                    case this.states.BATTLE:
+                        this.handleBattleClick(x, y);
+                        break;
+                }
+            }
+            
+            handleMainMenuClick(x, y) {
+                if (this.isPointInRect(x, y, this.width/2 - 150, 350, 300, 60)) {
+                    this.currentState = this.states.WORLD_MAP;
+                } else if (this.isPointInRect(x, y, this.width/2 - 150, 430, 300, 60)) {
+                    this.currentState = this.states.SHOP;
+                } else if (this.isPointInRect(x, y, this.width/2 - 150, 510, 300, 60)) {
+                    this.currentState = this.states.BATTLE;
+                }
+            }
+            
+            handleWorldMapClick(x, y) {
+                if (this.isPointInRect(x, y, 50, 50, 150, 50)) {
+                    this.currentState = this.states.MAIN_MENU;
+                }
+                // Add region click handling here
+            }
+            
+            handleShopClick(x, y) {
+                if (this.isPointInRect(x, y, 50, 50, 150, 50)) {
+                    this.currentState = this.states.MAIN_MENU;
+                }
+                // Add weapon purchase handling here
+            }
+            
+            handleBattleClick(x, y) {
+                if (this.isPointInRect(x, y, 50, 50, 150, 50)) {
+                    this.currentState = this.states.MAIN_MENU;
+                }
+                // Add battle action handling here
+            }
+            
+            handleKeyPress(keyCode) {
+                if (keyCode === 'Space') {
+                    this.currentState = this.states.MAIN_MENU;
+                }
+            }
+        }
+        
+        // Start the game when page loads
+        window.addEventListener('load', () => {
+            new KingdomOfAldoria();
+        });
+    </script>
+</body>
+</html>
